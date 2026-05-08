@@ -1,0 +1,143 @@
+import { ArrowUpRight, ExternalLink, Star } from 'lucide-react'
+import { useRef } from 'react'
+
+import type { Repo } from '#/db/schema'
+import { cn } from '#/lib/utils'
+
+const LANG_ACCENT: Record<string, string> = {
+  TypeScript: 'oklch(0.58 0.15 250)',
+  JavaScript: 'oklch(0.82 0.14 94)',
+  Python: 'oklch(0.54 0.11 245)',
+  Rust: 'oklch(0.63 0.12 55)',
+  Go: 'oklch(0.74 0.12 205)',
+  Java: 'oklch(0.58 0.13 50)',
+  Vue: 'oklch(0.68 0.14 150)',
+  Svelte: 'oklch(0.62 0.19 35)',
+  CSS: 'oklch(0.48 0.12 305)',
+  HTML: 'oklch(0.62 0.18 35)',
+  Shell: 'oklch(0.74 0.15 135)',
+  Ruby: 'oklch(0.44 0.14 25)',
+  C: 'oklch(0.45 0.02 204)',
+}
+
+export function ProjectCard({
+  repo,
+  featured = false,
+  compact = false,
+}: {
+  repo: Repo
+  featured?: boolean
+  compact?: boolean
+}) {
+  const ref = useRef<HTMLElement>(null)
+  const accent = (repo.language && LANG_ACCENT[repo.language]) || 'oklch(0.72 0.085 185)'
+  const title = repo.customTitle?.trim() || repo.name
+  const description = repo.customDescription?.trim() || repo.description
+
+  return (
+    <article
+      ref={ref}
+      className={cn(
+        'project-card group flex flex-col gap-4 p-6 sm:p-7',
+        featured && 'project-card-featured',
+        compact && 'project-card-compact',
+      )}
+      onMouseMove={(e) => {
+        const el = ref.current
+        if (!el) return
+        const rect = el.getBoundingClientRect()
+        const x = ((e.clientX - rect.left) / rect.width) * 100
+        const y = ((e.clientY - rect.top) / rect.height) * 100
+        el.style.setProperty('--mx', `${x}%`)
+        el.style.setProperty('--my', `${y}%`)
+      }}
+    >
+      <a
+        href={repo.htmlUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="flex flex-1 flex-col gap-4 no-underline"
+      >
+        {!compact && repo.customCoverUrl ? (
+          <img
+            src={repo.customCoverUrl}
+            alt=""
+            className={cn(
+              'w-full rounded-sm object-cover ring-1 ring-[var(--line)]',
+              featured ? 'h-56' : 'h-32',
+            )}
+          />
+        ) : !compact ? (
+          <div
+            className={cn(
+              'relative w-full overflow-hidden rounded-sm ring-1 ring-[var(--line)]',
+              featured ? 'h-56' : 'h-28',
+            )}
+            aria-hidden
+            style={{
+              background: `linear-gradient(135deg, color-mix(in oklab, ${accent} 26%, transparent), color-mix(in oklab, ${accent} 8%, transparent))`,
+            }}
+          >
+            <div
+              className="absolute inset-0 opacity-60"
+              style={{
+                backgroundImage:
+                  'radial-gradient(circle at 30% 20%, oklch(0.99 0.008 190 / 0.58), transparent 50%), radial-gradient(circle at 75% 75%, oklch(0.94 0.018 190 / 0.28), transparent 55%)',
+              }}
+            />
+            <div className="absolute right-3 top-3 rounded-sm bg-[var(--surface-strong)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-[color:var(--sea-ink)]">
+              {repo.language || 'project'}
+            </div>
+          </div>
+        ) : null}
+
+        <div className="flex items-start justify-between gap-3">
+          <h3
+            className={cn(
+              'display-title font-semibold text-[color:var(--sea-ink)]',
+              featured ? 'text-3xl' : 'text-xl',
+            )}
+          >
+            {title}
+          </h3>
+          <ArrowUpRight className="mt-1 h-4 w-4 text-[color:var(--sea-ink-soft)] transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[color:var(--lagoon-deep)]" />
+        </div>
+
+        <p
+          className={cn(
+            'line-clamp-3 text-sm leading-6 text-[color:var(--sea-ink-soft)]',
+            !compact && 'min-h-[3.6em]',
+          )}
+        >
+          {description || 'Details coming soon.'}
+        </p>
+      </a>
+
+      <div className="mt-auto flex flex-wrap items-center gap-3 pt-2 text-xs text-[color:var(--sea-ink-soft)]">
+        {repo.language ? (
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block h-2 w-2 rounded-full" style={{ background: accent }} />
+            {repo.language}
+          </span>
+        ) : null}
+        {repo.stars > 0 ? (
+          <span className="flex items-center gap-1">
+            <Star className="h-3 w-3" />
+            {repo.stars}
+          </span>
+        ) : null}
+        {repo.homepage ? (
+          <a
+            href={repo.homepage}
+            target="_blank"
+            rel="noreferrer"
+            className="ml-auto flex items-center gap-1 text-[color:var(--lagoon-deep)] hover:underline"
+          >
+            <ExternalLink className="h-3 w-3" />
+            live
+          </a>
+        ) : null}
+      </div>
+    </article>
+  )
+}

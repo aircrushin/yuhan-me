@@ -1,0 +1,128 @@
+import { useState } from 'react'
+import { Send } from 'lucide-react'
+import { useServerFn } from '@tanstack/react-start'
+import { toast } from 'sonner'
+
+import type { Profile } from '#/db/schema'
+import { Section } from '#/components/site/Section'
+import { Button } from '#/components/ui/button'
+import { Input } from '#/components/ui/input'
+import { Label } from '#/components/ui/label'
+import { Textarea } from '#/components/ui/textarea'
+import { submitContact } from '#/server/public'
+import { m } from '#/paraglide/messages'
+
+interface ContactSectionProps {
+  profile: Profile | null
+}
+
+export function ContactSection({ profile }: ContactSectionProps) {
+  const submit = useServerFn(submitContact)
+  const [pending, setPending] = useState(false)
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [body, setBody] = useState('')
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setPending(true)
+    try {
+      await submit({ data: { name, email, body } })
+      toast.success(m.form_success())
+      setName('')
+      setEmail('')
+      setBody('')
+    } catch {
+      toast.error(m.form_error())
+    } finally {
+      setPending(false)
+    }
+  }
+
+  return (
+    <Section
+      id="contact"
+      kicker={m.section_contact_kicker()}
+      title={m.section_contact_title()}
+      description={m.section_contact_subtitle()}
+    >
+      <div className="contact-panel">
+        <form onSubmit={onSubmit} className="surface-card space-y-4 p-6 md:p-8">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="contact-name">{m.form_name()}</Label>
+              <Input
+                id="contact-name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                minLength={1}
+                maxLength={120}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="contact-email">{m.form_email()}</Label>
+              <Input
+                id="contact-email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="contact-body">{m.form_message()}</Label>
+            <Textarea
+              id="contact-body"
+              rows={6}
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              required
+              minLength={5}
+              maxLength={5000}
+            />
+          </div>
+          <div className="flex justify-end">
+            <Button type="submit" disabled={pending} className="gap-2 rounded-sm px-6">
+              <Send className="h-4 w-4" />
+              {m.form_send()}
+            </Button>
+          </div>
+        </form>
+
+        <div className="surface-card flex flex-col gap-4 p-6 md:p-8">
+          <p className="display-title text-2xl font-semibold text-[color:var(--sea-ink)]">
+            Or, the old-fashioned way.
+          </p>
+          <p className="text-sm text-[color:var(--sea-ink-soft)]">
+            Email me directly, or find me on these platforms. I read everything.
+          </p>
+          <div className="mt-2 space-y-2 text-sm">
+            {profile?.email ? <ContactLink label="Email" href={`mailto:${profile.email}`} value={profile.email} /> : null}
+            {profile?.github ? <ContactLink label="GitHub" href={profile.github} value={profile.github.replace('https://', '')} /> : null}
+            {profile?.x ? <ContactLink label="Twitter / X" href={profile.x} value={profile.x.replace('https://', '')} /> : null}
+            {profile?.linkedin ? <ContactLink label="LinkedIn" href={profile.linkedin} value={profile.linkedin.replace('https://', '')} /> : null}
+            {profile?.resumeUrl ? <ContactLink label="Resume" href={profile.resumeUrl} value="Download" /> : null}
+          </div>
+        </div>
+      </div>
+    </Section>
+  )
+}
+
+function ContactLink({ label, href, value }: { label: string; href: string; value: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className="flex items-center justify-between gap-3 rounded-sm border border-[var(--line)] bg-[var(--surface)] px-3 py-2 transition hover:bg-[var(--link-bg-hover)]"
+    >
+      <span className="text-xs uppercase tracking-[0.16em] text-[color:var(--sea-ink-soft)]">
+        {label}
+      </span>
+      <span className="font-mono text-xs text-[color:var(--sea-ink)]">{value}</span>
+    </a>
+  )
+}

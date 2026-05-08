@@ -1,0 +1,68 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "site_title": "aircrushin: portfolio",
+  "site_description": "Indie developer building thoughtful tools on the web.",
+
+  "language_label": "Language",
+  "current_locale": "Current locale: {locale}",
+
+  "nav_home": "Home",
+  "nav_projects": "Projects",
+  "nav_blog": "Writing",
+  "nav_contact": "Contact",
+  "nav_admin": "Admin",
+
+  "hero_kicker": "Indie developer · Chengdu",
+  "hero_title": "Building thoughtful tools, one small idea at a time.",
+  "hero_subtitle": "I design and ship opinionated software, from prompt-management platforms to audio-reactive visuals. Open-source by default.",
+  "hero_cta_primary": "View my work",
+  "hero_cta_secondary": "Get in touch",
+
+  "stats_repos": "public repos",
+  "stats_stars": "stars earned",
+  "stats_followers": "followers",
+  "stats_focus": "currently",
+
+  "section_about_kicker": "About",
+  "section_about_title": "Hello, I'm aircrushin.",
+
+  "section_skills_kicker": "Toolbelt",
+  "section_skills_title": "What I work with",
+
+  "section_projects_kicker": "Selected work",
+  "section_projects_title": "Things I've built",
+  "section_projects_view_all": "Browse all projects",
+
+  "section_experience_kicker": "Path",
+  "section_experience_title": "A short timeline",
+
+  "section_blog_kicker": "Writing",
+  "section_blog_title": "Recent notes",
+  "section_blog_view_all": "Read all posts",
+
+  "section_contact_kicker": "Get in touch",
+  "section_contact_title": "Let's build something good.",
+  "section_contact_subtitle": "Drop a line. I usually reply within a day or two.",
+
+  "form_name": "Your name",
+  "form_email": "Email",
+  "form_message": "What's on your mind?",
+  "form_send": "Send message",
+  "form_success": "Thanks, your message just landed in my inbox.",
+  "form_error": "Couldn't send right now. Please try again or email me directly.",
+
+  "projects_filter_all": "All",
+  "projects_search_placeholder": "Search projects",
+  "projects_empty": "Nothing matches this filter yet.",
+
+  "blog_empty": "No posts published yet. Soon.",
+  "blog_back": "← Back to all posts",
+
+  "footer_built": "Built with TanStack Start, Tailwind, and a lot of tea.",
+
+  "admin_login_title": "Admin",
+  "admin_login_subtitle": "Enter the owner password to continue.",
+  "admin_login_password": "Password",
+  "admin_login_submit": "Sign in",
+  "admin_login_error": "Wrong password. Try again."
+}
