@@ -16,3 +16,6 @@ todos.json
 # Generated artifacts
 src/paraglide/
 src/routeTree.gen.ts
+
+# Playwright
+# .playwright-cli
