@@ -1,10 +1,13 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
   "site_title": "aircrushin: portfolio",
-  "site_description": "Indie developer building thoughtful tools on the web.",
+  "site_description": "Indie developer building thoughtful, useful tools for the web.",
 
   "language_label": "Language",
+  "language_switcher_aria": "Switch language",
   "current_locale": "Current locale: {locale}",
+  "theme_toggle_aria": "Switch color theme",
+  "menu_toggle_aria": "Open or close menu",
 
   "nav_home": "Home",
   "nav_projects": "Projects",
@@ -14,7 +17,8 @@
 
   "hero_kicker": "Indie developer · Chengdu",
   "hero_title": "Building thoughtful tools, one small idea at a time.",
-  "hero_subtitle": "I design and ship opinionated software, from prompt-management platforms to audio-reactive visuals. Open-source by default.",
+  "hero_subtitle": "I design and ship opinionated software, from prompt-management platforms to audio-reactive visuals. Most of it starts as a tiny itch and grows in public.",
+  "hero_focus_fallback": "Independent software",
   "hero_cta_primary": "View my work",
   "hero_cta_secondary": "Get in touch",
 
@@ -22,9 +26,13 @@
   "stats_stars": "stars earned",
   "stats_followers": "followers",
   "stats_focus": "currently",
+  "stats_mode": "mode",
+  "stats_mode_value": "Open-source first",
 
   "section_about_kicker": "About",
   "section_about_title": "Hello, I'm aircrushin.",
+  "about_fallback_bio": "I'm an indie developer who likes building small, opinionated tools, usually around AI tooling, prompt management, and creative coding. Most of my work is open-source.",
+  "about_work_note": "I work mostly with TypeScript, React, and Postgres. When I'm not shipping side projects, I'm reading papers, testing new ideas, or looking for a good quiet café.",
 
   "section_skills_kicker": "Toolbelt",
   "section_skills_title": "What I work with",
@@ -32,24 +40,37 @@
   "section_projects_kicker": "Selected work",
   "section_projects_title": "Things I've built",
   "section_projects_view_all": "Browse all projects",
+  "projects_page_kicker": "Library",
+  "projects_page_title": "Everything I've built in public.",
+  "projects_page_description": "A live-curated list of open-source projects. Filter by language, search by name or topic, and jump to a demo when one is available.",
+  "projects_preview_empty": "No projects are published yet. Sync from the admin panel when you're ready to show them.",
+  "project_details_soon": "Details coming soon.",
+  "project_type_fallback": "project",
+  "project_live_link": "live",
 
   "section_experience_kicker": "Path",
   "section_experience_title": "A short timeline",
+  "experience_present": "Present",
 
   "section_blog_kicker": "Writing",
   "section_blog_title": "Recent notes",
   "section_blog_view_all": "Read all posts",
+  "blog_page_title": "Notes from the workshop.",
+  "blog_page_description": "Short essays on building things, prompt engineering, and the occasional side quest.",
+  "blog_read_link": "read",
 
   "section_contact_kicker": "Get in touch",
   "section_contact_title": "Let's build something good.",
   "section_contact_subtitle": "Drop a line. I usually reply within a day or two.",
+  "contact_direct_title": "Or, the old-fashioned way.",
+  "contact_direct_body": "Email me directly, or find me on these platforms. I read everything.",
 
   "form_name": "Your name",
   "form_email": "Email",
   "form_message": "What's on your mind?",
   "form_send": "Send message",
   "form_success": "Thanks, your message just landed in my inbox.",
-  "form_error": "Couldn't send right now. Please try again or email me directly.",
+  "form_error": "Couldn't send right now. Please try again, or email me directly.",
 
   "projects_filter_all": "All",
   "projects_search_placeholder": "Search projects",
@@ -57,6 +78,13 @@
 
   "blog_empty": "No posts published yet. Soon.",
   "blog_back": "← Back to all posts",
+
+  "contact_label_email": "Email",
+  "contact_label_github": "GitHub",
+  "contact_label_x": "Twitter / X",
+  "contact_label_linkedin": "LinkedIn",
+  "contact_label_resume": "Resume",
+  "contact_resume_value": "Download",
 
   "footer_built": "Built with TanStack Start, Tailwind, and a lot of tea.",
 

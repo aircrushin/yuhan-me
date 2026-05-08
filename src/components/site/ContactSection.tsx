@@ -93,17 +93,47 @@ export function ContactSection({ profile }: ContactSectionProps) {
 
         <div className="surface-card flex flex-col gap-4 p-6 md:p-8">
           <p className="display-title text-2xl font-semibold text-[color:var(--sea-ink)]">
-            Or, the old-fashioned way.
+            {m.contact_direct_title()}
           </p>
           <p className="text-sm text-[color:var(--sea-ink-soft)]">
-            Email me directly, or find me on these platforms. I read everything.
+            {m.contact_direct_body()}
           </p>
           <div className="mt-2 space-y-2 text-sm">
-            {profile?.email ? <ContactLink label="Email" href={`mailto:${profile.email}`} value={profile.email} /> : null}
-            {profile?.github ? <ContactLink label="GitHub" href={profile.github} value={profile.github.replace('https://', '')} /> : null}
-            {profile?.x ? <ContactLink label="Twitter / X" href={profile.x} value={profile.x.replace('https://', '')} /> : null}
-            {profile?.linkedin ? <ContactLink label="LinkedIn" href={profile.linkedin} value={profile.linkedin.replace('https://', '')} /> : null}
-            {profile?.resumeUrl ? <ContactLink label="Resume" href={profile.resumeUrl} value="Download" /> : null}
+            {profile?.email ? (
+              <ContactLink
+                label={m.contact_label_email()}
+                href={`mailto:${profile.email}`}
+                value={profile.email}
+              />
+            ) : null}
+            {profile?.github ? (
+              <ContactLink
+                label={m.contact_label_github()}
+                href={profile.github}
+                value={profile.github.replace('https://', '')}
+              />
+            ) : null}
+            {profile?.x ? (
+              <ContactLink
+                label={m.contact_label_x()}
+                href={profile.x}
+                value={profile.x.replace('https://', '')}
+              />
+            ) : null}
+            {profile?.linkedin ? (
+              <ContactLink
+                label={m.contact_label_linkedin()}
+                href={profile.linkedin}
+                value={profile.linkedin.replace('https://', '')}
+              />
+            ) : null}
+            {profile?.resumeUrl ? (
+              <ContactLink
+                label={m.contact_label_resume()}
+                href={profile.resumeUrl}
+                value={m.contact_resume_value()}
+              />
+            ) : null}
           </div>
         </div>
       </div>

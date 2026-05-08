@@ -1,6 +1,8 @@
 import { Moon, Sun } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
+import { m } from '#/paraglide/messages'
+
 const STORAGE_KEY = 'aircrushin-theme'
 
 function getInitial(): 'light' | 'dark' {
@@ -31,7 +33,7 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      aria-label="Toggle theme"
+      aria-label={m.theme_toggle_aria()}
       onClick={toggle}
       className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] text-[color:var(--sea-ink-soft)] transition hover:bg-[var(--link-bg-hover)] hover:text-[color:var(--sea-ink)]"
     >

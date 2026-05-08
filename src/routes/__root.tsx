@@ -1,6 +1,7 @@
 import { HeadContent, Scripts, createRootRoute, useRouterState } from '@tanstack/react-router'
 
 import { getLocale } from '#/paraglide/runtime'
+import { m } from '#/paraglide/messages'
 import { SiteHeader } from '#/components/site/SiteHeader'
 import { SiteFooter } from '#/components/site/SiteFooter'
 import { Toaster } from '#/components/ui/sonner'
@@ -18,17 +19,16 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'aircrushin: Building thoughtful tools on the web.' },
+      { title: m.site_title() },
       {
         name: 'description',
-        content:
-          'Indie developer based in Chengdu. I design and ship small, opinionated software, open-source by default.',
+        content: m.site_description(),
       },
       { name: 'theme-color', content: '#4fb8b2' },
-      { property: 'og:title', content: 'aircrushin: portfolio' },
+      { property: 'og:title', content: m.site_title() },
       {
         property: 'og:description',
-        content: 'Indie developer building thoughtful tools on the web.',
+        content: m.site_description(),
       },
       { property: 'og:type', content: 'website' },
     ],

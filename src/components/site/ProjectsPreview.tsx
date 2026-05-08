@@ -19,7 +19,7 @@ export function ProjectsPreview({ repos }: ProjectsPreviewProps) {
         title={m.section_projects_title()}
       >
         <div className="surface-card p-10 text-center text-sm text-[color:var(--sea-ink-soft)]">
-          No projects published yet. Sync from the admin panel to populate this section.
+          {m.projects_preview_empty()}
         </div>
       </Section>
     )

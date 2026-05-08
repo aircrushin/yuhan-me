@@ -13,9 +13,9 @@ interface HeroProps {
 
 export function Hero({ profile, recentNames, stats }: HeroProps) {
   const headline = profile?.headline?.trim() || m.hero_title()
-  const kicker = profile?.location ? `${m.hero_kicker()}` : m.hero_kicker()
+  const kicker = m.hero_kicker()
   const location = profile?.location || 'Chengdu'
-  const focus = profile?.currently || 'Independent software'
+  const focus = profile?.currently || m.hero_focus_fallback()
   const bio = cleanPublicCopy(profile?.bio?.trim() || m.hero_subtitle())
 
   return (
@@ -54,7 +54,7 @@ export function Hero({ profile, recentNames, stats }: HeroProps) {
             <Stat label={m.stats_repos()} value={stats.visible_repos.toString()} />
             <Stat label={m.stats_stars()} value={stats.total_stars.toString()} />
             <Stat label={m.stats_focus()} value={focus} />
-            <Stat label="mode" value="Open-source first" />
+            <Stat label={m.stats_mode()} value={m.stats_mode_value()} />
           </aside>
         </div>
       </div>
@@ -107,10 +107,10 @@ export function HeroRepoTeasers({ repos }: RepoTeaserListProps) {
               {repo.customTitle || repo.name}
             </span>
             <span className="line-clamp-2 text-xs text-[color:var(--sea-ink-soft)]">
-              {repo.customDescription || repo.description || 'Details coming soon.'}
+              {repo.customDescription || repo.description || m.project_details_soon()}
             </span>
             <span className="mt-auto inline-flex items-center gap-2 text-[11px] uppercase tracking-widest text-[color:var(--lagoon-deep)] opacity-80 group-hover:opacity-100">
-              {repo.language || 'project'} <ArrowUpRight className="h-3 w-3" />
+              {repo.language || m.project_type_fallback()} <ArrowUpRight className="h-3 w-3" />
             </span>
           </Link>
         ))}

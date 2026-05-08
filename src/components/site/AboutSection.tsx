@@ -11,8 +11,7 @@ interface AboutSectionProps {
 
 export function AboutSection({ profile }: AboutSectionProps) {
   const bio = cleanPublicCopy(
-    profile?.bio?.trim() ||
-      "I'm an indie developer who likes building small, opinionated tools, usually around AI tooling, prompt management, and creative coding. Most of my work is open-source.",
+    profile?.bio?.trim() || m.about_fallback_bio(),
   )
 
   return (
@@ -49,8 +48,7 @@ export function AboutSection({ profile }: AboutSectionProps) {
             {bio}
           </p>
           <p className="mt-6 max-w-2xl">
-            I work mostly with TypeScript, React, and Postgres. When I'm not shipping side projects,
-            I'm reading papers, listening to ambient mixes, or hunting for obscure cafés.
+            {m.about_work_note()}
           </p>
         </div>
       </div>

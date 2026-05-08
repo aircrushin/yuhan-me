@@ -11,7 +11,7 @@ import { m } from '#/paraglide/messages'
 export const Route = createFileRoute('/projects')({
   loader: () => getVisibleRepos(),
   component: ProjectsPage,
-  head: () => ({ meta: [{ title: 'Projects — aircrushin' }] }),
+  head: () => ({ meta: [{ title: `${m.nav_projects()} — aircrushin` }] }),
 })
 
 function ProjectsPage() {
@@ -37,9 +37,9 @@ function ProjectsPage() {
 
   return (
     <Section
-      kicker="Library"
-      title="Everything I've built in public."
-      description="A live-curated list of my open-source projects. Filter by language, search by name or topic — homepage links out to live demos when available."
+      kicker={m.projects_page_kicker()}
+      title={m.projects_page_title()}
+      description={m.projects_page_description()}
     >
       <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-wrap gap-2">

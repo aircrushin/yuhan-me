@@ -3,6 +3,7 @@ import { ArrowUpRight } from 'lucide-react'
 
 import type { Post } from '#/db/schema'
 import { Section } from '#/components/site/Section'
+import { formatLocalizedDate, localizedPosts } from '#/lib/i18n'
 import { m } from '#/paraglide/messages'
 
 interface BlogPreviewProps {
@@ -10,7 +11,8 @@ interface BlogPreviewProps {
 }
 
 export function BlogPreview({ posts }: BlogPreviewProps) {
-  if (posts.length === 0) return null
+  const visiblePosts = localizedPosts(posts).slice(0, 3)
+  if (visiblePosts.length === 0) return null
   return (
     <Section
       id="blog"
@@ -18,7 +20,7 @@ export function BlogPreview({ posts }: BlogPreviewProps) {
       title={m.section_blog_title()}
     >
       <div className="grid gap-5 md:grid-cols-3">
-        {posts.map((post) => (
+        {visiblePosts.map((post) => (
           <Link
             key={post.id}
             to="/blog/$slug"
@@ -33,20 +35,15 @@ export function BlogPreview({ posts }: BlogPreviewProps) {
               />
             ) : null}
             <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--sea-ink-soft)]">
-              {post.publishedAt
-                ? new Date(post.publishedAt).toLocaleDateString(undefined, {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                  })
-                : ''}
+              {formatLocalizedDate(post.publishedAt)}
             </p>
             <h3 className="display-title text-lg font-semibold text-[color:var(--sea-ink)]">
               {post.title}
             </h3>
             <p className="line-clamp-3 text-sm text-[color:var(--sea-ink-soft)]">{post.excerpt}</p>
             <span className="mt-auto inline-flex items-center gap-1 text-xs font-medium text-[color:var(--lagoon-deep)]">
-              read <ArrowUpRight className="h-3 w-3 transition group-hover:-translate-y-0.5" />
+              {m.blog_read_link()}{' '}
+              <ArrowUpRight className="h-3 w-3 transition group-hover:-translate-y-0.5" />
             </span>
           </Link>
         ))}

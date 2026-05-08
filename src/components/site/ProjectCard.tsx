@@ -3,6 +3,7 @@ import { useRef } from 'react'
 
 import type { Repo } from '#/db/schema'
 import { cn } from '#/lib/utils'
+import { m } from '#/paraglide/messages'
 
 const LANG_ACCENT: Record<string, string> = {
   TypeScript: 'oklch(0.58 0.15 250)',
@@ -86,7 +87,7 @@ export function ProjectCard({
               }}
             />
             <div className="absolute right-3 top-3 rounded-sm bg-[var(--surface-strong)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-[color:var(--sea-ink)]">
-              {repo.language || 'project'}
+              {repo.language || m.project_type_fallback()}
             </div>
           </div>
         ) : null}
@@ -109,7 +110,7 @@ export function ProjectCard({
             !compact && 'min-h-[3.6em]',
           )}
         >
-          {description || 'Details coming soon.'}
+          {description || m.project_details_soon()}
         </p>
       </a>
 
@@ -134,7 +135,7 @@ export function ProjectCard({
             className="ml-auto flex items-center gap-1 text-[color:var(--lagoon-deep)] hover:underline"
           >
             <ExternalLink className="h-3 w-3" />
-            live
+            {m.project_live_link()}
           </a>
         ) : null}
       </div>

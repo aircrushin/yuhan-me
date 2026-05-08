@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '#/components/ui/dropdown-menu'
+import { m } from '#/paraglide/messages'
 
 const LABEL: Record<string, string> = {
   en: 'English',
@@ -18,7 +19,7 @@ export function LocaleSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label="Switch language"
+        aria-label={m.language_switcher_aria()}
         className="inline-flex h-9 items-center gap-1 rounded-full border border-[var(--line)] px-3 text-xs font-medium text-[color:var(--sea-ink-soft)] transition hover:bg-[var(--link-bg-hover)] hover:text-[color:var(--sea-ink)]"
       >
         <Languages className="h-3.5 w-3.5" />

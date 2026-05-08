@@ -1,10 +1,13 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
   "site_title": "aircrushin：个人主页",
-  "site_description": "独立开发者，在网页上打磨小而精的工具。",
+  "site_description": "独立开发者，在网页上打磨有温度、也真正好用的工具。",
 
   "language_label": "语言",
+  "language_switcher_aria": "切换语言",
   "current_locale": "当前语言: {locale}",
+  "theme_toggle_aria": "切换明暗主题",
+  "menu_toggle_aria": "打开或关闭菜单",
 
   "nav_home": "首页",
   "nav_projects": "作品",
@@ -14,7 +17,8 @@
 
   "hero_kicker": "独立开发者 · 成都",
   "hero_title": "用心打磨工具，慢慢做出好东西。",
-  "hero_subtitle": "从提示词管理平台到音频驱动的视觉作品，我喜欢做带点态度的小产品。默认开源。",
+  "hero_subtitle": "从提示词管理平台到音频驱动的视觉作品，我喜欢做带点态度的小产品。很多想法都从一个小痒点开始，然后在公开处慢慢长大。",
+  "hero_focus_fallback": "独立软件",
   "hero_cta_primary": "查看作品",
   "hero_cta_secondary": "和我聊聊",
 
@@ -22,9 +26,13 @@
   "stats_stars": "累计 Star",
   "stats_followers": "关注者",
   "stats_focus": "目前",
+  "stats_mode": "模式",
+  "stats_mode_value": "优先开源",
 
   "section_about_kicker": "关于",
   "section_about_title": "你好，我是 aircrushin。",
+  "about_fallback_bio": "我是一个独立开发者，喜欢做小而有主见的工具，常常围绕 AI 工具、提示词管理和创意编程展开。大部分作品都会开源。",
+  "about_work_note": "我主要使用 TypeScript、React 和 Postgres。没在推进副项目的时候，我通常在读论文、试新点子，或者找一家适合安静坐下来的咖啡馆。",
 
   "section_skills_kicker": "工具箱",
   "section_skills_title": "我的常用技术栈",
@@ -32,24 +40,37 @@
   "section_projects_kicker": "精选作品",
   "section_projects_title": "我做过的一些东西",
   "section_projects_view_all": "查看全部项目",
+  "projects_page_kicker": "作品库",
+  "projects_page_title": "这些是我公开做过的项目。",
+  "projects_page_description": "这里会同步整理我的开源项目。你可以按语言筛选、按名字或主题搜索，有线上演示的项目也可以直接点进去看。",
+  "projects_preview_empty": "暂时还没有公开展示的项目。准备好之后，可以在后台同步并发布。",
+  "project_details_soon": "更多介绍还在整理中。",
+  "project_type_fallback": "项目",
+  "project_live_link": "在线预览",
 
   "section_experience_kicker": "经历",
   "section_experience_title": "一条小小的时间线",
+  "experience_present": "现在",
 
   "section_blog_kicker": "写作",
   "section_blog_title": "最近的随笔",
   "section_blog_view_all": "查看全部文章",
+  "blog_page_title": "一些从工坊里带出来的笔记。",
+  "blog_page_description": "关于做东西、提示词工程，以及偶尔跑偏但值得记录的小探索。",
+  "blog_read_link": "阅读",
 
   "section_contact_kicker": "联系我",
   "section_contact_title": "一起做点有意思的事吧。",
   "section_contact_subtitle": "留个言，我通常在一两天内回复。",
+  "contact_direct_title": "或者，用最直接的方式。",
+  "contact_direct_body": "你也可以直接发邮件，或在这些平台找到我。每条消息我都会认真看。",
 
   "form_name": "你的称呼",
   "form_email": "邮箱",
   "form_message": "想说点什么？",
   "form_send": "发送",
   "form_success": "已收到，谢谢你的留言。",
-  "form_error": "发送失败，请稍后再试或直接发邮件给我。",
+  "form_error": "刚刚没能发送成功。可以稍后再试，也可以直接发邮件给我。",
 
   "projects_filter_all": "全部",
   "projects_search_placeholder": "搜索作品",
@@ -57,6 +78,13 @@
 
   "blog_empty": "还没有公开的文章，敬请期待。",
   "blog_back": "← 返回全部文章",
+
+  "contact_label_email": "邮箱",
+  "contact_label_github": "GitHub",
+  "contact_label_x": "Twitter / X",
+  "contact_label_linkedin": "LinkedIn",
+  "contact_label_resume": "简历",
+  "contact_resume_value": "下载",
 
   "footer_built": "由 TanStack Start、Tailwind 与许多杯茶共同搭建。",
 

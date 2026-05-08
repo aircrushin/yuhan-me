@@ -106,7 +106,7 @@ export const getHomeData = createServerFn({ method: 'GET' }).handler(async () =>
     .from(posts)
     .where(eq(posts.isDraft, false))
     .orderBy(desc(posts.publishedAt))
-    .limit(3)
+    .limit(12)
 
   const stats = await db.execute(sql`
     SELECT

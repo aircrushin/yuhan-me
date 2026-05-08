@@ -2,11 +2,12 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { ContactSection } from '#/components/site/ContactSection'
 import { getPublicProfile } from '#/server/public'
+import { m } from '#/paraglide/messages'
 
 export const Route = createFileRoute('/contact')({
   loader: () => getPublicProfile(),
   component: ContactPage,
-  head: () => ({ meta: [{ title: 'Contact — aircrushin' }] }),
+  head: () => ({ meta: [{ title: `${m.nav_contact()} — aircrushin` }] }),
 })
 
 function ContactPage() {

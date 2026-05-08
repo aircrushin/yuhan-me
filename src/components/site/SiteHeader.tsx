@@ -57,7 +57,7 @@ export function SiteHeader() {
           <LocaleSwitcher />
           <button
             className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] text-[color:var(--sea-ink-soft)] md:hidden"
-            aria-label="Toggle menu"
+            aria-label={m.menu_toggle_aria()}
             onClick={() => setOpen((v) => !v)}
           >
             {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}

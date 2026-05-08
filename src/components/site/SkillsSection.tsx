@@ -11,16 +11,16 @@ export function SkillsSection({ skills, fallbackLanguages }: SkillsSectionProps)
   let groups: Record<string, string[]>
   if (skills.length > 0) {
     groups = skills.reduce<Record<string, string[]>>((acc, s) => {
-      const key = s.category || 'Tools'
+      const key = s.category || m.section_skills_kicker()
       acc[key] ||= []
       acc[key]!.push(s.name)
       return acc
     }, {})
   } else {
-    groups = { Languages: fallbackLanguages }
+    groups = { [m.section_skills_kicker()]: fallbackLanguages }
   }
 
-  if (Object.keys(groups).length === 0 || (groups.Languages?.length === 0 && skills.length === 0)) {
+  if (Object.keys(groups).length === 0 || (fallbackLanguages.length === 0 && skills.length === 0)) {
     return null
   }
 

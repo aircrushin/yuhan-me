@@ -4,6 +4,7 @@ import remarkGfm from 'remark-gfm'
 
 import { Section } from '#/components/site/Section'
 import { getPostBySlug } from '#/server/public'
+import { formatLocalizedDate } from '#/lib/i18n'
 import { m } from '#/paraglide/messages'
 
 export const Route = createFileRoute('/blog/$slug')({
@@ -37,13 +38,7 @@ function BlogPost() {
         />
       ) : null}
       <p className="kicker-line">
-        {post.publishedAt
-          ? new Date(post.publishedAt).toLocaleDateString(undefined, {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-            })
-          : ''}
+        {formatLocalizedDate(post.publishedAt)}
       </p>
       <h1 className="hero-title mt-3 max-w-[24ch] text-balance">{post.title}</h1>
       {post.excerpt ? (

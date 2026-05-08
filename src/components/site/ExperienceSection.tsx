@@ -26,7 +26,7 @@ export function ExperienceSection({ items }: ExperienceSectionProps) {
                   {item.role}
                 </p>
                 <p className="font-mono text-xs text-[color:var(--sea-ink-soft)]">
-                  {item.startDate} → {item.endDate || 'Present'}
+                  {item.startDate} → {item.endDate || m.experience_present()}
                 </p>
               </div>
               <p className="mt-1 text-sm font-medium text-[color:var(--lagoon-deep)]">
