@@ -1,0 +1,293 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-08T11:21:06Z",
+  "title": "Design System: aircrushin",
+  "extensions": {
+    "colorMeta": {
+      "sea-ink": {
+        "role": "primary",
+        "displayName": "Atelier Ink",
+        "canonical": "oklch(0.23 0.026 204)",
+        "tonalRamp": [
+          "oklch(0.15 0.026 204)",
+          "oklch(0.23 0.026 204)",
+          "oklch(0.34 0.026 204)",
+          "oklch(0.45 0.026 204)",
+          "oklch(0.56 0.026 204)",
+          "oklch(0.68 0.024 204)",
+          "oklch(0.82 0.018 204)",
+          "oklch(0.95 0.01 204)"
+        ]
+      },
+      "lacquer": {
+        "role": "primary-accent",
+        "displayName": "Lacquer Signal",
+        "canonical": "oklch(0.43 0.16 27)",
+        "tonalRamp": [
+          "oklch(0.18 0.08 27)",
+          "oklch(0.28 0.12 27)",
+          "oklch(0.43 0.16 27)",
+          "oklch(0.55 0.15 27)",
+          "oklch(0.66 0.13 27)",
+          "oklch(0.76 0.1 27)",
+          "oklch(0.86 0.06 27)",
+          "oklch(0.95 0.025 27)"
+        ]
+      },
+      "lagoon-deep": {
+        "role": "secondary",
+        "displayName": "Lagoon Deep",
+        "canonical": "oklch(0.46 0.08 188)",
+        "tonalRamp": [
+          "oklch(0.16 0.04 188)",
+          "oklch(0.28 0.06 188)",
+          "oklch(0.46 0.08 188)",
+          "oklch(0.58 0.08 188)",
+          "oklch(0.7 0.07 188)",
+          "oklch(0.8 0.05 188)",
+          "oklch(0.89 0.03 188)",
+          "oklch(0.96 0.015 188)"
+        ]
+      },
+      "brass": {
+        "role": "tertiary",
+        "displayName": "Brass Glint",
+        "canonical": "oklch(0.74 0.105 86)",
+        "tonalRamp": [
+          "oklch(0.18 0.05 86)",
+          "oklch(0.32 0.075 86)",
+          "oklch(0.48 0.09 86)",
+          "oklch(0.62 0.1 86)",
+          "oklch(0.74 0.105 86)",
+          "oklch(0.82 0.075 86)",
+          "oklch(0.9 0.045 86)",
+          "oklch(0.96 0.02 86)"
+        ]
+      },
+      "foam": {
+        "role": "neutral",
+        "displayName": "Porcelain Foam",
+        "canonical": "oklch(0.97 0.012 185)",
+        "tonalRamp": [
+          "oklch(0.15 0.012 185)",
+          "oklch(0.28 0.012 185)",
+          "oklch(0.42 0.012 185)",
+          "oklch(0.56 0.012 185)",
+          "oklch(0.7 0.012 185)",
+          "oklch(0.84 0.012 185)",
+          "oklch(0.92 0.012 185)",
+          "oklch(0.97 0.012 185)"
+        ]
+      },
+      "line": {
+        "role": "neutral-border",
+        "displayName": "Measured Line",
+        "canonical": "oklch(0.57 0.026 204 / 0.22)",
+        "tonalRamp": [
+          "oklch(0.18 0.026 204 / 0.18)",
+          "oklch(0.3 0.026 204 / 0.2)",
+          "oklch(0.44 0.026 204 / 0.22)",
+          "oklch(0.57 0.026 204 / 0.22)",
+          "oklch(0.68 0.022 204 / 0.2)",
+          "oklch(0.78 0.018 204 / 0.18)",
+          "oklch(0.88 0.014 204 / 0.16)",
+          "oklch(0.96 0.01 204 / 0.14)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headlines only. The first viewport depends on this scale."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles and major editorial breaks."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Project titles, contact panels, and major card headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Paragraphs, project descriptions, controls, and default UI copy."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Kickers, categories, ledger labels, and compact metadata."
+      }
+    },
+    "shadows": [
+      {
+        "name": "surface-lift",
+        "value": "0 1px 0 var(--inset-glint) inset, 0 18px 32px oklch(0.23 0.026 204 / 0.07), 0 4px 14px oklch(0.23 0.026 204 / 0.05)",
+        "purpose": "Default surface cards and contact panels."
+      },
+      {
+        "name": "project-lift",
+        "value": "0 1px 0 var(--inset-glint) inset, 0 22px 40px oklch(0.23 0.026 204 / 0.08), 0 6px 18px oklch(0.23 0.026 204 / 0.06)",
+        "purpose": "Project cards and featured work objects."
+      },
+      {
+        "name": "input-trace",
+        "value": "0 1px 2px rgb(0 0 0 / 0.05)",
+        "purpose": "Shared input primitive shadow."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state-ease",
+        "value": "180ms cubic-bezier(0.25, 1, 0.5, 1)",
+        "purpose": "Button, link, and surface state changes."
+      },
+      {
+        "name": "rise-in",
+        "value": "700ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Single hero entrance."
+      },
+      {
+        "name": "project-hover",
+        "value": "220ms cubic-bezier(0.25, 1, 0.5, 1)",
+        "purpose": "Project card lift and hover response."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact",
+        "value": "560px"
+      },
+      {
+        "name": "tablet",
+        "value": "900px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main public CTA. Use once per action group.",
+      "html": "<button class=\"ds-btn-primary\">View my work</button>",
+      "css": ".ds-btn-primary { height: 40px; padding: 10px 24px; border: 1px solid var(--sea-ink); border-radius: 4px; background: var(--sea-ink); color: var(--foam); font-family: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 500; transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, transform 180ms cubic-bezier(0.25, 1, 0.5, 1); } .ds-btn-primary:hover { color: var(--lagoon-deep); transform: translateY(-1px); } .ds-btn-primary:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary public CTA with the same proportions as the primary button.",
+      "html": "<button class=\"ds-btn-outline\">Get in touch</button>",
+      "css": ".ds-btn-outline { height: 40px; padding: 10px 24px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface-strong); color: var(--sea-ink); font-family: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 500; transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, transform 180ms cubic-bezier(0.25, 1, 0.5, 1); } .ds-btn-outline:hover { background: var(--link-bg-hover); transform: translateY(-1px); } .ds-btn-outline:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }"
+    },
+    {
+      "name": "Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Compact metadata or skill tag.",
+      "html": "<span class=\"ds-chip\">TypeScript</span>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border: 1px solid var(--chip-line); border-radius: 8px; background: var(--chip-bg); color: var(--sea-ink-soft); font-family: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif; font-size: 12px; font-weight: 500; }"
+    },
+    {
+      "name": "Project Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Framed work object for selected repositories.",
+      "html": "<article class=\"ds-project-card\"><div class=\"ds-project-cover\"><span>JAVASCRIPT</span></div><h3>promptMinder</h3><p>An open-source platform focused on prompt management.</p></article>",
+      "css": ".ds-project-card { padding: 28px; border: 1px solid var(--line); border-radius: 8px; background: linear-gradient(165deg, color-mix(in oklab, var(--surface-strong) 96%, var(--foam) 4%), var(--surface)); color: var(--sea-ink); box-shadow: 0 1px 0 var(--inset-glint) inset, 0 22px 40px oklch(0.23 0.026 204 / 0.08), 0 6px 18px oklch(0.23 0.026 204 / 0.06); font-family: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif; transition: transform 220ms cubic-bezier(0.25, 1, 0.5, 1), border-color 220ms ease; } .ds-project-card:hover { transform: translateY(-3px); border-color: color-mix(in oklab, var(--lagoon-deep) 30%, var(--line)); } .ds-project-card h3 { margin: 20px 0 8px; font-family: Literata, Georgia, serif; font-size: 30px; line-height: 1.2; font-weight: 650; } .ds-project-card p { margin: 0; color: var(--sea-ink-soft); font-size: 14px; line-height: 1.7; } .ds-project-cover { height: 224px; border: 1px solid var(--line); border-radius: 4px; background: linear-gradient(135deg, color-mix(in oklab, var(--brass) 26%, transparent), color-mix(in oklab, var(--lagoon) 8%, transparent)); position: relative; } .ds-project-cover span { position: absolute; top: 12px; right: 12px; padding: 2px 8px; border-radius: 4px; background: var(--surface-strong); color: var(--sea-ink); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Contact form field and admin input primitive.",
+      "html": "<input class=\"ds-input\" placeholder=\"Email\" />",
+      "css": ".ds-input { height: 36px; width: 100%; min-width: 0; padding: 4px 12px; border: 1px solid var(--input); border-radius: 8px; background: transparent; color: var(--sea-ink); font-family: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif; font-size: 14px; box-shadow: 0 1px 2px rgb(0 0 0 / 0.05); transition: color 180ms ease, box-shadow 180ms ease, border-color 180ms ease; } .ds-input::placeholder { color: var(--muted-foreground); } .ds-input:focus-visible { outline: 3px solid color-mix(in oklab, var(--ring) 50%, transparent); outline-offset: 1px; border-color: var(--ring); }"
+    },
+    {
+      "name": "Site Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Sticky public header with brand mark, centered links, and utility controls.",
+      "html": "<nav class=\"ds-nav\"><span class=\"ds-mark\">ac</span><a class=\"ds-active\">Home</a><a>Projects</a><a>Writing</a><a>Contact</a></nav>",
+      "css": ".ds-nav { height: 64px; display: flex; align-items: center; gap: 28px; border-bottom: 1px solid var(--line); background: var(--header-bg); color: var(--sea-ink-soft); font-family: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif; } .ds-mark { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 4px; border: 1px solid color-mix(in oklab, var(--sea-ink) 42%, var(--line)); background: var(--sea-ink); color: var(--foam); font-size: 11px; font-weight: 700; } .ds-nav a { position: relative; color: var(--sea-ink-soft); font-size: 14px; text-decoration: none; } .ds-nav a:hover, .ds-nav .ds-active { color: var(--sea-ink); } .ds-nav .ds-active::after { content: ''; position: absolute; left: 0; right: 0; bottom: -12px; height: 1px; background: var(--lacquer); }"
+    },
+    {
+      "name": "Hero Ledger",
+      "kind": "custom",
+      "refersTo": "hero-ledger",
+      "description": "Right-side first-viewport record of location, repository count, stars, and current focus.",
+      "html": "<aside class=\"ds-ledger\"><div><strong>Chengdu, China</strong></div><dl><dt>Public repos</dt><dd>4</dd><dt>Stars earned</dt><dd>138</dd></dl></aside>",
+      "css": ".ds-ledger { border-top: 1px solid var(--sea-ink); border-bottom: 1px solid var(--line); padding: 19px 0; color: var(--sea-ink); font-family: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif; } .ds-ledger strong { font-size: 14px; } .ds-ledger dl { margin: 12px 0 0; } .ds-ledger dt, .ds-ledger dd { margin: 0; } .ds-ledger dt { border-top: 1px solid var(--line); padding-top: 14px; color: var(--sea-ink-soft); font-size: 11px; font-weight: 700; text-transform: uppercase; } .ds-ledger dd { padding: 4px 0 14px; font-size: 15px; font-weight: 650; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Software Atelier Ledger",
+    "overview": "This system should feel like a small studio record for serious software work: crisp, quiet, organized, and personal. It is a brand surface, so the first impression matters, but the page earns polish through proportion, type, and controlled rhythm rather than decorative spectacle.\n\nThe atmosphere is cool porcelain in light mode and ink-studio in dark mode. Visitors should feel they are reading a curated work ledger, not browsing an API dump or a portfolio theme. PRODUCT.md defines the voice as \"Precise, quiet, cultivated\"; every surface should keep that line.\n\nIt explicitly rejects generic SaaS landing pages, oversized stat blocks, neon hacker aesthetics, glassy blur-heavy cards, identical icon grids, portfolio pages that feel like a theme preview, beige editorial minimalism, and dark-blue developer dashboard convention.",
+    "keyCharacteristics": [
+      "Editorial display type balanced by compact technical labels.",
+      "Restrained OKLCH palette with one rare lacquer accent.",
+      "Thin structural rules, ledger rows, and gridded sections instead of decorative card piles.",
+      "Small-radius, tactile components with visible focus states.",
+      "Motion that supports state and orientation, never choreography for its own sake."
+    ],
+    "rules": [
+      {
+        "name": "The Lacquer Rarity Rule",
+        "body": "Lacquer is a mark, not a wash. Use it for active state and small semantic signals only.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tinted Neutral Rule",
+        "body": "Never use pure black or pure white. All neutrals must carry the portfolio's cool ink hue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Porcelain Not Beige Rule",
+        "body": "The light theme must stay cool, airy, and technical. If it starts reading tan, cream, or generic editorial, correct the palette.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ledger Type Rule",
+        "body": "Use display type for identity and orientation; use grotesk type for operations, metadata, and controls.",
+        "section": "typography"
+      },
+      {
+        "name": "The No Decorative Mono Rule",
+        "body": "Monospace is not shorthand for technical taste. Use it only when the content is genuinely code-like or tabular.",
+        "section": "typography"
+      },
+      {
+        "name": "The Border-First Rule",
+        "body": "If a surface can be separated by a measured line and spacing, do that before increasing shadow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The No Glass Rule",
+        "body": "Do not add decorative blur or frosted-card effects. Translucency is allowed only when paired with crisp borders and readable contrast.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep the public homepage as a brand surface: the design is part of the product.",
+      "Do use OKLCH tokens from `src/styles.css` as the canonical palette.",
+      "Do preserve the \"Precise, quiet, cultivated\" personality from PRODUCT.md.",
+      "Do make work feel curated, not dumped from an API.",
+      "Do use thin full borders, ledger rows, and measured spacing before adding more cards.",
+      "Do keep the lacquer accent rare and meaningful.",
+      "Do preserve bilingual English and Chinese content, visible focus states, reduced-motion behavior, and responsive hierarchy.",
+      "Do use lucide icons only where they clarify an action or state."
+    ],
+    "donts": [
+      "Don't create generic SaaS landing pages.",
+      "Don't use oversized stat blocks or the hero-metric template.",
+      "Don't use neon hacker aesthetics.",
+      "Don't use glassy blur-heavy cards.",
+      "Don't create identical icon grids.",
+      "Don't make portfolio pages that feel like a theme preview.",
+      "Don't let the design collapse into beige editorial minimalism.",
+      "Don't let the design become dark-blue developer dashboard convention.",
+      "Don't use side-stripe borders, gradient text, nested cards, or decorative glassmorphism.",
+      "Don't use pure black, pure white, or decorative monospace."
+    ]
+  }
+}
