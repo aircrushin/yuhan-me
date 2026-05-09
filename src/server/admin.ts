@@ -4,7 +4,7 @@ import { eq, sql, desc, asc } from 'drizzle-orm'
 import { z } from 'zod'
 
 import { getDb } from '#/db/client'
-import { profile, repos, experience, skills, posts, messages } from '#/db/schema'
+import { profile, repos, experience, skills, posts, messages, travelDumps } from '#/db/schema'
 import {
   ADMIN_COOKIE,
   getCookie,
@@ -29,7 +29,7 @@ async function assertAdmin() {
 export const getAdminStatus = createServerFn({ method: 'GET' }).handler(async () => {
   await assertAdmin()
   const db = getDb()
-  const [repoStats, postStats, messageStats] = await Promise.all([
+  const [repoStats, postStats, messageStats, travelStats] = await Promise.all([
     db.execute(sql`
       SELECT
         COUNT(*)::int AS total,
@@ -51,6 +51,12 @@ export const getAdminStatus = createServerFn({ method: 'GET' }).handler(async ()
         COUNT(*) FILTER (WHERE NOT is_read)::int AS unread
       FROM messages
     `),
+    db.execute(sql`
+      SELECT
+        COUNT(*)::int AS total,
+        COUNT(*) FILTER (WHERE is_visible)::int AS visible
+      FROM travel_dumps
+    `),
   ])
 
   return {
@@ -62,6 +68,7 @@ export const getAdminStatus = createServerFn({ method: 'GET' }).handler(async ()
     },
     posts: postStats.rows[0] as { total: number; drafts: number; published: number },
     messages: messageStats.rows[0] as { total: number; unread: number },
+    travel: travelStats.rows[0] as { total: number; visible: number },
   }
 })
 
@@ -301,6 +308,65 @@ export const deleteSkill = createServerFn({ method: 'POST' })
     await assertAdmin()
     const db = getDb()
     await db.delete(skills).where(eq(skills.id, data.id))
+    return { ok: true }
+  })
+
+// ─── Travel dumps ───────────────────────────────────────────────────────────
+
+const travelDumpInput = z.object({
+  id: z.number().optional(),
+  name: z.string().min(1),
+  photoWallUrl: z.string().url(),
+  placeId: z.string().nullable().optional(),
+  locationName: z.string().default(''),
+  formattedAddress: z.string().default(''),
+  latitude: z.number().nullable().optional(),
+  longitude: z.number().nullable().optional(),
+  googleMapsUrl: z.string().default(''),
+  isVisible: z.boolean().default(true),
+  displayOrder: z.number().int().default(0),
+})
+
+export const listTravelDumpsAdmin = createServerFn({ method: 'GET' }).handler(async () => {
+  await assertAdmin()
+  const db = getDb()
+  return db.select().from(travelDumps).orderBy(asc(travelDumps.displayOrder), desc(travelDumps.id))
+})
+
+export const upsertTravelDump = createServerFn({ method: 'POST' })
+  .inputValidator(travelDumpInput)
+  .handler(async ({ data }) => {
+    await assertAdmin()
+    const db = getDb()
+    if (data.id) {
+      const { id, ...rest } = data
+      await db.update(travelDumps).set({ ...rest, updatedAt: new Date() }).where(eq(travelDumps.id, id))
+      return { id }
+    }
+    const [row] = await db.insert(travelDumps).values(data).returning({ id: travelDumps.id })
+    return { id: row!.id }
+  })
+
+export const deleteTravelDump = createServerFn({ method: 'POST' })
+  .inputValidator(z.object({ id: z.number() }))
+  .handler(async ({ data }) => {
+    await assertAdmin()
+    const db = getDb()
+    await db.delete(travelDumps).where(eq(travelDumps.id, data.id))
+    return { ok: true }
+  })
+
+export const reorderTravelDumps = createServerFn({ method: 'POST' })
+  .inputValidator(reorderInput)
+  .handler(async ({ data }) => {
+    await assertAdmin()
+    const db = getDb()
+    for (let i = 0; i < data.ids.length; i++) {
+      await db
+        .update(travelDumps)
+        .set({ displayOrder: i, updatedAt: new Date() })
+        .where(eq(travelDumps.id, data.ids[i]!))
+    }
     return { ok: true }
   })
 

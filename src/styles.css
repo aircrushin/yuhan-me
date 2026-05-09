@@ -612,6 +612,31 @@ a {
   color: var(--foam);
 }
 
+.travel-frame-shell {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-strong);
+  box-shadow:
+    0 1px 0 var(--inset-glint) inset,
+    0 18px 32px oklch(0.23 0.026 204 / 0.07),
+    0 4px 14px oklch(0.23 0.026 204 / 0.05);
+}
+
+.travel-frame {
+  display: block;
+  height: min(720px, 74vh);
+  min-height: 420px;
+  border: 0;
+}
+
+@media (max-width: 640px) {
+  .travel-frame {
+    height: 520px;
+    min-height: 360px;
+  }
+}
+
 .timeline-rail {
   position: relative;
 }

@@ -3,7 +3,7 @@ import { and, desc, asc, eq, sql } from 'drizzle-orm'
 import { z } from 'zod'
 
 import { getDb } from '#/db/client'
-import { profile, repos, experience, skills, posts, messages } from '#/db/schema'
+import { profile, repos, experience, skills, posts, messages, travelDumps } from '#/db/schema'
 
 export const getPublicProfile = createServerFn({ method: 'GET' }).handler(async () => {
   const db = getDb()
@@ -28,6 +28,15 @@ export const getPublicSkills = createServerFn({ method: 'GET' }).handler(async (
 export const getPublicExperience = createServerFn({ method: 'GET' }).handler(async () => {
   const db = getDb()
   return db.select().from(experience).orderBy(asc(experience.displayOrder), desc(experience.id))
+})
+
+export const getVisibleTravelDumps = createServerFn({ method: 'GET' }).handler(async () => {
+  const db = getDb()
+  return db
+    .select()
+    .from(travelDumps)
+    .where(eq(travelDumps.isVisible, true))
+    .orderBy(asc(travelDumps.displayOrder), desc(travelDumps.id))
 })
 
 export const getPublishedPosts = createServerFn({ method: 'GET' }).handler(async () => {
@@ -107,6 +116,11 @@ export const getHomeData = createServerFn({ method: 'GET' }).handler(async () =>
     .where(eq(posts.isDraft, false))
     .orderBy(desc(posts.publishedAt))
     .limit(12)
+  const visibleTravelDumps = await db
+    .select()
+    .from(travelDumps)
+    .where(eq(travelDumps.isVisible, true))
+    .orderBy(asc(travelDumps.displayOrder), desc(travelDumps.id))
 
   const stats = await db.execute(sql`
     SELECT
@@ -123,6 +137,7 @@ export const getHomeData = createServerFn({ method: 'GET' }).handler(async () =>
     skills: skillRows,
     experience: experienceRows,
     posts: recentPosts,
+    travelDumps: visibleTravelDumps,
     stats: (stats.rows[0] as { visible_repos: number; total_stars: number }) ?? {
       visible_repos: 0,
       total_stars: 0,

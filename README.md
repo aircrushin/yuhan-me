@@ -35,6 +35,7 @@ Optional:
 | Name | Purpose |
 | --- | --- |
 | `GITHUB_TOKEN` | Bumps the GitHub API rate limit during admin "Sync now" |
+| `VITE_GOOGLE_MAPS_API_KEY` | Enables Google Places selection for Travel walls in the admin |
 | `RESEND_API_KEY`, `CONTACT_FORWARD_TO`, `CONTACT_FROM` | If set, the contact form forwards submissions by email |
 
 ## Using the admin panel
@@ -44,6 +45,7 @@ Optional:
 3. Open **Projects** and toggle the repos you want shown publicly. Pin a few you're proud of, reorder with the arrows, and optionally override titles, descriptions, and cover images.
 4. Edit your **Profile** (hero copy, location, social links).
 5. Add timeline entries on **Experience**, manage your **Skills** chips, and write notes on **Blog**.
+6. Add **Travel** photo walls by selecting a Google Maps place and pasting the LiveDrop iframe `src`, for example `http://localhost:3000/live/-h2hd?embed=1`.
 
 ## Scripts
 

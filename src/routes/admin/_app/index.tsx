@@ -7,6 +7,7 @@ import {
   FileText,
   Folder,
   Inbox,
+  MapPinned,
   RefreshCw,
   Sparkles,
 } from 'lucide-react'
@@ -65,7 +66,7 @@ function Dashboard() {
         </Button>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <StatCard
           icon={Folder}
           label="Visible projects"
@@ -85,6 +86,12 @@ function Dashboard() {
           value={stats.messages.unread}
           to="/admin/messages"
         />
+        <StatCard
+          icon={MapPinned}
+          label="Travel walls"
+          value={`${stats.travel.visible}/${stats.travel.total}`}
+          to="/admin/travel"
+        />
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -99,6 +106,12 @@ function Dashboard() {
           title="Update experience"
           body="Add a new role or tweak the timeline."
           to="/admin/experience"
+        />
+        <QuickAction
+          icon={MapPinned}
+          title="Share travel walls"
+          body="Embed LiveDrop photo walls and pin them to Google Maps places."
+          to="/admin/travel"
         />
         <QuickAction
           icon={Sparkles}
@@ -128,6 +141,7 @@ function StatCard({
   value: string | number
   to:
     | '/admin/projects'
+    | '/admin/travel'
     | '/admin/experience'
     | '/admin/skills'
     | '/admin/blog'
@@ -163,6 +177,7 @@ function QuickAction({
   body: string
   to:
     | '/admin/projects'
+    | '/admin/travel'
     | '/admin/experience'
     | '/admin/skills'
     | '/admin/blog'

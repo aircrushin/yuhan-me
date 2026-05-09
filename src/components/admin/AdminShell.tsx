@@ -6,6 +6,7 @@ import {
   Home,
   Inbox,
   LogOut,
+  MapPinned,
   Sparkles,
   User,
 } from 'lucide-react'
@@ -19,6 +20,7 @@ const NAV: Array<{
   to:
     | '/admin'
     | '/admin/projects'
+    | '/admin/travel'
     | '/admin/experience'
     | '/admin/skills'
     | '/admin/blog'
@@ -29,6 +31,7 @@ const NAV: Array<{
 }> = [
   { to: '/admin', label: 'Dashboard', icon: Home },
   { to: '/admin/projects', label: 'Projects', icon: Folder },
+  { to: '/admin/travel', label: 'Travel', icon: MapPinned },
   { to: '/admin/experience', label: 'Experience', icon: Briefcase },
   { to: '/admin/skills', label: 'Skills', icon: Sparkles },
   { to: '/admin/blog', label: 'Blog', icon: FileText },

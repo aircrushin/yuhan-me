@@ -5,6 +5,7 @@ import { AboutSection } from '#/components/site/AboutSection'
 import { SkillsSection } from '#/components/site/SkillsSection'
 import { ProjectsPreview } from '#/components/site/ProjectsPreview'
 import { ExperienceSection } from '#/components/site/ExperienceSection'
+import { TravelSection } from '#/components/site/TravelSection'
 import { BlogPreview } from '#/components/site/BlogPreview'
 import { ContactSection } from '#/components/site/ContactSection'
 import { getHomeData } from '#/server/public'
@@ -26,6 +27,7 @@ function Home() {
       <AboutSection profile={data.profile} />
       <SkillsSection skills={data.skills} fallbackLanguages={fallbackLanguages} />
       <ProjectsPreview repos={data.featured} />
+      <TravelSection items={data.travelDumps} preview />
       <ExperienceSection items={data.experience} />
       <BlogPreview posts={data.posts} />
       <ContactSection profile={data.profile} />

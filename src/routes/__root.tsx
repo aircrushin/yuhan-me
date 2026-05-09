@@ -4,6 +4,7 @@ import { getLocale } from '#/paraglide/runtime'
 import { m } from '#/paraglide/messages'
 import { SiteHeader } from '#/components/site/SiteHeader'
 import { SiteFooter } from '#/components/site/SiteFooter'
+import { NotFoundPage } from '#/components/site/NotFoundPage'
 import { Toaster } from '#/components/ui/sonner'
 
 import appCss from '../styles.css?url'
@@ -39,6 +40,7 @@ export const Route = createRootRoute({
   }),
 
   shellComponent: RootDocument,
+  notFoundComponent: NotFoundPage,
 })
 
 function SiteShell({ children }: { children: React.ReactNode }) {

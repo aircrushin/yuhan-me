@@ -7,9 +7,10 @@ import { LocaleSwitcher } from '#/components/site/LocaleSwitcher'
 import { ThemeToggle } from '#/components/site/ThemeToggle'
 import { m } from '#/paraglide/messages'
 
-const NAV: Array<{ to: '/' | '/projects' | '/blog' | '/contact'; label: () => string }> = [
+const NAV: Array<{ to: '/' | '/projects' | '/travel' | '/blog' | '/contact'; label: () => string }> = [
   { to: '/', label: () => m.nav_home() },
   { to: '/projects', label: () => m.nav_projects() },
+  { to: '/travel', label: () => m.nav_travel() },
   { to: '/blog', label: () => m.nav_blog() },
   { to: '/contact', label: () => m.nav_contact() },
 ]

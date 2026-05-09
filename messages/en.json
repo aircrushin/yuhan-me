@@ -11,6 +11,7 @@
 
   "nav_home": "Home",
   "nav_projects": "Projects",
+  "nav_travel": "Travel",
   "nav_blog": "Writing",
   "nav_contact": "Contact",
   "nav_admin": "Admin",
@@ -51,6 +52,12 @@
   "project_type_fallback": "project",
   "project_live_link": "live",
 
+  "section_travel_kicker": "Travel dump",
+  "section_travel_title": "Photo walls from the road",
+  "section_travel_description": "Live snapshots from places I've stayed, wandered through, and kept thinking about afterward.",
+  "section_travel_view_all": "Open travel walls",
+  "travel_empty": "No travel photo walls are published yet.",
+
   "section_experience_kicker": "Path",
   "section_experience_title": "A short timeline",
   "experience_present": "Present",
@@ -81,6 +88,14 @@
 
   "blog_empty": "No posts published yet. Soon.",
   "blog_back": "← Back to all posts",
+
+  "not_found_kicker": "Lost signal",
+  "not_found_title": "This page drifted away.",
+  "not_found_description": "The link may be old, the route may have moved, or this idea has not made it into the portfolio yet. Pick a door below and you will be back on track.",
+  "not_found_home": "Back home",
+  "not_found_projects": "Browse projects",
+  "not_found_panel_aria": "Helpful links for missing pages",
+  "not_found_status_label": "Not found",
 
   "contact_label_email": "Email",
   "contact_label_github": "GitHub",

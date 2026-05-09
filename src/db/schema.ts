@@ -6,6 +6,7 @@ import {
   integer,
   bigint,
   boolean,
+  doublePrecision,
   timestamp,
   jsonb,
 } from 'drizzle-orm/pg-core'
@@ -116,9 +117,26 @@ export const messages = pgTable('messages', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 })
 
+export const travelDumps = pgTable('travel_dumps', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 160 }).notNull(),
+  photoWallUrl: text('photo_wall_url').notNull(),
+  placeId: text('place_id'),
+  locationName: varchar('location_name', { length: 240 }).notNull().default(''),
+  formattedAddress: text('formatted_address').notNull().default(''),
+  latitude: doublePrecision('latitude'),
+  longitude: doublePrecision('longitude'),
+  googleMapsUrl: text('google_maps_url').notNull().default(''),
+  isVisible: boolean('is_visible').notNull().default(true),
+  displayOrder: integer('display_order').notNull().default(0),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+})
+
 export type Profile = typeof profile.$inferSelect
 export type Repo = typeof repos.$inferSelect
 export type Experience = typeof experience.$inferSelect
 export type Skill = typeof skills.$inferSelect
 export type Post = typeof posts.$inferSelect
 export type Message = typeof messages.$inferSelect
+export type TravelDump = typeof travelDumps.$inferSelect

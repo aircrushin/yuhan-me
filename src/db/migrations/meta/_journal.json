@@ -15,6 +15,13 @@
       "when": 1778241812119,
       "tag": "0001_steady_black_tarantula",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1778366089944,
+      "tag": "0002_shallow_epoch",
+      "breakpoints": true
     }
   ]
 }
