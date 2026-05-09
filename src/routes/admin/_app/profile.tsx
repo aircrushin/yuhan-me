@@ -24,10 +24,16 @@ function AdminProfile() {
   const [form, setForm] = useState({
     name: initial?.name ?? 'aircrushin',
     headline: initial?.headline ?? '',
+    headlineEn: initial?.headlineEn ?? '',
+    headlineZh: initial?.headlineZh ?? '',
     bio: initial?.bio ?? '',
+    bioEn: initial?.bioEn ?? '',
+    bioZh: initial?.bioZh ?? '',
     avatarUrl: initial?.avatarUrl ?? '',
     location: initial?.location ?? 'Chengdu, China',
     currently: initial?.currently ?? '',
+    currentlyEn: initial?.currentlyEn ?? '',
+    currentlyZh: initial?.currentlyZh ?? '',
     email: initial?.email ?? '',
     github: initial?.github ?? 'https://github.com/aircrushin',
     x: initial?.x ?? '',
@@ -77,17 +83,45 @@ function AdminProfile() {
             <Field label="Location">
               <Input value={form.location} onChange={(e) => set('location', e.target.value)} />
             </Field>
-            <Field label="Currently" hint="Short status, e.g. 'Open-source · MS @ Monash'" className="sm:col-span-2">
+            <Field label="Currently (default)" hint="Short status, e.g. 'Open-source · MS @ Monash'" className="sm:col-span-2">
               <Input value={form.currently} onChange={(e) => set('currently', e.target.value)} />
             </Field>
-            <Field label="Headline" className="sm:col-span-2">
+            <Field label="Currently (EN)">
+              <Input value={form.currentlyEn} onChange={(e) => set('currentlyEn', e.target.value)} placeholder={form.currently} />
+            </Field>
+            <Field label="Currently (ZH)">
+              <Input value={form.currentlyZh} onChange={(e) => set('currentlyZh', e.target.value)} placeholder={form.currently} />
+            </Field>
+            <Field label="Headline (default)" className="sm:col-span-2">
               <Input value={form.headline} onChange={(e) => set('headline', e.target.value)} />
             </Field>
-            <Field label="Bio" className="sm:col-span-2">
+            <Field label="Headline (EN)">
+              <Input value={form.headlineEn} onChange={(e) => set('headlineEn', e.target.value)} placeholder={form.headline} />
+            </Field>
+            <Field label="Headline (ZH)">
+              <Input value={form.headlineZh} onChange={(e) => set('headlineZh', e.target.value)} placeholder={form.headline} />
+            </Field>
+            <Field label="Bio (default)" className="sm:col-span-2">
               <Textarea
                 rows={5}
                 value={form.bio}
                 onChange={(e) => set('bio', e.target.value)}
+              />
+            </Field>
+            <Field label="Bio (EN)">
+              <Textarea
+                rows={5}
+                value={form.bioEn}
+                onChange={(e) => set('bioEn', e.target.value)}
+                placeholder={form.bio}
+              />
+            </Field>
+            <Field label="Bio (ZH)">
+              <Textarea
+                rows={5}
+                value={form.bioZh}
+                onChange={(e) => set('bioZh', e.target.value)}
+                placeholder={form.bio}
               />
             </Field>
             <Field label="Avatar URL" className="sm:col-span-2">

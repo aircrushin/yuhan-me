@@ -24,15 +24,33 @@ export const Route = createFileRoute('/admin/_app/experience')({
   head: () => ({ meta: [{ title: 'Admin · Experience' }] }),
 })
 
-type Draft = Omit<Experience, 'id' | 'createdAt'> & { id?: number }
+type Draft = Omit<Experience, 'id' | 'createdAt'> & {
+  id?: number
+  roleEn: string
+  roleZh: string
+  companyEn: string
+  companyZh: string
+  locationEn: string
+  locationZh: string
+  descriptionEn: string
+  descriptionZh: string
+}
 
 const EMPTY_DRAFT: Draft = {
   role: '',
+  roleEn: '',
+  roleZh: '',
   company: '',
+  companyEn: '',
+  companyZh: '',
   location: '',
+  locationEn: '',
+  locationZh: '',
   startDate: '',
   endDate: '',
   description: '',
+  descriptionEn: '',
+  descriptionZh: '',
   url: '',
   displayOrder: 0,
 }
@@ -55,11 +73,19 @@ function AdminExperience() {
     setDraft({
       id: item.id,
       role: item.role,
+      roleEn: item.roleEn ?? '',
+      roleZh: item.roleZh ?? '',
       company: item.company,
+      companyEn: item.companyEn ?? '',
+      companyZh: item.companyZh ?? '',
       location: item.location,
+      locationEn: item.locationEn ?? '',
+      locationZh: item.locationZh ?? '',
       startDate: item.startDate,
       endDate: item.endDate ?? '',
       description: item.description,
+      descriptionEn: item.descriptionEn ?? '',
+      descriptionZh: item.descriptionZh ?? '',
       url: item.url,
       displayOrder: item.displayOrder,
     })
@@ -149,26 +175,74 @@ function AdminExperience() {
           <DialogHeader>
             <DialogTitle>{draft.id ? 'Edit experience' : 'New experience'}</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2 max-h-[70vh] overflow-y-auto p-1">
             <div className="space-y-2 sm:col-span-2">
-              <Label>Role</Label>
+              <Label>Role (default)</Label>
               <Input
                 value={draft.role}
                 onChange={(e) => setDraft({ ...draft, role: e.target.value })}
               />
             </div>
             <div className="space-y-2">
-              <Label>Company</Label>
+              <Label>Role (EN)</Label>
+              <Input
+                value={draft.roleEn}
+                onChange={(e) => setDraft({ ...draft, roleEn: e.target.value })}
+                placeholder={draft.role}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Role (ZH)</Label>
+              <Input
+                value={draft.roleZh}
+                onChange={(e) => setDraft({ ...draft, roleZh: e.target.value })}
+                placeholder={draft.role}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Company (default)</Label>
               <Input
                 value={draft.company}
                 onChange={(e) => setDraft({ ...draft, company: e.target.value })}
               />
             </div>
             <div className="space-y-2">
-              <Label>Location</Label>
+              <Label>Company (EN)</Label>
+              <Input
+                value={draft.companyEn}
+                onChange={(e) => setDraft({ ...draft, companyEn: e.target.value })}
+                placeholder={draft.company}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Company (ZH)</Label>
+              <Input
+                value={draft.companyZh}
+                onChange={(e) => setDraft({ ...draft, companyZh: e.target.value })}
+                placeholder={draft.company}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Location (default)</Label>
               <Input
                 value={draft.location}
                 onChange={(e) => setDraft({ ...draft, location: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Location (EN)</Label>
+              <Input
+                value={draft.locationEn}
+                onChange={(e) => setDraft({ ...draft, locationEn: e.target.value })}
+                placeholder={draft.location}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Location (ZH)</Label>
+              <Input
+                value={draft.locationZh}
+                onChange={(e) => setDraft({ ...draft, locationZh: e.target.value })}
+                placeholder={draft.location}
               />
             </div>
             <div className="space-y-2">
@@ -194,11 +268,29 @@ function AdminExperience() {
               />
             </div>
             <div className="space-y-2 sm:col-span-2">
-              <Label>Description</Label>
+              <Label>Description (default)</Label>
               <Textarea
-                rows={4}
+                rows={3}
                 value={draft.description}
                 onChange={(e) => setDraft({ ...draft, description: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Description (EN)</Label>
+              <Textarea
+                rows={3}
+                value={draft.descriptionEn}
+                onChange={(e) => setDraft({ ...draft, descriptionEn: e.target.value })}
+                placeholder={draft.description}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Description (ZH)</Label>
+              <Textarea
+                rows={3}
+                value={draft.descriptionZh}
+                onChange={(e) => setDraft({ ...draft, descriptionZh: e.target.value })}
+                placeholder={draft.description}
               />
             </div>
             <div className="space-y-2">

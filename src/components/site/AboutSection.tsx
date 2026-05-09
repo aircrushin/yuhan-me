@@ -3,6 +3,7 @@ import { MapPin, Sparkles } from 'lucide-react'
 import type { Profile } from '#/db/schema'
 import { Section } from '#/components/site/Section'
 import { Avatar, AvatarFallback, AvatarImage } from '#/components/ui/avatar'
+import { pickLocaleField } from '#/lib/i18n'
 import { m } from '#/paraglide/messages'
 
 interface AboutSectionProps {
@@ -11,8 +12,9 @@ interface AboutSectionProps {
 
 export function AboutSection({ profile }: AboutSectionProps) {
   const bio = cleanPublicCopy(
-    profile?.bio?.trim() || m.about_fallback_bio(),
+    pickLocaleField(profile, 'bio') || m.about_fallback_bio(),
   )
+  const currently = pickLocaleField(profile, 'currently')
 
   return (
     <Section
@@ -34,10 +36,10 @@ export function AboutSection({ profile }: AboutSectionProps) {
               <MapPin className="h-3.5 w-3.5" />
               {profile?.location || 'Chengdu, China'}
             </p>
-            {profile?.currently ? (
+            {currently ? (
               <p className="flex items-center gap-1.5 text-sm text-[color:var(--sea-ink-soft)]">
                 <Sparkles className="h-3.5 w-3.5" />
-                {profile.currently}
+                {currently}
               </p>
             ) : null}
           </div>

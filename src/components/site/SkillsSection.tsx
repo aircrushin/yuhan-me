@@ -1,5 +1,6 @@
 import type { Skill } from '#/db/schema'
 import { Section } from '#/components/site/Section'
+import { pickLocaleField } from '#/lib/i18n'
 import { m } from '#/paraglide/messages'
 
 interface SkillsSectionProps {
@@ -11,9 +12,9 @@ export function SkillsSection({ skills, fallbackLanguages }: SkillsSectionProps)
   let groups: Record<string, string[]>
   if (skills.length > 0) {
     groups = skills.reduce<Record<string, string[]>>((acc, s) => {
-      const key = s.category || m.section_skills_kicker()
+      const key = pickLocaleField(s, 'category') || m.section_skills_kicker()
       acc[key] ||= []
-      acc[key]!.push(s.name)
+      acc[key]!.push(pickLocaleField(s, 'name') || s.name)
       return acc
     }, {})
   } else {

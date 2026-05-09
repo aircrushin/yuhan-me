@@ -3,6 +3,7 @@ import { ArrowUpRight, MapPin, Sparkles } from 'lucide-react'
 
 import type { Profile, Repo } from '#/db/schema'
 import { Button } from '#/components/ui/button'
+import { pickLocaleField } from '#/lib/i18n'
 import { m } from '#/paraglide/messages'
 
 interface HeroProps {
@@ -12,11 +13,11 @@ interface HeroProps {
 }
 
 export function Hero({ profile, recentNames, stats }: HeroProps) {
-  const headline = profile?.headline?.trim() || m.hero_title()
+  const headline = pickLocaleField(profile, 'headline') || m.hero_title()
   const kicker = m.hero_kicker()
   const location = profile?.location || 'Chengdu'
-  const focus = profile?.currently || m.hero_focus_fallback()
-  const bio = cleanPublicCopy(profile?.bio?.trim() || m.hero_subtitle())
+  const focus = pickLocaleField(profile, 'currently') || m.hero_focus_fallback()
+  const bio = cleanPublicCopy(pickLocaleField(profile, 'bio') || m.hero_subtitle())
 
   return (
     <section className="relative overflow-hidden">
@@ -104,10 +105,10 @@ export function HeroRepoTeasers({ repos }: RepoTeaserListProps) {
             className="surface-card group flex flex-col gap-2 px-4 py-3 text-sm"
           >
             <span className="font-medium text-[color:var(--sea-ink)]">
-              {repo.customTitle || repo.name}
+              {pickLocaleField(repo, 'customTitle') || repo.name}
             </span>
             <span className="line-clamp-2 text-xs text-[color:var(--sea-ink-soft)]">
-              {repo.customDescription || repo.description || m.project_details_soon()}
+              {pickLocaleField(repo, 'customDescription') || repo.description || m.project_details_soon()}
             </span>
             <span className="mt-auto inline-flex items-center gap-2 text-[11px] uppercase tracking-widest text-[color:var(--lagoon-deep)] opacity-80 group-hover:opacity-100">
               {repo.language || m.project_type_fallback()} <ArrowUpRight className="h-3 w-3" />

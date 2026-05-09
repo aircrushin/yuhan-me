@@ -23,8 +23,14 @@ export const Route = createFileRoute('/admin/_app/skills')({
   head: () => ({ meta: [{ title: 'Admin · Skills' }] }),
 })
 
-type Draft = Omit<Skill, 'id'> & { id?: number }
-const EMPTY: Draft = { name: '', category: 'Tools', level: 3, displayOrder: 0 }
+type Draft = Omit<Skill, 'id'> & {
+  id?: number
+  nameEn: string
+  nameZh: string
+  categoryEn: string
+  categoryZh: string
+}
+const EMPTY: Draft = { name: '', nameEn: '', nameZh: '', category: 'Tools', categoryEn: '', categoryZh: '', level: 3, displayOrder: 0 }
 
 function AdminSkills() {
   const items = Route.useLoaderData()
@@ -50,7 +56,7 @@ function AdminSkills() {
   }
 
   function startEdit(s: Skill) {
-    setDraft({ id: s.id, name: s.name, category: s.category, level: s.level, displayOrder: s.displayOrder })
+    setDraft({ id: s.id, name: s.name, nameEn: s.nameEn ?? '', nameZh: s.nameZh ?? '', category: s.category, categoryEn: s.categoryEn ?? '', categoryZh: s.categoryZh ?? '', level: s.level, displayOrder: s.displayOrder })
     setOpen(true)
   }
 
@@ -129,16 +135,32 @@ function AdminSkills() {
           <DialogHeader>
             <DialogTitle>{draft.id ? 'Edit skill' : 'New skill'}</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2 max-h-[50vh] overflow-y-auto p-1">
             <div className="space-y-2 sm:col-span-2">
-              <Label>Name</Label>
+              <Label>Name (default)</Label>
               <Input
                 value={draft.name}
                 onChange={(e) => setDraft({ ...draft, name: e.target.value })}
               />
             </div>
             <div className="space-y-2">
-              <Label>Category</Label>
+              <Label>Name (EN)</Label>
+              <Input
+                value={draft.nameEn}
+                onChange={(e) => setDraft({ ...draft, nameEn: e.target.value })}
+                placeholder={draft.name}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Name (ZH)</Label>
+              <Input
+                value={draft.nameZh}
+                onChange={(e) => setDraft({ ...draft, nameZh: e.target.value })}
+                placeholder={draft.name}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Category (default)</Label>
               <Input
                 value={draft.category}
                 onChange={(e) => setDraft({ ...draft, category: e.target.value })}
@@ -149,6 +171,22 @@ function AdminSkills() {
                   <option key={c} value={c} />
                 ))}
               </datalist>
+            </div>
+            <div className="space-y-2">
+              <Label>Category (EN)</Label>
+              <Input
+                value={draft.categoryEn}
+                onChange={(e) => setDraft({ ...draft, categoryEn: e.target.value })}
+                placeholder={draft.category}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Category (ZH)</Label>
+              <Input
+                value={draft.categoryZh}
+                onChange={(e) => setDraft({ ...draft, categoryZh: e.target.value })}
+                placeholder={draft.category}
+              />
             </div>
             <div className="space-y-2">
               <Label>Level (1–5)</Label>

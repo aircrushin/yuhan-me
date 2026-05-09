@@ -3,6 +3,7 @@ import { useRef } from 'react'
 
 import type { Repo } from '#/db/schema'
 import { cn } from '#/lib/utils'
+import { pickLocaleField } from '#/lib/i18n'
 import { m } from '#/paraglide/messages'
 
 const LANG_ACCENT: Record<string, string> = {
@@ -32,8 +33,8 @@ export function ProjectCard({
 }) {
   const ref = useRef<HTMLElement>(null)
   const accent = (repo.language && LANG_ACCENT[repo.language]) || 'oklch(0.72 0.085 185)'
-  const title = repo.customTitle?.trim() || repo.name
-  const description = repo.customDescription?.trim() || repo.description
+  const title = pickLocaleField(repo, 'customTitle') || repo.name
+  const description = pickLocaleField(repo, 'customDescription') || repo.description
 
   return (
     <article

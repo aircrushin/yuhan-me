@@ -2,6 +2,7 @@ import { ExternalLink } from 'lucide-react'
 
 import type { Experience } from '#/db/schema'
 import { Section } from '#/components/site/Section'
+import { pickLocaleField } from '#/lib/i18n'
 import { m } from '#/paraglide/messages'
 
 interface ExperienceSectionProps {
@@ -17,13 +18,18 @@ export function ExperienceSection({ items }: ExperienceSectionProps) {
       title={m.section_experience_title()}
     >
       <ol className="timeline-rail relative space-y-6 pl-10">
-        {items.map((item) => (
+        {items.map((item) => {
+          const role = pickLocaleField(item, 'role') || item.role
+          const company = pickLocaleField(item, 'company') || item.company
+          const location = pickLocaleField(item, 'location') || item.location
+          const description = pickLocaleField(item, 'description') || item.description
+          return (
           <li key={item.id} className="relative">
             <span className="timeline-dot" />
             <div className="surface-card p-5">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <p className="display-title text-lg font-semibold text-[color:var(--sea-ink)]">
-                  {item.role}
+                  {role}
                 </p>
                 <p className="font-mono text-xs text-[color:var(--sea-ink-soft)]">
                   {item.startDate} → {item.endDate || m.experience_present()}
@@ -37,22 +43,23 @@ export function ExperienceSection({ items }: ExperienceSectionProps) {
                     rel="noreferrer"
                     className="inline-flex items-center gap-1 hover:underline"
                   >
-                    {item.company}
+                    {company}
                     <ExternalLink className="h-3 w-3" />
                   </a>
                 ) : (
-                  item.company
+                  company
                 )}
-                {item.location ? (
-                  <span className="text-[color:var(--sea-ink-soft)]"> · {item.location}</span>
+                {location ? (
+                  <span className="text-[color:var(--sea-ink-soft)]"> · {location}</span>
                 ) : null}
               </p>
-              {item.description ? (
-                <p className="mt-3 text-sm text-[color:var(--sea-ink-soft)]">{item.description}</p>
+              {description ? (
+                <p className="mt-3 text-sm text-[color:var(--sea-ink-soft)]">{description}</p>
               ) : null}
             </div>
           </li>
-        ))}
+          )
+        })}
       </ol>
     </Section>
   )

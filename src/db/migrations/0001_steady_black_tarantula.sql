@@ -1,0 +1,22 @@
+ALTER TABLE "experience" ADD COLUMN "role_en" text;--> statement-breakpoint
+ALTER TABLE "experience" ADD COLUMN "role_zh" text;--> statement-breakpoint
+ALTER TABLE "experience" ADD COLUMN "company_en" text;--> statement-breakpoint
+ALTER TABLE "experience" ADD COLUMN "company_zh" text;--> statement-breakpoint
+ALTER TABLE "experience" ADD COLUMN "location_en" text;--> statement-breakpoint
+ALTER TABLE "experience" ADD COLUMN "location_zh" text;--> statement-breakpoint
+ALTER TABLE "experience" ADD COLUMN "description_en" text;--> statement-breakpoint
+ALTER TABLE "experience" ADD COLUMN "description_zh" text;--> statement-breakpoint
+ALTER TABLE "profile" ADD COLUMN "headline_en" text;--> statement-breakpoint
+ALTER TABLE "profile" ADD COLUMN "headline_zh" text;--> statement-breakpoint
+ALTER TABLE "profile" ADD COLUMN "bio_en" text;--> statement-breakpoint
+ALTER TABLE "profile" ADD COLUMN "bio_zh" text;--> statement-breakpoint
+ALTER TABLE "profile" ADD COLUMN "currently_en" text;--> statement-breakpoint
+ALTER TABLE "profile" ADD COLUMN "currently_zh" text;--> statement-breakpoint
+ALTER TABLE "repos" ADD COLUMN "custom_title_en" text;--> statement-breakpoint
+ALTER TABLE "repos" ADD COLUMN "custom_title_zh" text;--> statement-breakpoint
+ALTER TABLE "repos" ADD COLUMN "custom_description_en" text;--> statement-breakpoint
+ALTER TABLE "repos" ADD COLUMN "custom_description_zh" text;--> statement-breakpoint
+ALTER TABLE "skills" ADD COLUMN "name_en" text;--> statement-breakpoint
+ALTER TABLE "skills" ADD COLUMN "name_zh" text;--> statement-breakpoint
+ALTER TABLE "skills" ADD COLUMN "category_en" text;--> statement-breakpoint
+ALTER TABLE "skills" ADD COLUMN "category_zh" text;

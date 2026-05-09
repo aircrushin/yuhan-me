@@ -293,10 +293,14 @@ function EditRepoDialog({
 }: {
   repo: Repo
   onClose: () => void
-  onSave: (patch: { customTitle: string | null; customDescription: string | null; customCoverUrl: string | null }) => Promise<void>
+  onSave: (patch: { customTitle: string | null; customTitleEn: string | null; customTitleZh: string | null; customDescription: string | null; customDescriptionEn: string | null; customDescriptionZh: string | null; customCoverUrl: string | null }) => Promise<void>
 }) {
   const [title, setTitle] = useState(repo.customTitle ?? '')
+  const [titleEn, setTitleEn] = useState(repo.customTitleEn ?? '')
+  const [titleZh, setTitleZh] = useState(repo.customTitleZh ?? '')
   const [description, setDescription] = useState(repo.customDescription ?? '')
+  const [descriptionEn, setDescriptionEn] = useState(repo.customDescriptionEn ?? '')
+  const [descriptionZh, setDescriptionZh] = useState(repo.customDescriptionZh ?? '')
   const [cover, setCover] = useState(repo.customCoverUrl ?? '')
 
   return (
@@ -305,9 +309,9 @@ function EditRepoDialog({
         <DialogHeader>
           <DialogTitle>Edit {repo.name}</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
+        <div className="space-y-4 max-h-[60vh] overflow-y-auto p-1">
           <div className="space-y-2">
-            <Label>Custom title</Label>
+            <Label>Custom title (default)</Label>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -315,12 +319,46 @@ function EditRepoDialog({
             />
           </div>
           <div className="space-y-2">
-            <Label>Custom description</Label>
+            <Label>Custom title (EN)</Label>
+            <Input
+              value={titleEn}
+              onChange={(e) => setTitleEn(e.target.value)}
+              placeholder={title || repo.name}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Custom title (ZH)</Label>
+            <Input
+              value={titleZh}
+              onChange={(e) => setTitleZh(e.target.value)}
+              placeholder={title || repo.name}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Custom description (default)</Label>
             <Textarea
               rows={3}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder={repo.description ?? ''}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Custom description (EN)</Label>
+            <Textarea
+              rows={3}
+              value={descriptionEn}
+              onChange={(e) => setDescriptionEn(e.target.value)}
+              placeholder={(description || repo.description) ?? ''}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Custom description (ZH)</Label>
+            <Textarea
+              rows={3}
+              value={descriptionZh}
+              onChange={(e) => setDescriptionZh(e.target.value)}
+              placeholder={(description || repo.description) ?? ''}
             />
           </div>
           <div className="space-y-2">
@@ -336,7 +374,11 @@ function EditRepoDialog({
             onClick={() =>
               onSave({
                 customTitle: title.trim() || null,
+                customTitleEn: titleEn.trim() || null,
+                customTitleZh: titleZh.trim() || null,
                 customDescription: description.trim() || null,
+                customDescriptionEn: descriptionEn.trim() || null,
+                customDescriptionZh: descriptionZh.trim() || null,
                 customCoverUrl: cover.trim() || null,
               })
             }
