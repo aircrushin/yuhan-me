@@ -24,7 +24,7 @@ export function ProjectsPreview({ repos }: ProjectsPreviewProps) {
       </Section>
     )
   }
-  const [lead, ...rest] = repos.slice(0, 6)
+  const [lead, ...rest] = repos.slice(0, 4)
 
   return (
     <Section

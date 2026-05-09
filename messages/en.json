@@ -31,6 +31,9 @@
 
   "section_about_kicker": "About",
   "section_about_title": "Hello, I'm aircrushin.",
+  "section_about_title_tag": "EN",
+  "section_about_title_primary": "Hello, I'm aircrushin",
+  "section_about_title_secondary": "You can also call me yuhan",
   "about_fallback_bio": "I'm an indie developer who likes building small, opinionated tools, usually around AI tooling, prompt management, and creative coding. Most of my work is open-source.",
   "about_work_note": "I work mostly with TypeScript, React, and Postgres. When I'm not shipping side projects, I'm reading papers, testing new ideas, or looking for a good quiet café.",
 

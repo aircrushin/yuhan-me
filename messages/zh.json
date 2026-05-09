@@ -31,6 +31,9 @@
 
   "section_about_kicker": "关于",
   "section_about_title": "你好，我是 aircrushin。",
+  "section_about_title_tag": "中文",
+  "section_about_title_primary": "你好，我是 aircrushin",
+  "section_about_title_secondary": "你也可以叫我 yuhan",
   "about_fallback_bio": "我是一个独立开发者，喜欢做小而有主见的工具，常常围绕 AI 工具、提示词管理和创意编程展开。大部分作品都会开源。",
   "about_work_note": "我主要使用 TypeScript、React 和 Postgres。没在推进副项目的时候，我通常在读论文、试新点子，或者找一家适合安静坐下来的咖啡馆。",
 

@@ -15,6 +15,7 @@ import {
 } from '#/components/ui/dialog'
 import { Input } from '#/components/ui/input'
 import { Label } from '#/components/ui/label'
+import { cn } from '#/lib/utils'
 import { deleteSkill, listSkillsAdmin, upsertSkill } from '#/server/admin'
 
 export const Route = createFileRoute('/admin/_app/skills')({
@@ -31,6 +32,20 @@ type Draft = Omit<Skill, 'id'> & {
   categoryZh: string
 }
 const EMPTY: Draft = { name: '', nameEn: '', nameZh: '', category: 'Tools', categoryEn: '', categoryZh: '', level: 3, displayOrder: 0 }
+const CUSTOM_CATEGORY = '__custom__'
+
+type CategoryOption = {
+  category: string
+  categoryEn: string
+  categoryZh: string
+}
+
+const DEFAULT_CATEGORIES: CategoryOption[] = [
+  { category: 'AI', categoryEn: 'AI', categoryZh: 'AI' },
+  { category: 'Frameworks', categoryEn: 'Frameworks', categoryZh: '框架' },
+  { category: 'Languages', categoryEn: 'Languages', categoryZh: '编程语言' },
+  { category: 'Tools', categoryEn: 'Tools', categoryZh: '工具' },
+]
 
 function AdminSkills() {
   const items = Route.useLoaderData()
@@ -41,6 +56,29 @@ function AdminSkills() {
   const upsert = useServerFn(upsertSkill)
   const remove = useServerFn(deleteSkill)
 
+  const categoryOptions = useMemo(() => {
+    const m = new Map<string, CategoryOption>()
+    for (const option of DEFAULT_CATEGORIES) {
+      m.set(option.category, option)
+    }
+
+    for (const s of items) {
+      const category = s.category.trim()
+      if (!category) continue
+      const existing = m.get(category)
+      m.set(category, {
+        category,
+        categoryEn: s.categoryEn?.trim() || existing?.categoryEn || category,
+        categoryZh: s.categoryZh?.trim() || existing?.categoryZh || category,
+      })
+    }
+    return Array.from(m.values()).sort((a, b) => a.category.localeCompare(b.category))
+  }, [items])
+
+  const selectedCategory = categoryOptions.some((option) => option.category === draft.category)
+    ? draft.category
+    : CUSTOM_CATEGORY
+
   const grouped = useMemo(() => {
     const m = new Map<string, Skill[]>()
     for (const s of items) {
@@ -50,14 +88,57 @@ function AdminSkills() {
     return Array.from(m.entries())
   }, [items])
 
+  function categoryTranslations(category: string) {
+    const option = categoryOptions.find((item) => item.category === category)
+    return {
+      categoryEn: option?.categoryEn ?? category,
+      categoryZh: option?.categoryZh ?? category,
+    }
+  }
+
   function startNew() {
-    setDraft({ ...EMPTY, displayOrder: items.length })
+    setDraft({ ...EMPTY, ...categoryTranslations(EMPTY.category), displayOrder: items.length })
     setOpen(true)
   }
 
   function startEdit(s: Skill) {
-    setDraft({ id: s.id, name: s.name, nameEn: s.nameEn ?? '', nameZh: s.nameZh ?? '', category: s.category, categoryEn: s.categoryEn ?? '', categoryZh: s.categoryZh ?? '', level: s.level, displayOrder: s.displayOrder })
+    const translatedCategory = categoryTranslations(s.category)
+    setDraft({
+      id: s.id,
+      name: s.name,
+      nameEn: s.nameEn ?? '',
+      nameZh: s.nameZh ?? '',
+      category: s.category,
+      categoryEn: s.categoryEn?.trim() || translatedCategory.categoryEn,
+      categoryZh: s.categoryZh?.trim() || translatedCategory.categoryZh,
+      level: s.level,
+      displayOrder: s.displayOrder,
+    })
     setOpen(true)
+  }
+
+  function selectCategory(value: string) {
+    if (value === CUSTOM_CATEGORY) {
+      setDraft({ ...draft, category: '', categoryEn: '', categoryZh: '' })
+      return
+    }
+
+    const option = categoryOptions.find((item) => item.category === value)
+    setDraft({
+      ...draft,
+      category: value,
+      categoryEn: option?.categoryEn ?? value,
+      categoryZh: option?.categoryZh ?? value,
+    })
+  }
+
+  function updateCustomCategory(category: string) {
+    setDraft((current) => ({
+      ...current,
+      category,
+      categoryEn: current.categoryEn === '' || current.categoryEn === current.category ? category : current.categoryEn,
+      categoryZh: current.categoryZh === '' || current.categoryZh === current.category ? category : current.categoryZh,
+    }))
   }
 
   async function save() {
@@ -161,17 +242,32 @@ function AdminSkills() {
             </div>
             <div className="space-y-2">
               <Label>Category (default)</Label>
-              <Input
-                value={draft.category}
-                onChange={(e) => setDraft({ ...draft, category: e.target.value })}
-                list="skill-categories"
-              />
-              <datalist id="skill-categories">
-                {Array.from(new Set(items.map((s) => s.category))).map((c) => (
-                  <option key={c} value={c} />
+              <select
+                value={selectedCategory}
+                onChange={(e) => selectCategory(e.target.value)}
+                className={cn(
+                  'h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow] md:text-sm dark:bg-input/30',
+                  'focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50',
+                )}
+              >
+                {categoryOptions.map((option) => (
+                  <option key={option.category} value={option.category}>
+                    {option.category}
+                  </option>
                 ))}
-              </datalist>
+                <option value={CUSTOM_CATEGORY}>Custom...</option>
+              </select>
             </div>
+            {selectedCategory === CUSTOM_CATEGORY ? (
+              <div className="space-y-2">
+                <Label>Custom category</Label>
+                <Input
+                  value={draft.category}
+                  onChange={(e) => updateCustomCategory(e.target.value)}
+                  placeholder="Category"
+                />
+              </div>
+            ) : null}
             <div className="space-y-2">
               <Label>Category (EN)</Label>
               <Input

@@ -1,4 +1,5 @@
 import { ArrowUpRight, ExternalLink, Star } from 'lucide-react'
+import type { CSSProperties } from 'react'
 import { useRef } from 'react'
 
 import type { Repo } from '#/db/schema'
@@ -72,22 +73,19 @@ export function ProjectCard({
         ) : !compact ? (
           <div
             className={cn(
-              'relative w-full overflow-hidden rounded-sm ring-1 ring-[var(--line)]',
+              'project-cover relative w-full overflow-hidden rounded-sm ring-1 ring-[var(--line)]',
               featured ? 'h-56' : 'h-28',
             )}
             aria-hidden
             style={{
-              background: `linear-gradient(135deg, color-mix(in oklab, ${accent} 26%, transparent), color-mix(in oklab, ${accent} 8%, transparent))`,
-            }}
+              '--project-accent': accent,
+            } as CSSProperties}
           >
-            <div
-              className="absolute inset-0 opacity-60"
-              style={{
-                backgroundImage:
-                  'radial-gradient(circle at 30% 20%, oklch(0.99 0.008 190 / 0.58), transparent 50%), radial-gradient(circle at 75% 75%, oklch(0.94 0.018 190 / 0.28), transparent 55%)',
-              }}
-            />
-            <div className="absolute right-3 top-3 rounded-sm bg-[var(--surface-strong)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-[color:var(--sea-ink)]">
+            <div className="project-cover-glow project-cover-glow-a" />
+            <div className="project-cover-glow project-cover-glow-b" />
+            <div className="project-cover-sheen" />
+            <div className="project-cover-grain" />
+            <div className="project-cover-label">
               {repo.language || m.project_type_fallback()}
             </div>
           </div>

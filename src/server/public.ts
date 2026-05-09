@@ -119,7 +119,7 @@ export const getHomeData = createServerFn({ method: 'GET' }).handler(async () =>
     profile: profileRow ?? null,
     repos: visibleRepos,
     pinned: visibleRepos.filter((r) => r.isPinned).slice(0, 6),
-    featured: visibleRepos.slice(0, 6),
+    featured: visibleRepos.slice(0, 4),
     skills: skillRows,
     experience: experienceRows,
     posts: recentPosts,

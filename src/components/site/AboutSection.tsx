@@ -20,7 +20,7 @@ export function AboutSection({ profile }: AboutSectionProps) {
     <Section
       id="about"
       kicker={m.section_about_kicker()}
-      title={m.section_about_title()}
+      title={<AboutLanguageTitle />}
     >
       <div className="about-layout">
         <div className="profile-plate">
@@ -55,6 +55,18 @@ export function AboutSection({ profile }: AboutSectionProps) {
         </div>
       </div>
     </Section>
+  )
+}
+
+function AboutLanguageTitle() {
+  return (
+    <span className="about-language-title" aria-label={`${m.section_about_title_primary()} / ${m.section_about_title_secondary()}`}>
+      <span className="language-tag" aria-hidden="true">{m.section_about_title_tag()}</span>
+      <span className="language-switch-copy">
+        <span className="language-copy-main">{m.section_about_title_primary()}</span>
+        <span className="language-copy-alt" aria-hidden="true">{m.section_about_title_secondary()}</span>
+      </span>
+    </span>
   )
 }
 
