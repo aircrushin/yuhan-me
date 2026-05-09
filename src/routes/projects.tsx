@@ -69,7 +69,7 @@ function ProjectsPage() {
           })}
         </div>
 
-        <div className="relative max-w-xs">
+        <div className="relative w-full md:max-w-xs">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(--sea-ink-soft)]" />
           <Input
             value={query}
