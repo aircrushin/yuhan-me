@@ -1,5 +1,6 @@
+import { useState, useRef, useCallback } from 'react'
 import { Link } from '@tanstack/react-router'
-import { ArrowUpRight, MapPin, Sparkles } from 'lucide-react'
+import { ArrowUpRight, MapPin } from 'lucide-react'
 
 import type { Profile, Repo } from '#/db/schema'
 import { Button } from '#/components/ui/button'
@@ -8,47 +9,74 @@ import { m } from '#/paraglide/messages'
 
 interface HeroProps {
   profile: Profile | null
-  recentNames: string[]
   stats: { visible_repos: number; total_stars: number }
 }
 
-export function Hero({ profile, recentNames, stats }: HeroProps) {
+export function Hero({ profile, stats }: HeroProps) {
   const headline = pickLocaleField(profile, 'headline') || m.hero_title()
   const kicker = m.hero_kicker()
   const location = profile?.location || 'Chengdu'
   const focus = pickLocaleField(profile, 'currently') || m.hero_focus_fallback()
   const bio = cleanPublicCopy(pickLocaleField(profile, 'bio') || m.hero_subtitle())
 
+  const [glowPos, setGlowPos] = useState({ x: 50, y: 40 })
+  const visualRef = useRef<HTMLElement>(null)
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    setGlowPos({
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+    })
+  }, [])
+
   return (
-    <section className="relative overflow-hidden">
+    <section className="hero-section">
+      <div className="hero-bg-ambient" aria-hidden="true" />
       <div className="page-wrap">
-        <div className="hero-shell rise-in">
-          <div className="hero-copy">
-            <div className="kicker-line">
-              <Sparkles className="h-3 w-3" /> {kicker}
-            </div>
+        <div className="hero-shell">
+          <figure
+            ref={visualRef}
+            className="hero-visual rise-in"
+            aria-label={headline}
+            onMouseMove={handleMouseMove}
+            style={
+              {
+                '--mx': `${glowPos.x}%`,
+                '--my': `${glowPos.y}%`,
+              } as React.CSSProperties
+            }
+          >
+            <div className="hero-visual-ambient hero-visual-ambient-a" aria-hidden="true" />
+            <div className="hero-visual-ambient hero-visual-ambient-b" aria-hidden="true" />
+            <div className="hero-visual-glow" aria-hidden="true" />
+            <img src="/atelier-hero.png" alt="" className="hero-image" />
+            <div className="hero-visual-grain" aria-hidden="true" />
+            <div className="hero-visual-sheen" aria-hidden="true" />
+            <figcaption className="hero-caption">
+              <div className="kicker-line stagger-item">{kicker}</div>
+              <h1 className="hero-title stagger-item">{headline}</h1>
+              <p className="stagger-item">{bio}</p>
+              <div className="hero-actions stagger-item">
+                <Button asChild size="lg" className="gap-2 rounded-sm px-6">
+                  <Link to="/projects">
+                    {m.hero_cta_primary()}
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="rounded-sm px-6">
+                  <Link to="/contact">{m.hero_cta_secondary()}</Link>
+                </Button>
+              </div>
+            </figcaption>
+          </figure>
 
-            <h1 className="hero-title max-w-[15ch]">{headline}</h1>
-
-            <p className="max-w-2xl text-lg leading-8 text-[color:var(--sea-ink-soft)]">
-              {bio}
-            </p>
-
-            <div className="hero-actions">
-              <Button asChild size="lg" className="gap-2 rounded-sm px-6">
-                <Link to="/projects">
-                  {m.hero_cta_primary()}
-                  <ArrowUpRight className="h-4 w-4" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="rounded-sm px-6">
-                <Link to="/contact">{m.hero_cta_secondary()}</Link>
-              </Button>
-            </div>
-          </div>
-
-          <aside className="hero-ledger" aria-label="Portfolio index">
-            <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-[color:var(--sea-ink)]">
+          <aside
+            className="hero-ledger rise-in"
+            style={{ animationDelay: '350ms' }}
+            aria-label="Portfolio index"
+          >
+            <div className="hero-place">
               <MapPin className="h-4 w-4 text-[color:var(--lacquer)]" />
               {location}
             </div>
@@ -59,19 +87,6 @@ export function Hero({ profile, recentNames, stats }: HeroProps) {
           </aside>
         </div>
       </div>
-
-      {recentNames.length > 0 ? (
-        <div className="work-index marquee-mask relative overflow-hidden">
-          <div className="marquee py-4 text-sm uppercase tracking-[0.16em] text-[color:var(--sea-ink-soft)]/80">
-            {[...recentNames, ...recentNames].map((name, i) => (
-              <span key={`${name}-${i}`} className="flex items-center gap-3">
-                <span className="text-[color:var(--lacquer)]">●</span>
-                {name}
-              </span>
-            ))}
-          </div>
-        </div>
-      ) : null}
     </section>
   )
 }

@@ -16,14 +16,13 @@ export const Route = createFileRoute('/')({
 
 function Home() {
   const data = Route.useLoaderData()
-  const recentNames = data.repos.slice(0, 12).map((r) => r.customTitle || r.name)
   const fallbackLanguages = Array.from(
     new Set(data.repos.map((r) => r.language).filter((v): v is string => Boolean(v))),
   ).slice(0, 8)
 
   return (
     <>
-      <Hero profile={data.profile} recentNames={recentNames} stats={data.stats} />
+      <Hero profile={data.profile} stats={data.stats} />
       <AboutSection profile={data.profile} />
       <SkillsSection skills={data.skills} fallbackLanguages={fallbackLanguages} />
       <ProjectsPreview repos={data.featured} />
