@@ -15,6 +15,8 @@ const NAV: Array<{ to: '/' | '/projects' | '/travel' | '/blog' | '/contact'; lab
   { to: '/contact', label: () => m.nav_contact() },
 ]
 
+const GITHUB_AVATAR_URL = 'https://avatars.githubusercontent.com/u/88492452?v=4'
+
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
   const pathname = useRouterState({ select: (s) => s.location.pathname })
@@ -25,9 +27,14 @@ export function SiteHeader() {
         <Link to="/" className="group flex items-center gap-2 text-base font-semibold">
           <span
             aria-hidden
-            className="brand-mark grid h-8 w-8 place-items-center rounded-sm text-[11px] font-bold"
+            className="brand-mark block h-8 w-8 overflow-hidden rounded-full"
           >
-            ac
+            <img
+              src={GITHUB_AVATAR_URL}
+              alt=""
+              className="h-full w-full object-cover"
+              loading="eager"
+            />
           </span>
           <span className="display-title text-lg">aircrushin</span>
         </Link>

@@ -649,9 +649,9 @@ a {
 }
 
 .brand-mark {
-  border: 1px solid color-mix(in oklab, var(--sea-ink) 42%, var(--line));
-  background: var(--sea-ink);
-  color: var(--foam);
+  border: 1px solid color-mix(in oklab, var(--sea-ink) 28%, var(--line));
+  background: var(--bg-base);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--foam) 80%, transparent);
 }
 
 .hero-section {
