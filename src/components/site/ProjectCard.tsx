@@ -85,9 +85,6 @@ export function ProjectCard({
             <div className="project-cover-glow project-cover-glow-b" />
             <div className="project-cover-sheen" />
             <div className="project-cover-grain" />
-            <div className="project-cover-label">
-              {repo.language || m.project_type_fallback()}
-            </div>
           </div>
         ) : null}
 

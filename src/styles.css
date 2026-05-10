@@ -531,24 +531,6 @@ a {
   pointer-events: none;
 }
 
-.project-cover-label {
-  position: absolute;
-  right: 0.75rem;
-  top: 0.75rem;
-  z-index: 4;
-  border: 1px solid oklch(0.99 0.006 190 / 0.64);
-  border-radius: 7px;
-  background: oklch(0.985 0.01 190 / 0.82);
-  box-shadow: 0 1px 0 oklch(0.99 0.006 190 / 0.7) inset;
-  color: var(--sea-ink);
-  font-size: 0.64rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  line-height: 1;
-  padding: 0.42rem 0.66rem;
-  text-transform: uppercase;
-}
-
 @keyframes project-cover-drift {
   from {
     transform: translate3d(-2%, -1%, 0) scale(1.08) rotate(0deg);
