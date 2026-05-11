@@ -40,9 +40,9 @@ function BlogPost() {
       <p className="kicker-line">
         {formatLocalizedDate(post.publishedAt)}
       </p>
-      <h1 className="hero-title mt-3 max-w-[24ch] text-balance">{post.title}</h1>
+      <h1 className="display-title text-4xl font-semibold mt-3 max-w-[24ch] text-balance text-[color:var(--sea-ink)]">{post.title}</h1>
       {post.excerpt ? (
-        <p className="mt-4 text-lg text-[color:var(--sea-ink-soft)]">{post.excerpt}</p>
+        <p className="mt-4 border-l-3 border-[color:var(--lagoon-deep)] pl-4 text-lg italic text-[color:var(--sea-ink-soft)]">{post.excerpt}</p>
       ) : null}
 
       <article className="prose prose-zinc mt-10 max-w-none">

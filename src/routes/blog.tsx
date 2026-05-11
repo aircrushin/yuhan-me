@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, Outlet, useChildMatches } from '@tanstack/react-router'
 
 import { Section } from '#/components/site/Section'
 import { getPublishedPosts } from '#/server/public'
@@ -12,7 +12,12 @@ export const Route = createFileRoute('/blog')({
 })
 
 function BlogIndex() {
+  const children = useChildMatches()
   const posts = localizedPosts(Route.useLoaderData())
+
+  if (children.length > 0) {
+    return <Outlet />
+  }
 
   return (
     <Section
@@ -25,29 +30,37 @@ function BlogIndex() {
           {m.blog_empty()}
         </div>
       ) : (
-        <ul className="space-y-4">
+        <div className="grid gap-6 md:grid-cols-2">
           {posts.map((post) => (
-            <li key={post.id}>
-              <Link
-                to="/blog/$slug"
-                params={{ slug: post.slug }}
-                className="surface-card group flex flex-col gap-2 p-6 transition hover:-translate-y-0.5 md:flex-row md:items-baseline md:justify-between"
-              >
-                <div className="space-y-1">
-                  <h3 className="display-title text-2xl font-semibold text-[color:var(--sea-ink)] group-hover:text-[color:var(--lagoon-deep)]">
-                    {post.title}
-                  </h3>
-                  {post.excerpt ? (
-                    <p className="text-sm text-[color:var(--sea-ink-soft)]">{post.excerpt}</p>
-                  ) : null}
-                </div>
-                <p className="font-mono text-xs text-[color:var(--sea-ink-soft)]">
+            <Link
+              key={post.id}
+              to="/blog/$slug"
+              params={{ slug: post.slug }}
+              className="surface-card group flex flex-col overflow-hidden transition hover:-translate-y-0.5"
+            >
+              {post.coverUrl ? (
+                <img
+                  src={post.coverUrl}
+                  alt=""
+                  className="aspect-[16/9] w-full object-cover"
+                />
+              ) : (
+                <div className="aspect-[16/9] w-full bg-[color:var(--mint-fresh)]" />
+              )}
+              <div className="flex flex-col gap-2 p-6">
+                <p className="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--sea-ink-soft)]">
                   {formatLocalizedDate(post.publishedAt)}
                 </p>
-              </Link>
-            </li>
+                <h3 className="display-title text-xl font-semibold text-[color:var(--sea-ink)] group-hover:text-[color:var(--lagoon-deep)]">
+                  {post.title}
+                </h3>
+                {post.excerpt ? (
+                  <p className="line-clamp-2 text-sm text-[color:var(--sea-ink-soft)]">{post.excerpt}</p>
+                ) : null}
+              </div>
+            </Link>
           ))}
-        </ul>
+        </div>
       )}
     </Section>
   )
