@@ -6,6 +6,7 @@ import { SiteHeader } from '#/components/site/SiteHeader'
 import { SiteFooter } from '#/components/site/SiteFooter'
 import { NotFoundPage } from '#/components/site/NotFoundPage'
 import { Toaster } from '#/components/ui/sonner'
+import { siteUrl } from '#/lib/seo'
 
 import appCss from '../styles.css?url'
 
@@ -16,28 +17,48 @@ export const Route = createRootRoute({
     }
   },
 
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: m.site_title() },
-      {
-        name: 'description',
-        content: m.site_description(),
-      },
-      { name: 'theme-color', content: '#4fb8b2' },
-      { property: 'og:title', content: m.site_title() },
-      {
-        property: 'og:description',
-        content: m.site_description(),
-      },
-      { property: 'og:type', content: 'website' },
-    ],
-    links: [
-      { rel: 'stylesheet', href: appCss },
-      { rel: 'icon', href: '/favicon.ico' },
-    ],
-  }),
+  head: ({ matches }: { matches: Array<{ pathname?: string }> }) => {
+    const pathname = matches[matches.length - 1]?.pathname ?? '/'
+    const url = siteUrl(pathname)
+    const ogImage = siteUrl('/logo512.png')
+    const title = m.site_title()
+    const description = m.site_description()
+
+    return {
+      meta: [
+        { charSet: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'robots', content: 'index, follow' },
+        { title },
+        { name: 'description', content: description },
+        { name: 'theme-color', content: '#4fb8b2' },
+
+        { property: 'og:site_name', content: 'aircrushin' },
+        { property: 'og:title', content: title },
+        { property: 'og:description', content: description },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:url', content: url },
+        { property: 'og:image', content: ogImage },
+        { property: 'og:image:width', content: '512' },
+        { property: 'og:image:height', content: '512' },
+        { property: 'og:locale', content: 'en_US' },
+        { property: 'og:locale:alternate', content: 'zh_CN' },
+
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: title },
+        { name: 'twitter:description', content: description },
+        { name: 'twitter:image', content: ogImage },
+      ],
+      links: [
+        { rel: 'stylesheet', href: appCss },
+        { rel: 'icon', href: '/favicon.ico' },
+        { rel: 'canonical', href: url },
+        { rel: 'alternate', hreflang: 'en', href: url },
+        { rel: 'alternate', hreflang: 'zh', href: url },
+        { rel: 'alternate', hreflang: 'x-default', href: url },
+      ],
+    }
+  },
 
   shellComponent: RootDocument,
   notFoundComponent: NotFoundPage,

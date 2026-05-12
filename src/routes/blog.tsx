@@ -8,7 +8,14 @@ import { m } from '#/paraglide/messages'
 export const Route = createFileRoute('/blog')({
   loader: () => getPublishedPosts(),
   component: BlogIndex,
-  head: () => ({ meta: [{ title: `${m.nav_blog()} — aircrushin` }] }),
+  head: () => ({
+    meta: [
+      { title: `${m.nav_blog()} — aircrushin` },
+      { name: 'description', content: m.blog_page_description() },
+      { property: 'og:title', content: `${m.nav_blog()} — aircrushin` },
+      { property: 'og:description', content: m.blog_page_description() },
+    ],
+  }),
 })
 
 function BlogIndex() {

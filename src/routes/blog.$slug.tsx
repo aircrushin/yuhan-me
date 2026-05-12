@@ -6,6 +6,7 @@ import { Section } from '#/components/site/Section'
 import { getPostBySlug } from '#/server/public'
 import { formatLocalizedDate } from '#/lib/i18n'
 import { m } from '#/paraglide/messages'
+import { siteUrl, generateBlogPostingSchema, generateBreadcrumbSchema } from '#/lib/seo'
 
 export const Route = createFileRoute('/blog/$slug')({
   loader: async ({ params }) => {
@@ -14,9 +15,53 @@ export const Route = createFileRoute('/blog/$slug')({
     return post
   },
   component: BlogPost,
-  head: ({ loaderData }) => ({
-    meta: [{ title: `${loaderData?.title ?? 'Post'} — aircrushin` }],
-  }),
+  head: ({ loaderData: post }) => {
+    const title = `${post?.title ?? 'Post'} — aircrushin`
+    const description = post?.excerpt || ''
+    const postUrl = siteUrl(`/blog/${post?.slug ?? ''}`)
+    const coverUrl = post?.coverUrl || siteUrl('/logo512.png')
+    const publishedTime = post?.publishedAt ? new Date(post.publishedAt).toISOString() : undefined
+    const modifiedTime = post?.updatedAt ? new Date(post.updatedAt).toISOString() : undefined
+
+    return {
+      meta: [
+        { title },
+        ...(description ? [{ name: 'description', content: description }] : []),
+        { property: 'og:title', content: title },
+        ...(description ? [{ property: 'og:description', content: description }] : []),
+        { property: 'og:type', content: 'article' },
+        { property: 'og:url', content: postUrl },
+        { property: 'og:image', content: coverUrl },
+        ...(publishedTime ? [{ property: 'article:published_time', content: publishedTime }] : []),
+        ...(modifiedTime ? [{ property: 'article:modified_time', content: modifiedTime }] : []),
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: title },
+        ...(description ? [{ name: 'twitter:description', content: description }] : []),
+        { name: 'twitter:image', content: coverUrl },
+      ],
+      links: [
+        { rel: 'canonical', href: postUrl },
+      ],
+      scripts: post
+        ? [
+            {
+              type: 'application/ld+json',
+              children: JSON.stringify(generateBlogPostingSchema(post)),
+            },
+            {
+              type: 'application/ld+json',
+              children: JSON.stringify(
+                generateBreadcrumbSchema([
+                  { name: 'Home', url: '/' },
+                  { name: 'Writing', url: '/blog' },
+                  { name: post.title, url: `/blog/${post.slug}` },
+                ]),
+              ),
+            },
+          ]
+        : [],
+    }
+  },
 })
 
 function BlogPost() {

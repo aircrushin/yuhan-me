@@ -1,6 +1,7 @@
 {
-  "short_name": "TanStack App",
-  "name": "Create TanStack App Sample",
+  "name": "aircrushin",
+  "short_name": "aircrushin",
+  "description": "Indie developer building thoughtful, useful tools for the web.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +21,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#4fb8b2",
+  "background_color": "#fafbfc"
 }

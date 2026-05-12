@@ -11,7 +11,14 @@ import { m } from '#/paraglide/messages'
 export const Route = createFileRoute('/projects')({
   loader: () => getVisibleRepos(),
   component: ProjectsPage,
-  head: () => ({ meta: [{ title: `${m.nav_projects()} — aircrushin` }] }),
+  head: () => ({
+    meta: [
+      { title: `${m.nav_projects()} — aircrushin` },
+      { name: 'description', content: m.projects_page_description() },
+      { property: 'og:title', content: `${m.nav_projects()} — aircrushin` },
+      { property: 'og:description', content: m.projects_page_description() },
+    ],
+  }),
 })
 
 function ProjectsPage() {

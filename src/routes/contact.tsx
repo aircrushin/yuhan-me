@@ -7,7 +7,20 @@ import { m } from '#/paraglide/messages'
 export const Route = createFileRoute('/contact')({
   loader: () => getPublicProfile(),
   component: ContactPage,
-  head: () => ({ meta: [{ title: `${m.nav_contact()} — aircrushin` }] }),
+  head: () => ({
+    meta: [
+      { title: `${m.nav_contact()} — aircrushin` },
+      {
+        name: 'description',
+        content: m.section_contact_subtitle(),
+      },
+      { property: 'og:title', content: `${m.nav_contact()} — aircrushin` },
+      {
+        property: 'og:description',
+        content: m.section_contact_subtitle(),
+      },
+    ],
+  }),
 })
 
 function ContactPage() {

@@ -8,9 +8,29 @@ import { ExperienceSection } from '#/components/site/ExperienceSection'
 import { BlogPreview } from '#/components/site/BlogPreview'
 import { ContactSection } from '#/components/site/ContactSection'
 import { getHomeData } from '#/server/public'
+import { m } from '#/paraglide/messages'
+import { siteUrl, generateWebsiteSchema, generatePersonSchema } from '#/lib/seo'
 
 export const Route = createFileRoute('/')({
   loader: () => getHomeData(),
+  head: ({ loaderData }) => ({
+    meta: [
+      { title: m.site_title() },
+      { name: 'description', content: m.site_description() },
+      { property: 'og:title', content: m.site_title() },
+      { property: 'og:description', content: m.site_description() },
+    ],
+    scripts: [
+      {
+        type: 'application/ld+json',
+        children: JSON.stringify(generateWebsiteSchema()),
+      },
+      {
+        type: 'application/ld+json',
+        children: JSON.stringify(generatePersonSchema(loaderData.profile)),
+      },
+    ],
+  }),
   component: Home,
 })
 

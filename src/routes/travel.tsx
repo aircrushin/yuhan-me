@@ -7,7 +7,14 @@ import { m } from '#/paraglide/messages'
 export const Route = createFileRoute('/travel')({
   loader: () => getVisibleTravelDumps(),
   component: TravelPage,
-  head: () => ({ meta: [{ title: `${m.nav_travel()} — aircrushin` }] }),
+  head: () => ({
+    meta: [
+      { title: `${m.nav_travel()} — aircrushin` },
+      { name: 'description', content: m.section_travel_description() },
+      { property: 'og:title', content: `${m.nav_travel()} — aircrushin` },
+      { property: 'og:description', content: m.section_travel_description() },
+    ],
+  }),
 })
 
 function TravelPage() {
