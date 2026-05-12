@@ -114,15 +114,17 @@ export function ContactSection({ profile }: ContactSectionProps) {
               />
             ) : null}
             {profile?.x ? (
-              <ContactText
+              <ContactLink
                 label={m.contact_label_x()}
-                value={profile.x.replace('https://', '')}
+                href={profile.x}
+                value={m.contact_label_x()}
               />
             ) : null}
             {profile?.linkedin ? (
-              <ContactText
+              <ContactLink
                 label={m.contact_label_linkedin()}
-                value={profile.linkedin.replace('https://', '')}
+                href={profile.linkedin}
+                value={m.contact_label_linkedin()}
               />
             ) : null}
             {profile?.resumeUrl ? (
@@ -152,16 +154,5 @@ function ContactLink({ label, href, value }: { label: string; href: string; valu
       </span>
       <span className="font-mono text-xs text-[color:var(--sea-ink)]">{value}</span>
     </a>
-  )
-}
-
-function ContactText({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-center justify-between gap-3 rounded-sm border border-[var(--line)] bg-[var(--surface)] px-3 py-2">
-      <span className="text-xs uppercase tracking-[0.16em] text-[color:var(--sea-ink-soft)]">
-        {label}
-      </span>
-      <span className="font-mono text-xs text-[color:var(--sea-ink)]">{value}</span>
-    </div>
   )
 }
