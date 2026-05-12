@@ -9,6 +9,7 @@ import { Button } from '#/components/ui/button'
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -215,6 +216,9 @@ function AdminSkills() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{draft.id ? 'Edit skill' : 'New skill'}</DialogTitle>
+            <DialogDescription className="sr-only">
+              Edit skill names, category, and proficiency level for the public site.
+            </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 sm:grid-cols-2 max-h-[50vh] overflow-y-auto p-1">
             <div className="space-y-2 sm:col-span-2">

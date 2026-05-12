@@ -9,6 +9,7 @@ import { Button } from '#/components/ui/button'
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -174,6 +175,9 @@ function AdminExperience() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{draft.id ? 'Edit experience' : 'New experience'}</DialogTitle>
+            <DialogDescription className="sr-only">
+              Edit job role, company, dates, and descriptions shown on the homepage timeline.
+            </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 sm:grid-cols-2 max-h-[70vh] overflow-y-auto p-1">
             <div className="space-y-2 sm:col-span-2">

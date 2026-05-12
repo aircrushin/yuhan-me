@@ -17,6 +17,7 @@ import { Button } from '#/components/ui/button'
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -258,6 +259,9 @@ function AdminTravel() {
         <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
             <DialogTitle>{draft.id ? 'Edit travel wall' : 'New travel wall'}</DialogTitle>
+            <DialogDescription className="sr-only">
+              Add or edit a LiveDrop photo wall, optional Google Maps place, and embed URL.
+            </DialogDescription>
           </DialogHeader>
           <div className="grid max-h-[70vh] gap-4 overflow-y-auto p-1 sm:grid-cols-2">
             <div className="space-y-2 sm:col-span-2">
@@ -343,6 +347,42 @@ function AdminTravel() {
   )
 }
 
+/** Place (New) id values are often `places/ChIJ…`; store the legacy-style id only. */
+function normalizePlaceId(id: string | undefined): string | null {
+  if (!id) return null
+  return id.startsWith('places/') ? id.slice('places/'.length) : id
+}
+
+function readLatLng(loc: unknown): { lat: number; lng: number } | null {
+  if (!loc || typeof loc !== 'object') return null
+  const o = loc as { lat?: unknown; lng?: unknown }
+  if (typeof o.lat === 'function' && typeof o.lng === 'function') {
+    return { lat: (o.lat as () => number)(), lng: (o.lng as () => number)() }
+  }
+  if (typeof o.lat === 'number' && typeof o.lng === 'number') {
+    return { lat: o.lat, lng: o.lng }
+  }
+  return null
+}
+
+/** Minimal typing for Maps JS Place (New) after `fetchFields`. */
+type PlaceFieldsResult = {
+  id?: string
+  displayName?: string
+  formattedAddress?: string
+  location?: unknown
+  googleMapsUri?: string
+  fetchFields: (opts: { fields: string[] }) => Promise<void>
+}
+
+type GmpSelectEvent = Event & {
+  placePrediction: { toPlace: () => PlaceFieldsResult }
+}
+
+type PlaceAutocompleteWidget = HTMLElement & {
+  value: string
+}
+
 function GooglePlaceSearch({
   defaultValue,
   onPlace,
@@ -350,18 +390,25 @@ function GooglePlaceSearch({
   defaultValue: string
   onPlace: (place: GooglePlace) => void
 }) {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const widgetRef = useRef<PlaceAutocompleteWidget | null>(null)
   const onPlaceRef = useRef(onPlace)
-  const [query, setQuery] = useState(defaultValue)
-  const [status, setStatus] = useState<'idle' | 'ready' | 'missing-key' | 'failed'>('idle')
+  const defaultValueRef = useRef(defaultValue)
+  const [status, setStatus] = useState<
+    'idle' | 'ready' | 'missing-key' | 'failed' | 'api-blocked'
+  >('idle')
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string | undefined
+
+  defaultValueRef.current = defaultValue
 
   useEffect(() => {
     onPlaceRef.current = onPlace
   }, [onPlace])
 
   useEffect(() => {
-    setQuery(defaultValue)
+    const el = widgetRef.current
+    if (!el) return
+    if (el.value !== defaultValue) el.value = defaultValue
   }, [defaultValue])
 
   useEffect(() => {
@@ -371,47 +418,79 @@ function GooglePlaceSearch({
     }
 
     let cancelled = false
+
     loadGoogleMapsPlaces(apiKey)
-      .then((google) => {
-        if (cancelled || !inputRef.current) return
-        const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
-          fields: ['place_id', 'name', 'formatted_address', 'geometry', 'url'],
+      .then(() => {
+        if (cancelled || !wrapRef.current) return
+        const ctor = window.google?.maps?.places?.PlaceAutocompleteElement
+        if (!ctor) {
+          setStatus('failed')
+          return
+        }
+
+        const el = new ctor({
+          placeholder: 'Search a place on Google Maps',
+          value: defaultValueRef.current,
         })
-        autocomplete.addListener('place_changed', () => {
-          const place = autocomplete.getPlace()
-          const location = place.geometry?.location
-          const selected = {
-            placeId: place.place_id ?? null,
-            locationName: place.name ?? '',
-            formattedAddress: place.formatted_address ?? '',
-            latitude: location ? location.lat() : null,
-            longitude: location ? location.lng() : null,
-            googleMapsUrl: place.url ?? '',
-          }
-          setQuery(selected.locationName || selected.formattedAddress)
-          onPlaceRef.current(selected)
-        })
+        widgetRef.current = el as PlaceAutocompleteWidget
+        el.style.width = '100%'
+        el.style.minHeight = '2.25rem'
+        el.style.borderRadius = '0.375rem'
+
+        const onSelect = (event: Event) => {
+          void (async () => {
+            const ev = event as GmpSelectEvent
+            const place = ev.placePrediction.toPlace()
+            try {
+              await place.fetchFields({
+                fields: ['id', 'displayName', 'formattedAddress', 'location', 'googleMapsUri'],
+              })
+            } catch {
+              return
+            }
+            const ll = readLatLng(place.location)
+            const selected = {
+              placeId: normalizePlaceId(place.id),
+              locationName: place.displayName ?? '',
+              formattedAddress: place.formattedAddress ?? '',
+              latitude: ll?.lat ?? null,
+              longitude: ll?.lng ?? null,
+              googleMapsUrl: place.googleMapsUri ?? '',
+            }
+            onPlaceRef.current(selected)
+          })()
+        }
+
+        const onError = () => setStatus('api-blocked')
+
+        el.addEventListener('gmp-select', onSelect)
+        el.addEventListener('gmp-error', onError)
+        wrapRef.current.replaceChildren(el)
         setStatus('ready')
       })
       .catch(() => setStatus('failed'))
 
     return () => {
       cancelled = true
+      widgetRef.current = null
+      wrapRef.current?.replaceChildren()
     }
   }, [apiKey])
 
   return (
     <div className="space-y-2">
-      <div className="relative">
-        <MapPin className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(--sea-ink-soft)]" />
-        <Input
-          ref={inputRef}
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          disabled={!apiKey}
-          placeholder="Search a place on Google Maps"
-          className="pl-9"
-        />
+      <div className="relative min-h-9 w-full">
+        <MapPin className="pointer-events-none absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-[color:var(--sea-ink-soft)]" />
+        {apiKey ? (
+          <div ref={wrapRef} className="w-full pl-8" />
+        ) : (
+          <Input
+            disabled
+            readOnly
+            placeholder="Search a place on Google Maps"
+            className="pl-9 opacity-50"
+          />
+        )}
       </div>
       {status === 'missing-key' ? (
         <p className="text-xs text-[color:var(--lacquer)]">
@@ -421,6 +500,22 @@ function GooglePlaceSearch({
       {status === 'failed' ? (
         <p className="text-xs text-[color:var(--lacquer)]">
           Google Places failed to load. You can still save the travel wall without a place.
+        </p>
+      ) : null}
+      {status === 'api-blocked' ? (
+        <p className="text-xs text-[color:var(--lacquer)]">
+          Google blocked Places requests (often the Places API (New) is disabled, billing is off, or
+          the API key is restricted). Enable{' '}
+          <a
+            href="https://console.cloud.google.com/apis/library/places.googleapis.com"
+            target="_blank"
+            rel="noreferrer"
+            className="underline"
+          >
+            Places API (New)
+          </a>{' '}
+          for your Maps key project and allow <span className="font-mono">places.googleapis.com</span>.
+          You can still save without a place.
         </p>
       ) : null}
       {status === 'ready' ? (
@@ -435,24 +530,10 @@ function GooglePlaceSearch({
 type GoogleMapsNamespace = {
   maps: {
     places: {
-      Autocomplete: new (
-        input: HTMLInputElement,
-        options: { fields: string[] },
-      ) => {
-        addListener: (eventName: 'place_changed', handler: () => void) => void
-        getPlace: () => {
-          place_id?: string
-          name?: string
-          formatted_address?: string
-          url?: string
-          geometry?: {
-            location?: {
-              lat: () => number
-              lng: () => number
-            }
-          }
-        }
-      }
+      PlaceAutocompleteElement: new (opts?: {
+        placeholder?: string
+        value?: string
+      }) => HTMLElement & { value: string }
     }
   }
 }
@@ -464,23 +545,37 @@ declare global {
   }
 }
 
-function loadGoogleMapsPlaces(apiKey: string) {
-  if (window.google?.maps.places) return Promise.resolve(window.google)
+function loadGoogleMapsPlaces(apiKey: string): Promise<GoogleMapsNamespace> {
+  if (window.google?.maps?.places?.PlaceAutocompleteElement) {
+    return Promise.resolve(window.google)
+  }
   if (window.__googleMapsPlacesPromise) return window.__googleMapsPlacesPromise
 
   window.__googleMapsPlacesPromise = new Promise<GoogleMapsNamespace>((resolve, reject) => {
-    const script = document.createElement('script')
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=places`
-    script.async = true
-    script.defer = true
-    script.onload = () => {
-      if (window.google?.maps.places) {
+    const fail = (err: Error) => {
+      delete window.__googleMapsPlacesPromise
+      reject(err)
+    }
+
+    const callbackName = `__googleMapsInit_${Math.random().toString(36).slice(2)}`
+    ;(window as unknown as Record<string, () => void>)[callbackName] = () => {
+      delete (window as unknown as Record<string, unknown>)[callbackName]
+      if (window.google?.maps?.places?.PlaceAutocompleteElement) {
         resolve(window.google)
       } else {
-        reject(new Error('Google Maps Places library is unavailable'))
+        fail(new Error('Google Maps Places library is unavailable'))
       }
     }
-    script.onerror = () => reject(new Error('Google Maps failed to load'))
+
+    const script = document.createElement('script')
+    script.async = true
+    script.src =
+      `https://maps.googleapis.com/maps/api/js?` +
+      `key=${encodeURIComponent(apiKey)}` +
+      `&loading=async` +
+      `&libraries=places` +
+      `&callback=${callbackName}`
+    script.onerror = () => fail(new Error('Google Maps failed to load'))
     document.head.appendChild(script)
   })
 

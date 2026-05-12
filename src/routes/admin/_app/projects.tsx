@@ -19,6 +19,7 @@ import { Button } from '#/components/ui/button'
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -308,6 +309,9 @@ function EditRepoDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit {repo.name}</DialogTitle>
+          <DialogDescription className="sr-only">
+            Override display title, descriptions, and cover image for this GitHub repository.
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 max-h-[60vh] overflow-y-auto p-1">
           <div className="space-y-2">
