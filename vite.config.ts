@@ -15,7 +15,7 @@ const config = defineConfig({
     paraglideVitePlugin({
       project: './project.inlang',
       outdir: './src/paraglide',
-      strategy: ['cookie', 'localStorage', 'preferredLanguage', 'baseLocale'],
+      strategy: ['cookie', 'baseLocale'],
     }),
     tailwindcss(),
     tanstackStart(),

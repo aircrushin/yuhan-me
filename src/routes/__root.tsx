@@ -53,9 +53,9 @@ export const Route = createRootRoute({
         { rel: 'stylesheet', href: appCss },
         { rel: 'icon', href: '/favicon.ico' },
         { rel: 'canonical', href: url },
-        { rel: 'alternate', hreflang: 'en', href: url },
-        { rel: 'alternate', hreflang: 'zh', href: url },
-        { rel: 'alternate', hreflang: 'x-default', href: url },
+        { rel: 'alternate', hrefLang: 'en', href: url },
+        { rel: 'alternate', hrefLang: 'zh', href: url },
+        { rel: 'alternate', hrefLang: 'x-default', href: url },
       ],
     }
   },

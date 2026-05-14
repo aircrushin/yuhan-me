@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Send } from 'lucide-react'
+import { CheckCircle2, Send } from 'lucide-react'
 import { useServerFn } from '@tanstack/react-start'
 import { toast } from 'sonner'
 
@@ -98,6 +98,14 @@ export function ContactSection({ profile }: ContactSectionProps) {
           <p className="text-sm text-[color:var(--sea-ink-soft)]">
             {m.contact_direct_body()}
           </p>
+          <div className="contact-fit-list" aria-label={m.contact_fit_aria()}>
+            {[m.contact_fit_product(), m.contact_fit_ai(), m.contact_fit_open_source()].map((item) => (
+              <div key={item} className="contact-fit-item">
+                <CheckCircle2 className="h-4 w-4" />
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
           <div className="mt-2 space-y-2 text-sm">
             {profile?.email ? (
               <ContactLink

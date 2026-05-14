@@ -68,6 +68,11 @@ export function Hero({ profile, stats }: HeroProps) {
                   <Link to="/contact">{m.hero_cta_secondary()}</Link>
                 </Button>
               </div>
+              <div className="hero-signals stagger-item" aria-label={m.hero_signals_aria()}>
+                <span>{m.hero_signal_product()}</span>
+                <span>{m.hero_signal_ai()}</span>
+                <span>{m.hero_signal_collaboration()}</span>
+              </div>
             </figcaption>
           </figure>
 

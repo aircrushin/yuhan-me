@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Hero } from '#/components/site/Hero'
 import { AboutSection } from '#/components/site/AboutSection'
+import { CollaborationSection } from '#/components/site/CollaborationSection'
 import { SkillsSection } from '#/components/site/SkillsSection'
 import { ProjectsPreview } from '#/components/site/ProjectsPreview'
 import { ExperienceSection } from '#/components/site/ExperienceSection'
@@ -44,6 +45,7 @@ function Home() {
     <>
       <Hero profile={data.profile} stats={data.stats} />
       <AboutSection profile={data.profile} />
+      <CollaborationSection />
       <SkillsSection skills={data.skills} fallbackLanguages={fallbackLanguages} />
       <ProjectsPreview repos={data.featured} />
       <ExperienceSection items={data.experience} />
