@@ -1,4 +1,4 @@
-import { Github, Mail, Twitter } from 'lucide-react'
+import { Github, Mail } from 'lucide-react'
 
 import { m } from '#/paraglide/messages'
 
@@ -21,16 +21,7 @@ export function SiteFooter() {
             <Github className="h-4 w-4" />
           </a>
           <a
-            href="https://x.com"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Twitter"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] text-[color:var(--sea-ink-soft)] transition hover:bg-[var(--link-bg-hover)] hover:text-[color:var(--sea-ink)]"
-          >
-            <Twitter className="h-4 w-4" />
-          </a>
-          <a
-            href="mailto:hello@example.com"
+            href="mailto:ultrav0229@gmail.com"
             aria-label="Email"
             className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] text-[color:var(--sea-ink-soft)] transition hover:bg-[var(--link-bg-hover)] hover:text-[color:var(--sea-ink)]"
           >
