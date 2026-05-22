@@ -404,16 +404,22 @@ export const upsertPost = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
     await assertAdmin()
     const db = getDb()
-    const publishedAt = data.publishedAt ? new Date(data.publishedAt) : !data.isDraft ? new Date() : null
     if (data.id) {
       const { id, publishedAt: _ignored, ...rest } = data
       void _ignored
+      const [existing] = await db.select().from(posts).where(eq(posts.id, id))
+      const publishedAt = data.publishedAt
+        ? new Date(data.publishedAt)
+        : data.isDraft
+          ? null
+          : existing?.publishedAt ?? new Date()
       await db
         .update(posts)
         .set({ ...rest, publishedAt, updatedAt: new Date() })
         .where(eq(posts.id, id))
       return { id }
     }
+    const publishedAt = data.publishedAt ? new Date(data.publishedAt) : !data.isDraft ? new Date() : null
     const { publishedAt: _ignored, ...rest } = data
     void _ignored
     const [row] = await db
