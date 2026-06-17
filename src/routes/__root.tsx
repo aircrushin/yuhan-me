@@ -7,10 +7,13 @@ import { SiteFooter } from '#/components/site/SiteFooter'
 import { NotFoundPage } from '#/components/site/NotFoundPage'
 import { Toaster } from '#/components/ui/sonner'
 import { siteUrl } from '#/lib/seo'
+import { getPublicProfile } from '#/server/public'
 
 import appCss from '../styles.css?url'
 
 export const Route = createRootRoute({
+  loader: () => getPublicProfile(),
+
   beforeLoad: async () => {
     if (typeof document !== 'undefined') {
       document.documentElement.setAttribute('lang', getLocale())
@@ -66,12 +69,13 @@ export const Route = createRootRoute({
 
 function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
+  const profile = Route.useLoaderData()
   const isAdmin = pathname.startsWith('/admin')
   return (
     <div className="flex min-h-screen flex-col">
-      {!isAdmin ? <SiteHeader /> : null}
+      {!isAdmin ? <SiteHeader profile={profile} /> : null}
       <main className="flex-1">{children}</main>
-      {!isAdmin ? <SiteFooter /> : null}
+      {!isAdmin ? <SiteFooter profile={profile} /> : null}
     </div>
   )
 }

@@ -1,9 +1,11 @@
 import { Link, useRouterState } from '@tanstack/react-router'
-import { Github, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { useState } from 'react'
 
+import type { Profile } from '#/db/schema'
 import { cn } from '#/lib/utils'
 import { LocaleSwitcher } from '#/components/site/LocaleSwitcher'
+import { ProfileSocialLinks } from '#/components/site/ProfileSocialLinks'
 import { ThemeToggle } from '#/components/site/ThemeToggle'
 import { m } from '#/paraglide/messages'
 
@@ -15,11 +17,11 @@ const NAV: Array<{ to: '/' | '/projects' | '/travel' | '/blog' | '/contact'; lab
   { to: '/contact', label: () => m.nav_contact() },
 ]
 
-const GITHUB_AVATAR_URL = 'https://avatars.githubusercontent.com/u/88492452?v=4'
-
-export function SiteHeader() {
+export function SiteHeader({ profile }: { profile: Profile | null }) {
   const [open, setOpen] = useState(false)
   const pathname = useRouterState({ select: (s) => s.location.pathname })
+  const avatarUrl = profile?.avatarUrl || ''
+  const siteName = profile?.name || 'aircrushin'
 
   return (
     <header className="site-header sticky top-0 z-30">
@@ -29,14 +31,20 @@ export function SiteHeader() {
             aria-hidden
             className="brand-mark block h-8 w-8 overflow-hidden rounded-full"
           >
-            <img
-              src={GITHUB_AVATAR_URL}
-              alt=""
-              className="h-full w-full object-cover"
-              loading="eager"
-            />
+            {avatarUrl ? (
+              <img
+                src={avatarUrl}
+                alt=""
+                className="h-full w-full object-cover"
+                loading="eager"
+              />
+            ) : (
+              <span className="flex h-full w-full items-center justify-center bg-[var(--link-bg-hover)] text-xs text-[color:var(--sea-ink)]">
+                {siteName.slice(0, 2).toUpperCase()}
+              </span>
+            )}
           </span>
-          <span className="display-title text-lg">aircrushin</span>
+          <span className="display-title text-lg">{siteName}</span>
         </Link>
 
         <nav className="hidden items-center gap-7 md:flex">
@@ -52,15 +60,10 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <a
-            href="https://github.com/aircrushin"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="GitHub"
-            className="hidden h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] text-[color:var(--sea-ink-soft)] transition hover:bg-[var(--link-bg-hover)] hover:text-[color:var(--sea-ink)] sm:inline-flex"
-          >
-            <Github className="h-4 w-4" />
-          </a>
+          <ProfileSocialLinks
+            profile={profile}
+            className="hidden items-center gap-2 sm:flex"
+          />
           <ThemeToggle />
           <LocaleSwitcher />
           <button

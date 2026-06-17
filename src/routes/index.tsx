@@ -10,7 +10,7 @@ import { BlogPreview } from '#/components/site/BlogPreview'
 import { ContactSection } from '#/components/site/ContactSection'
 import { getHomeData } from '#/server/public'
 import { m } from '#/paraglide/messages'
-import { siteUrl, generateWebsiteSchema, generatePersonSchema } from '#/lib/seo'
+import { generateWebsiteSchema, generatePersonSchema } from '#/lib/seo'
 
 export const Route = createFileRoute('/')({
   loader: () => getHomeData(),
@@ -28,7 +28,7 @@ export const Route = createFileRoute('/')({
       },
       {
         type: 'application/ld+json',
-        children: JSON.stringify(generatePersonSchema(loaderData.profile)),
+        children: JSON.stringify(generatePersonSchema(loaderData?.profile ?? null)),
       },
     ],
   }),
