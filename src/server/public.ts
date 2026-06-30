@@ -65,36 +65,120 @@ const contactInput = z.object({
   body: z.string().min(5).max(5000),
 })
 
+const resendEndpoint = 'https://api.resend.com/emails'
+
+function getContactForwardingConfig() {
+  const apiKey = process.env.RESEND_API_KEY
+  const to = process.env.CONTACT_FORWARD_TO
+  const from = process.env.CONTACT_FROM || 'Portfolio <onboarding@resend.dev>'
+
+  return {
+    apiKey,
+    to,
+    from,
+    isConfigured: Boolean(apiKey && to),
+  }
+}
+
+async function readErrorBody(response: Response) {
+  try {
+    const body = await response.text()
+    return body.slice(0, 1000)
+  } catch {
+    return ''
+  }
+}
+
 export const submitContact = createServerFn({ method: 'POST' })
   .inputValidator(contactInput)
   .handler(async ({ data }) => {
     const db = getDb()
-    await db.insert(messages).values(data)
+    const [message] = await db
+      .insert(messages)
+      .values({
+        ...data,
+        forwardStatus: 'pending',
+      })
+      .returning({ id: messages.id })
 
-    const apiKey = process.env.RESEND_API_KEY
-    const to = process.env.CONTACT_FORWARD_TO
-    if (apiKey && to) {
-      try {
-        await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            authorization: `Bearer ${apiKey}`,
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify({
-            from: process.env.CONTACT_FROM || 'Portfolio <onboarding@resend.dev>',
-            to,
-            subject: `New message from ${data.name}`,
-            reply_to: data.email,
-            text: `${data.body}\n\n— ${data.name} <${data.email}>`,
-          }),
+    const messageId = message!.id
+    const forwarding = getContactForwardingConfig()
+
+    if (!forwarding.isConfigured) {
+      await db
+        .update(messages)
+        .set({
+          forwardStatus: 'not_configured',
+          forwardError: 'Missing RESEND_API_KEY or CONTACT_FORWARD_TO',
         })
-      } catch {
-        // ignore email transport errors; message is already in the DB
+        .where(eq(messages.id, messageId))
+
+      return {
+        ok: false,
+        status: 'not_configured' as const,
       }
     }
 
-    return { ok: true }
+    try {
+      const response = await fetch(resendEndpoint, {
+        method: 'POST',
+        headers: {
+          authorization: `Bearer ${forwarding.apiKey}`,
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: forwarding.from,
+          to: forwarding.to,
+          subject: `New message from ${data.name}`,
+          reply_to: data.email,
+          text: `${data.body}\n\n- ${data.name} <${data.email}>`,
+        }),
+      })
+
+      if (!response.ok) {
+        const errorBody = await readErrorBody(response)
+        const forwardError = errorBody || `Resend returned ${response.status}`
+        await db
+          .update(messages)
+          .set({
+            forwardStatus: 'failed',
+            forwardError,
+          })
+          .where(eq(messages.id, messageId))
+
+        return {
+          ok: false,
+          status: 'failed' as const,
+        }
+      }
+
+      await db
+        .update(messages)
+        .set({
+          forwardStatus: 'sent',
+          forwardError: null,
+          forwardedAt: new Date(),
+        })
+        .where(eq(messages.id, messageId))
+
+      return {
+        ok: true,
+        status: 'sent' as const,
+      }
+    } catch (error) {
+      await db
+        .update(messages)
+        .set({
+          forwardStatus: 'failed',
+          forwardError: error instanceof Error ? error.message : 'Unknown Resend transport error',
+        })
+        .where(eq(messages.id, messageId))
+
+      return {
+        ok: false,
+        status: 'failed' as const,
+      }
+    }
   })
 
 export const getHomeData = createServerFn({ method: 'GET' }).handler(async () => {

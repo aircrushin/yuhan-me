@@ -100,7 +100,7 @@
   "form_message": "目标、时间线、预算或你已有的资源",
   "form_send": "发送",
   "form_success": "已收到，谢谢你的留言。",
-  "form_error": "刚刚没能发送成功。可以稍后再试，也可以直接发邮件给我。",
+  "form_error": "刚刚没能转发到我的邮箱。请直接发邮件给我。",
 
   "projects_filter_all": "全部",
   "projects_search_placeholder": "搜索作品",
@@ -119,7 +119,7 @@
 
   "contact_label_email": "邮箱",
   "contact_label_github": "GitHub",
-  "contact_label_x": "小红书",
+  "contact_label_xiaohongshu": "小红书",
   "contact_label_linkedin": "LinkedIn",
   "contact_label_resume": "简历",
   "contact_resume_value": "下载",

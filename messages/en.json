@@ -100,7 +100,7 @@
   "form_message": "Goal, timeline, budget, or resources you already have",
   "form_send": "Send message",
   "form_success": "Thanks, your message just landed in my inbox.",
-  "form_error": "Couldn't send right now. Please try again, or email me directly.",
+  "form_error": "Couldn't forward this to my inbox. Please email me directly instead.",
 
   "projects_filter_all": "All",
   "projects_search_placeholder": "Search projects",
@@ -119,7 +119,7 @@
 
   "contact_label_email": "Email",
   "contact_label_github": "GitHub",
-  "contact_label_x": "小红书",
+  "contact_label_xiaohongshu": "小红书",
   "contact_label_linkedin": "LinkedIn",
   "contact_label_resume": "Resume",
   "contact_resume_value": "Download",

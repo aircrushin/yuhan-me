@@ -60,7 +60,7 @@ export function generatePersonSchema(profile: Profile | null) {
     sameAs: [
       profile.github || undefined,
       profile.linkedin || undefined,
-      profile.x || undefined,
+      profile.xiaohongshu || undefined,
     ].filter(Boolean),
     image: profile.avatarUrl || undefined,
   }

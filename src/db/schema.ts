@@ -27,7 +27,7 @@ export const profile = pgTable('profile', {
   currentlyZh: text('currently_zh'),
   email: varchar('email', { length: 200 }).notNull().default(''),
   github: varchar('github', { length: 200 }).notNull().default('https://github.com/aircrushin'),
-  x: varchar('x', { length: 200 }).notNull().default(''),
+  xiaohongshu: varchar('x', { length: 200 }).notNull().default(''),
   linkedin: varchar('linkedin', { length: 200 }).notNull().default(''),
   resumeUrl: varchar('resume_url', { length: 400 }).notNull().default(''),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
@@ -113,6 +113,9 @@ export const messages = pgTable('messages', {
   name: varchar('name', { length: 120 }).notNull(),
   email: varchar('email', { length: 200 }).notNull(),
   body: text('body').notNull(),
+  forwardStatus: varchar('forward_status', { length: 32 }).notNull().default('unknown'),
+  forwardError: text('forward_error'),
+  forwardedAt: timestamp('forwarded_at', { withTimezone: true }),
   isRead: boolean('is_read').notNull().default(false),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 })

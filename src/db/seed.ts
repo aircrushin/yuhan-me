@@ -24,7 +24,7 @@ async function main() {
       currentlyZh: '开源 · 蒙纳士大学研究生',
       email: '',
       github: 'https://github.com/aircrushin',
-      x: '',
+      xiaohongshu: '',
       linkedin: '',
       resumeUrl: '',
     })

@@ -36,7 +36,7 @@ function AdminProfile() {
     currentlyZh: initial?.currentlyZh ?? '',
     email: initial?.email ?? '',
     github: initial?.github ?? 'https://github.com/aircrushin',
-    x: initial?.x ?? '',
+    xiaohongshu: initial?.xiaohongshu ?? '',
     linkedin: initial?.linkedin ?? '',
     resumeUrl: initial?.resumeUrl ?? '',
   })
@@ -147,8 +147,8 @@ function AdminProfile() {
                 小红书
               </Label>
               <Input
-                value={form.x}
-                onChange={(e) => set('x', e.target.value)}
+                value={form.xiaohongshu}
+                onChange={(e) => set('xiaohongshu', e.target.value)}
                 placeholder="https://www.xiaohongshu.com/user/profile/…"
               />
             </div>

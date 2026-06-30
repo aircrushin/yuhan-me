@@ -32,10 +32,10 @@ export function ProfileSocialLinks({
     })
   }
 
-  if (profile?.x) {
+  if (profile?.xiaohongshu) {
     links.push({
-      href: profile.x,
-      label: m.contact_label_x(),
+      href: profile.xiaohongshu,
+      label: m.contact_label_xiaohongshu(),
       icon: <XiaohongshuMark className="h-4 w-4" aria-hidden />,
     })
   }

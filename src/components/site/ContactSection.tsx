@@ -27,11 +27,15 @@ export function ContactSection({ profile }: ContactSectionProps) {
     e.preventDefault()
     setPending(true)
     try {
-      await submit({ data: { name, email, body } })
-      toast.success(m.form_success())
-      setName('')
-      setEmail('')
-      setBody('')
+      const result = await submit({ data: { name, email, body } })
+      if (result.ok) {
+        toast.success(m.form_success())
+        setName('')
+        setEmail('')
+        setBody('')
+      } else {
+        toast.error(m.form_error())
+      }
     } catch {
       toast.error(m.form_error())
     } finally {
@@ -121,11 +125,11 @@ export function ContactSection({ profile }: ContactSectionProps) {
                 value={profile.github.replace('https://', '')}
               />
             ) : null}
-            {profile?.x ? (
+            {profile?.xiaohongshu ? (
               <ContactLink
-                label={m.contact_label_x()}
-                href={profile.x}
-                value={m.contact_label_x()}
+                label={m.contact_label_xiaohongshu()}
+                href={profile.xiaohongshu}
+                value={m.contact_label_xiaohongshu()}
               />
             ) : null}
             {profile?.linkedin ? (

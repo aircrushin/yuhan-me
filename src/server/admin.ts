@@ -24,6 +24,22 @@ async function assertAdmin() {
   }
 }
 
+function getContactForwardingHealth() {
+  const missing = [
+    ['RESEND_API_KEY', process.env.RESEND_API_KEY],
+    ['CONTACT_FORWARD_TO', process.env.CONTACT_FORWARD_TO],
+  ]
+    .filter(([, value]) => !value)
+    .map(([name]) => name)
+
+  return {
+    isConfigured: missing.length === 0,
+    missing,
+    from: process.env.CONTACT_FROM || 'Portfolio <onboarding@resend.dev>',
+    to: process.env.CONTACT_FORWARD_TO || null,
+  }
+}
+
 // ─── Status / health ────────────────────────────────────────────────────────
 
 export const getAdminStatus = createServerFn({ method: 'GET' }).handler(async () => {
@@ -48,7 +64,9 @@ export const getAdminStatus = createServerFn({ method: 'GET' }).handler(async ()
     db.execute(sql`
       SELECT
         COUNT(*)::int AS total,
-        COUNT(*) FILTER (WHERE NOT is_read)::int AS unread
+        COUNT(*) FILTER (WHERE NOT is_read)::int AS unread,
+        COUNT(*) FILTER (WHERE forward_status = 'failed')::int AS failed_forwarding,
+        COUNT(*) FILTER (WHERE forward_status = 'not_configured')::int AS not_configured_forwarding
       FROM messages
     `),
     db.execute(sql`
@@ -67,8 +85,14 @@ export const getAdminStatus = createServerFn({ method: 'GET' }).handler(async ()
       last_synced: string | null
     },
     posts: postStats.rows[0] as { total: number; drafts: number; published: number },
-    messages: messageStats.rows[0] as { total: number; unread: number },
+    messages: messageStats.rows[0] as {
+      total: number
+      unread: number
+      failed_forwarding: number
+      not_configured_forwarding: number
+    },
     travel: travelStats.rows[0] as { total: number; visible: number },
+    contactForwarding: getContactForwardingHealth(),
   }
 })
 
@@ -190,10 +214,14 @@ const profileInput = z.object({
   currentlyZh: z.string().nullable().optional(),
   email: z.string().email().or(z.literal('')),
   github: z.string(),
-  x: z.string(),
+  xiaohongshu: z.string().optional(),
+  x: z.string().optional(),
   linkedin: z.string(),
   resumeUrl: z.string(),
-})
+}).transform(({ x, xiaohongshu, ...data }) => ({
+  ...data,
+  xiaohongshu: xiaohongshu ?? x ?? '',
+}))
 
 export const updateProfile = createServerFn({ method: 'POST' })
   .inputValidator(profileInput)
@@ -443,7 +471,14 @@ export const deletePost = createServerFn({ method: 'POST' })
 export const listMessages = createServerFn({ method: 'GET' }).handler(async () => {
   await assertAdmin()
   const db = getDb()
-  return db.select().from(messages).orderBy(desc(messages.createdAt))
+  const rows = await db.select().from(messages).orderBy(desc(messages.createdAt))
+
+  return {
+    messages: rows,
+    contactForwarding: getContactForwardingHealth(),
+    failedCount: rows.filter((message) => message.forwardStatus === 'failed').length,
+    notConfiguredCount: rows.filter((message) => message.forwardStatus === 'not_configured').length,
+  }
 })
 
 export const markMessageRead = createServerFn({ method: 'POST' })

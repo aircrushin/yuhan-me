@@ -2,6 +2,7 @@ import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/react-start'
 import {
   Activity,
+  AlertTriangle,
   ArrowRight,
   Briefcase,
   FileText,
@@ -65,6 +66,40 @@ function Dashboard() {
           Sync from GitHub
         </Button>
       </div>
+
+      {!stats.contactForwarding.isConfigured ? (
+        <Link
+          to="/admin/messages"
+          className="surface-card flex items-start gap-3 border-amber-300 bg-amber-50 p-4 text-sm text-amber-950"
+        >
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+          <div>
+            <p className="font-semibold">Contact forwarding needs setup before launch.</p>
+            <p className="mt-1">
+              Missing {stats.contactForwarding.missing.join(' and ')}. Contact submissions will
+              be saved, but visitors will see a send error until forwarding is configured.
+            </p>
+          </div>
+        </Link>
+      ) : null}
+
+      {stats.messages.failed_forwarding > 0 ? (
+        <Link
+          to="/admin/messages"
+          className="surface-card flex items-start gap-3 border-red-300 bg-red-50 p-4 text-sm text-red-950"
+        >
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+          <div>
+            <p className="font-semibold">
+              {stats.messages.failed_forwarding} contact message
+              {stats.messages.failed_forwarding === 1 ? '' : 's'} failed to forward.
+            </p>
+            <p className="mt-1">
+              Review the inbox and Resend configuration before relying on contact-form delivery.
+            </p>
+          </div>
+        </Link>
+      ) : null}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <StatCard
