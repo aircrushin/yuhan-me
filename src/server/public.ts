@@ -20,16 +20,6 @@ export const getVisibleRepos = createServerFn({ method: 'GET' }).handler(async (
     .orderBy(desc(repos.isPinned), asc(repos.displayOrder), desc(repos.stars), desc(repos.pushedAt))
 })
 
-export const getPublicSkills = createServerFn({ method: 'GET' }).handler(async () => {
-  const db = getDb()
-  return db.select().from(skills).orderBy(asc(skills.displayOrder), asc(skills.id))
-})
-
-export const getPublicExperience = createServerFn({ method: 'GET' }).handler(async () => {
-  const db = getDb()
-  return db.select().from(experience).orderBy(asc(experience.displayOrder), desc(experience.id))
-})
-
 export const getVisibleTravelDumps = createServerFn({ method: 'GET' }).handler(async () => {
   const db = getDb()
   return db

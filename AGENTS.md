@@ -6,7 +6,7 @@ This is a TanStack Start portfolio app built with Vite, React 19, Tailwind 4, Dr
 
 ## Build, Test, and Development Commands
 
-- `pnpm install`: install dependencies from `package-lock.json`.
+- `pnpm install`: install dependencies from `pnpm-lock.yaml`.
 - `pnpm run dev`: start the Vite dev server on `http://localhost:3000`.
 - `pnpm run build`: create the production SSR/Nitro build.
 - `pnpm run test`: run the Vitest suite.

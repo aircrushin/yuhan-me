@@ -13,11 +13,11 @@ Everything persists in **Neon Postgres** through Drizzle ORM.
 ## Getting started
 
 ```bash
-npm install
+pnpm install
 cp .env.example .env  # then fill it in
-npm run db:push       # creates tables on your Neon DB
-npm run db:seed       # writes a default profile row + initial skills/experience
-npm run dev
+pnpm run db:push       # creates tables on your Neon DB
+pnpm run db:seed       # writes a default profile row + initial skills/experience
+pnpm run dev
 ```
 
 Open <http://localhost:3000>.
@@ -51,13 +51,13 @@ Optional:
 
 | Command | What it does |
 | --- | --- |
-| `npm run dev` | Vite dev server on port 3000 |
-| `npm run build` | Production SSR build via Nitro |
-| `npm run db:generate` | Generate a new Drizzle migration from `src/db/schema.ts` |
-| `npm run db:push` | Push the schema to your Postgres |
-| `npm run db:studio` | Open Drizzle Studio against your DB |
-| `npm run db:seed` | Insert default profile / sample skills / experience |
-| `npm run test` | Run the Vitest suite |
+| `pnpm run dev` | Vite dev server on port 3000 |
+| `pnpm run build` | Production SSR build via Nitro |
+| `pnpm run db:generate` | Generate a new Drizzle migration from `src/db/schema.ts` |
+| `pnpm run db:push` | Push the schema to your Postgres |
+| `pnpm run db:studio` | Open Drizzle Studio against your DB |
+| `pnpm run db:seed` | Insert default profile / sample skills / experience |
+| `pnpm run test` | Run the Vitest suite |
 
 ## Stack
 
@@ -69,4 +69,4 @@ Optional:
 
 ## Deployment
 
-Build with `npm run build` and run `node dist/server/index.mjs` (Nitro produces a self-contained Node server). Vercel, Render, Fly.io, Railway, your own VPS — all fine. Just be sure the env vars above are set on the host.
+Build with `pnpm run build` and run `node dist/server/index.mjs` (Nitro produces a self-contained Node server). Vercel, Render, Fly.io, Railway, your own VPS — all fine. Just be sure the env vars above are set on the host.

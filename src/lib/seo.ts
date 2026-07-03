@@ -11,10 +11,6 @@ export function siteUrl(path?: string) {
   return `${base}${p}`
 }
 
-export function canonicalUrl(pathname: string) {
-  return siteUrl(pathname)
-}
-
 // ---- Structured data generators ----
 
 export function generateWebsiteSchema() {

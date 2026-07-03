@@ -1,18 +1,15 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { getDb } from '#/db/client'
 import { posts } from '#/db/schema'
+import { siteUrl } from '#/lib/seo'
 import { eq } from 'drizzle-orm'
-
-function siteUrl() {
-  return (typeof window === 'undefined' ? process.env.SITE_URL : null) || 'https://aircrushin.com'
-}
 
 function urlEntry(loc: string, lastmod?: string, changefreq = 'monthly', priority = '0.7') {
   const lm = lastmod
     ? `\n    <lastmod>${lastmod}</lastmod>`
     : ''
   return `  <url>
-    <loc>${siteUrl()}${loc}</loc>${lm}
+    <loc>${siteUrl(loc)}</loc>${lm}
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
   </url>`

@@ -130,19 +130,3 @@ export function getCookie(cookieHeader: string | null | undefined, name: string)
   }
   return undefined
 }
-
-export async function isAdminRequest(request: Request): Promise<boolean> {
-  const token = getCookie(request.headers.get('cookie'), ADMIN_COOKIE)
-  const session = await verifySession(token)
-  return session !== null
-}
-
-export async function requireAdmin(request: Request): Promise<void> {
-  const ok = await isAdminRequest(request)
-  if (!ok) {
-    throw new Response(JSON.stringify({ error: 'Unauthorized' }), {
-      status: 401,
-      headers: { 'content-type': 'application/json' },
-    })
-  }
-}
