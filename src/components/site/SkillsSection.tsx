@@ -1,4 +1,5 @@
 import type { Skill } from '#/db/schema'
+import type { CSSProperties } from 'react'
 import { Section } from '#/components/site/Section'
 import { pickLocaleField } from '#/lib/i18n'
 import { m } from '#/paraglide/messages'
@@ -31,20 +32,25 @@ export function SkillsSection({ skills, fallbackLanguages }: SkillsSectionProps)
       kicker={m.section_skills_kicker()}
       title={m.section_skills_title()}
     >
-      <div className="skill-matrix">
-        {Object.entries(groups).map(([cat, names]) => (
-          <div key={cat} className="skill-panel">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--lacquer)]">
-              {cat}
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {names.map((name) => (
-                <span key={name} className="chip">
+      <div className="skill-instrument">
+        {Object.entries(groups).map(([cat, names], groupIndex) => (
+          <article key={cat} className="skill-instrument-row">
+            <div className="skill-instrument-heading">
+              <span>{String(groupIndex + 1).padStart(2, '0')}</span>
+              <h3>{cat}</h3>
+            </div>
+            <div className="skill-cloud">
+              {names.map((name, skillIndex) => (
+                <span
+                  key={name}
+                  className="skill-node"
+                  style={{ '--skill-index': skillIndex } as CSSProperties}
+                >
                   {name}
                 </span>
               ))}
             </div>
-          </div>
+          </article>
         ))}
       </div>
     </Section>

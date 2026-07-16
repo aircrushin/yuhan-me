@@ -8,6 +8,7 @@ import { ProjectsPreview } from '#/components/site/ProjectsPreview'
 import { ExperienceSection } from '#/components/site/ExperienceSection'
 import { BlogPreview } from '#/components/site/BlogPreview'
 import { ContactSection } from '#/components/site/ContactSection'
+import { HomeExperience } from '#/components/site/HomeExperience'
 import { getHomeData } from '#/server/public'
 import { m } from '#/paraglide/messages'
 import { generateWebsiteSchema, generatePersonSchema } from '#/lib/seo'
@@ -42,15 +43,31 @@ function Home() {
   ).slice(0, 8)
 
   return (
-    <>
-      <Hero profile={data.profile} stats={data.stats} />
-      <AboutSection profile={data.profile} />
-      <CollaborationSection />
-      <SkillsSection skills={data.skills} fallbackLanguages={fallbackLanguages} />
-      <ProjectsPreview repos={data.featured} />
-      <ExperienceSection items={data.experience} />
-      <BlogPreview posts={data.posts} />
-      <ContactSection profile={data.profile} />
-    </>
+    <HomeExperience>
+      <div data-home-section="home">
+        <Hero profile={data.profile} stats={data.stats} />
+      </div>
+      <div data-home-section="about" data-home-reveal>
+        <AboutSection profile={data.profile} />
+      </div>
+      <div data-home-section="collaboration" data-home-reveal>
+        <CollaborationSection />
+      </div>
+      <div data-home-reveal>
+        <SkillsSection skills={data.skills} fallbackLanguages={fallbackLanguages} />
+      </div>
+      <div data-home-section="projects" data-home-reveal>
+        <ProjectsPreview repos={data.featured} />
+      </div>
+      <div data-home-reveal>
+        <ExperienceSection items={data.experience} />
+      </div>
+      <div data-home-reveal>
+        <BlogPreview posts={data.posts} />
+      </div>
+      <div data-home-section="contact" data-home-reveal>
+        <ContactSection profile={data.profile} />
+      </div>
+    </HomeExperience>
   )
 }

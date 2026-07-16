@@ -1,4 +1,4 @@
-import { ArrowUpRight, Handshake, Rocket, Workflow } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 
 import { Section } from '#/components/site/Section'
@@ -6,17 +6,14 @@ import { m } from '#/paraglide/messages'
 
 const collaborationItems = [
   {
-    icon: Rocket,
     title: m.collaboration_item_product_title,
     body: m.collaboration_item_product_body,
   },
   {
-    icon: Workflow,
     title: m.collaboration_item_ai_title,
     body: m.collaboration_item_ai_body,
   },
   {
-    icon: Handshake,
     title: m.collaboration_item_partner_title,
     body: m.collaboration_item_partner_body,
   },
@@ -31,23 +28,36 @@ export function CollaborationSection() {
       description={m.section_collaboration_subtitle()}
       className="collaboration-section"
     >
-      <div className="collaboration-grid">
-        {collaborationItems.map((item) => {
-          const Icon = item.icon
-          return (
-            <article key={item.title()} className="collaboration-card surface-card">
-              <div className="collaboration-card-icon" aria-hidden="true">
-                <Icon className="h-4 w-4" />
-              </div>
-              <h3 className="display-title text-xl font-semibold text-[color:var(--sea-ink)]">
+      <div className="collaboration-stack">
+        {collaborationItems.map((item, index) => (
+          <article
+            key={item.title()}
+            className="collaboration-row"
+            onPointerMove={(event) => {
+              const rect = event.currentTarget.getBoundingClientRect()
+              event.currentTarget.style.setProperty('--row-x', `${event.clientX - rect.left}px`)
+              event.currentTarget.style.setProperty('--row-y', `${event.clientY - rect.top}px`)
+            }}
+            onPointerLeave={(event) => {
+              event.currentTarget.style.removeProperty('--row-x')
+              event.currentTarget.style.removeProperty('--row-y')
+            }}
+          >
+            <span className="collaboration-row-index">{String(index + 1).padStart(2, '0')}</span>
+            <div className="collaboration-row-copy">
+              <h3 className="display-title text-2xl font-semibold">
                 {item.title()}
               </h3>
-              <p className="text-sm leading-6 text-[color:var(--sea-ink-soft)]">
+              <p>
                 {item.body()}
               </p>
-            </article>
-          )
-        })}
+            </div>
+            <div className="collaboration-row-object" aria-hidden="true">
+              <span />
+              <ArrowUpRight className="h-5 w-5" />
+            </div>
+          </article>
+        ))}
       </div>
       <div className="collaboration-note">
         <p>{m.collaboration_note()}</p>

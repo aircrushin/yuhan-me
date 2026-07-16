@@ -27,10 +27,12 @@ export function ProjectCard({
   repo,
   featured = false,
   compact = false,
+  interactive = false,
 }: {
   repo: Repo
   featured?: boolean
   compact?: boolean
+  interactive?: boolean
 }) {
   const ref = useRef<HTMLElement>(null)
   const accent = (repo.language && LANG_ACCENT[repo.language]) || 'oklch(0.72 0.085 185)'
@@ -44,8 +46,9 @@ export function ProjectCard({
         'project-card group flex flex-col gap-4 p-6 sm:p-7',
         featured && 'project-card-featured',
         compact && 'project-card-compact',
+        interactive && 'project-card-interactive',
       )}
-      onMouseMove={(e) => {
+      onPointerMove={(e) => {
         const el = ref.current
         if (!el) return
         const rect = el.getBoundingClientRect()
@@ -53,6 +56,16 @@ export function ProjectCard({
         const y = ((e.clientY - rect.top) / rect.height) * 100
         el.style.setProperty('--mx', `${x}%`)
         el.style.setProperty('--my', `${y}%`)
+        if (interactive && e.pointerType === 'mouse') {
+          el.style.setProperty('--card-rx', `${((50 - y) / 50) * 3.2}deg`)
+          el.style.setProperty('--card-ry', `${((x - 50) / 50) * 4.2}deg`)
+        }
+      }}
+      onPointerLeave={() => {
+        const el = ref.current
+        if (!el) return
+        el.style.setProperty('--card-rx', '0deg')
+        el.style.setProperty('--card-ry', '0deg')
       }}
     >
       <a

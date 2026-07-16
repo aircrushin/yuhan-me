@@ -1,9 +1,10 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { Link } from '@tanstack/react-router'
-import { ArrowUpRight, MapPin } from 'lucide-react'
+import { ArrowDown, ArrowUpRight, MapPin, MousePointer2 } from 'lucide-react'
 
 import type { Profile, Repo } from '#/db/schema'
 import { Button } from '#/components/ui/button'
+import { HeroSceneGate } from '#/components/site/HeroSceneGate'
 import { pickLocaleField } from '#/lib/i18n'
 import { m } from '#/paraglide/messages'
 
@@ -18,46 +19,36 @@ export function Hero({ profile, stats }: HeroProps) {
   const location = profile?.location || 'Chengdu'
   const focus = pickLocaleField(profile, 'currently') || m.hero_focus_fallback()
   const bio = cleanPublicCopy(pickLocaleField(profile, 'bio') || m.hero_subtitle())
-
-  const [glowPos, setGlowPos] = useState({ x: 50, y: 40 })
-  const visualRef = useRef<HTMLElement>(null)
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    setGlowPos({
-      x: ((e.clientX - rect.left) / rect.width) * 100,
-      y: ((e.clientY - rect.top) / rect.height) * 100,
-    })
-  }, [])
+  const [activeMode, setActiveMode] = useState(0)
+  const modes = [
+    m.hero_signal_product(),
+    m.hero_signal_ai(),
+    m.hero_signal_collaboration(),
+  ]
+  const activeModeLabel = modes[activeMode] ?? modes[0]
 
   return (
-    <section className="hero-section">
+    <section id="home" className="hero-section kinetic-hero" aria-labelledby="home-title">
       <div className="hero-bg-ambient" aria-hidden="true" />
       <div className="page-wrap">
-        <div className="hero-shell">
-          <figure
-            ref={visualRef}
-            className="hero-visual rise-in"
-            aria-label={headline}
-            onMouseMove={handleMouseMove}
-            style={
-              {
-                '--mx': `${glowPos.x}%`,
-                '--my': `${glowPos.y}%`,
-              } as React.CSSProperties
-            }
-          >
-            <div className="hero-visual-ambient hero-visual-ambient-a" aria-hidden="true" />
-            <div className="hero-visual-ambient hero-visual-ambient-b" aria-hidden="true" />
-            <div className="hero-visual-glow" aria-hidden="true" />
-            <img src="/atelier-hero.png" alt="" className="hero-image" />
-            <div className="hero-visual-grain" aria-hidden="true" />
-            <div className="hero-visual-sheen" aria-hidden="true" />
-            <figcaption className="hero-caption">
-              <div className="kicker-line stagger-item">{kicker}</div>
-              <h1 className="hero-title stagger-item">{headline}</h1>
-              <p className="stagger-item">{bio}</p>
-              <div className="hero-actions stagger-item">
+        <div className="kinetic-hero-shell">
+          <div className="kinetic-hero-grid">
+            <div className="kinetic-hero-copy">
+              <div className="kicker-line kinetic-reveal" style={{ '--i': 0 } as CSSProperties}>
+                {kicker}
+              </div>
+              <h1
+                id="home-title"
+                className="hero-title kinetic-reveal"
+                style={{ '--i': 1 } as CSSProperties}
+              >
+                {headline}
+              </h1>
+              <p className="kinetic-hero-intro kinetic-reveal" style={{ '--i': 2 } as CSSProperties}>
+                {bio}
+              </p>
+
+              <div className="hero-actions kinetic-reveal" style={{ '--i': 3 } as CSSProperties}>
                 <Button asChild size="lg" className="gap-2 rounded-sm px-6">
                   <Link to="/projects">
                     {m.hero_cta_primary()}
@@ -68,19 +59,55 @@ export function Hero({ profile, stats }: HeroProps) {
                   <Link to="/contact">{m.hero_cta_secondary()}</Link>
                 </Button>
               </div>
-              <div className="hero-signals stagger-item" aria-label={m.hero_signals_aria()}>
-                <span>{m.hero_signal_product()}</span>
-                <span>{m.hero_signal_ai()}</span>
-                <span>{m.hero_signal_collaboration()}</span>
-              </div>
-            </figcaption>
-          </figure>
 
-          <aside
-            className="hero-ledger rise-in"
-            style={{ animationDelay: '350ms' }}
-            aria-label="Portfolio index"
-          >
+              <div
+                className="hero-mode-selector kinetic-reveal"
+                style={{ '--i': 4 } as CSSProperties}
+                role="group"
+                aria-label={m.hero_scene_modes_aria()}
+              >
+                <div className="hero-mode-heading">
+                  <span>{m.hero_scene_modes_label()}</span>
+                  <strong aria-live="polite">{activeModeLabel}</strong>
+                </div>
+                <div className="hero-mode-list">
+                  {modes.map((mode, index) => (
+                    <button
+                      key={mode}
+                      type="button"
+                      aria-pressed={activeMode === index}
+                      onClick={() => setActiveMode(index)}
+                    >
+                      <span>{String(index + 1).padStart(2, '0')}</span>
+                      {mode}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <a href="#about" className="hero-scroll-cue kinetic-reveal" style={{ '--i': 5 } as CSSProperties}>
+                <ArrowDown className="h-4 w-4" />
+                {m.hero_scroll_cue()}
+              </a>
+            </div>
+
+            <div className="kinetic-hero-stage kinetic-reveal" style={{ '--i': 2 } as CSSProperties}>
+              <HeroSceneGate mode={activeMode} />
+              <div className="hero-stage-hud hero-stage-hud-top" aria-hidden="true">
+                <span>{m.hero_scene_label()}</span>
+                <span>0{activeMode + 1} / 03</span>
+              </div>
+              <div className="hero-stage-hud hero-stage-hud-bottom">
+                <span className="hero-stage-instruction">
+                  <MousePointer2 className="h-3.5 w-3.5" />
+                  {m.hero_scene_instruction()}
+                </span>
+                <span>{activeModeLabel}</span>
+              </div>
+            </div>
+          </div>
+
+          <aside className="hero-ledger kinetic-reveal" style={{ '--i': 5 } as CSSProperties} aria-label={m.hero_ledger_aria()}>
             <div className="hero-place">
               <MapPin className="h-4 w-4 text-[color:var(--lacquer)]" />
               {location}

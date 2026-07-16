@@ -23,11 +23,27 @@ export function AboutSection({ profile }: AboutSectionProps) {
       title={<AboutLanguageTitle />}
     >
       <div className="about-layout">
-        <div className="profile-plate">
-          <Avatar className="h-32 w-32 rounded-sm shadow-md">
-            <AvatarImage src={profile?.avatarUrl || ''} alt={profile?.name || 'avatar'} />
-            <AvatarFallback className="rounded-sm">AC</AvatarFallback>
-          </Avatar>
+        <div
+          className="profile-plate"
+          onPointerMove={(event) => {
+            const rect = event.currentTarget.getBoundingClientRect()
+            const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2
+            const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2
+            event.currentTarget.style.setProperty('--profile-x', x.toFixed(3))
+            event.currentTarget.style.setProperty('--profile-y', y.toFixed(3))
+          }}
+          onPointerLeave={(event) => {
+            event.currentTarget.style.setProperty('--profile-x', '0')
+            event.currentTarget.style.setProperty('--profile-y', '0')
+          }}
+        >
+          <div className="profile-portrait-stage">
+            <span className="profile-portrait-orbit" aria-hidden="true" />
+            <Avatar className="profile-portrait h-32 w-32 rounded-sm shadow-md">
+              <AvatarImage src={profile?.avatarUrl || ''} alt={profile?.name || 'avatar'} />
+              <AvatarFallback className="rounded-sm">AC</AvatarFallback>
+            </Avatar>
+          </div>
           <div className="mt-5 space-y-2">
             <p className="display-title text-xl font-semibold text-[color:var(--sea-ink)]">
               {profile?.name || 'aircrushin'}
