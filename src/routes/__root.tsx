@@ -34,7 +34,7 @@ export const Route = createRootRoute({
         { name: 'robots', content: 'index, follow' },
         { title },
         { name: 'description', content: description },
-        { name: 'theme-color', content: '#4fb8b2' },
+        { name: 'theme-color', content: '#ede3cc' },
 
         { property: 'og:site_name', content: 'aircrushin' },
         { property: 'og:title', content: title },

@@ -1,180 +1,58 @@
-import {
-  Component,
-  lazy,
-  Suspense,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type MutableRefObject,
-  type PointerEvent as ReactPointerEvent,
-  type ReactNode,
-} from 'react'
-import { ClientOnly } from '@tanstack/react-router'
+import { useState, type CSSProperties, type PointerEvent } from 'react'
 
-const AtelierScene = lazy(() => import('#/components/site/AtelierScene.client'))
+import { m } from '#/paraglide/messages'
 
-export interface SceneInteraction {
-  x: number
-  y: number
-  dragX: number
-  dragY: number
-  dragging: boolean
-  lastX: number
-  lastY: number
-}
+const LETTERS = 'AIRCRUSHIN'.split('')
 
-interface HeroSceneGateProps {
-  mode: number
-}
+export function HeroSceneGate() {
+  const foods = [
+    m.hero_food_apple(),
+    m.hero_food_croissant(),
+    m.hero_food_herbs(),
+    m.hero_food_fig(),
+    m.hero_food_chestnut(),
+    m.hero_food_strawberry(),
+    m.hero_food_honeycomb(),
+    m.hero_food_olive(),
+    m.hero_food_cheese(),
+    m.hero_food_mushroom(),
+  ]
+  const [active, setActive] = useState(0)
 
-export function HeroSceneGate({ mode }: HeroSceneGateProps) {
-  return (
-    <ClientOnly fallback={<ScenePoster />}>
-      <SceneCapabilityGate mode={mode} />
-    </ClientOnly>
-  )
-}
-
-function SceneCapabilityGate({ mode }: HeroSceneGateProps) {
-  const rootRef = useRef<HTMLDivElement>(null)
-  const interactionRef = useRef<SceneInteraction>({
-    x: 0,
-    y: 0,
-    dragX: 0,
-    dragY: 0,
-    dragging: false,
-    lastX: 0,
-    lastY: 0,
-  })
-  const [canRender, setCanRender] = useState(false)
-  const [visible, setVisible] = useState(true)
-  const [ready, setReady] = useState(false)
-  const [quality, setQuality] = useState<'low' | 'high'>('high')
-  const handleReady = useCallback(() => setReady(true), [])
-
-  useEffect(() => {
-    const root = rootRef.current
-    if (!root) return
-
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const coarsePointer = window.matchMedia('(pointer: coarse)')
-    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
-
-    if (reduceMotion.matches || connection?.saveData || !supportsWebGL()) return
-
-    setQuality(coarsePointer.matches ? 'low' : 'high')
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry) return
-        setVisible(entry.isIntersecting)
-        if (entry.isIntersecting) setCanRender(true)
-      },
-      { rootMargin: '180px 0px', threshold: 0.01 },
-    )
-    observer.observe(root)
-
-    return () => observer.disconnect()
-  }, [])
-
-  const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (event.pointerType !== 'mouse') return
-    const interaction = interactionRef.current
-    interaction.dragging = true
-    interaction.lastX = event.clientX
-    interaction.lastY = event.clientY
-    event.currentTarget.dataset.dragging = 'true'
-    event.currentTarget.setPointerCapture(event.pointerId)
-  }
-
-  const onPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+  const moveLight = (event: PointerEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect()
-    const interaction = interactionRef.current
-    interaction.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
-    interaction.y = -(((event.clientY - rect.top) / rect.height) * 2 - 1)
-
-    if (!interaction.dragging || event.pointerType !== 'mouse') return
-    interaction.dragX += (event.clientX - interaction.lastX) * 0.006
-    interaction.dragY += (event.clientY - interaction.lastY) * 0.006
-    interaction.lastX = event.clientX
-    interaction.lastY = event.clientY
-  }
-
-  const releasePointer = (event: ReactPointerEvent<HTMLDivElement>) => {
-    interactionRef.current.dragging = false
-    event.currentTarget.dataset.dragging = 'false'
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId)
-    }
+    event.currentTarget.style.setProperty('--food-light-x', `${event.clientX - rect.left}px`)
+    event.currentTarget.style.setProperty('--food-light-y', `${event.clientY - rect.top}px`)
   }
 
   return (
-    <div
-      ref={rootRef}
-      className="atelier-scene-shell"
-      data-ready={ready ? 'true' : 'false'}
-      data-dragging="false"
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={releasePointer}
-      onPointerCancel={releasePointer}
-      onPointerLeave={(event) => {
-        interactionRef.current.x = 0
-        interactionRef.current.y = 0
-        releasePointer(event)
-      }}
-    >
-      <ScenePoster />
-      {canRender ? (
-        <SceneErrorBoundary>
-          <Suspense fallback={null}>
-            <AtelierScene
-              interaction={interactionRef as MutableRefObject<SceneInteraction>}
-              mode={mode}
-              quality={quality}
-              visible={visible}
-              onReady={handleReady}
-            />
-          </Suspense>
-        </SceneErrorBoundary>
-      ) : null}
+    <div className="food-word-stage" onPointerMove={moveLight}>
+      <div className="food-word" aria-label={`AIRCRUSHIN, ${m.hero_food_word_aria()}`}>
+        {LETTERS.map((letter, index) => (
+          <button
+            key={`${letter}-${index}`}
+            type="button"
+            className="food-letter"
+            style={{
+              '--food-position': `${(index / (LETTERS.length - 1)) * 100}%`,
+              '--food-delay': `${index * 45}ms`,
+              '--food-tilt': `${index % 2 ? 1.5 : -1.5}deg`,
+            } as CSSProperties}
+            aria-label={`${letter}, ${foods[index]}`}
+            aria-pressed={active === index}
+            onPointerEnter={() => setActive(index)}
+            onFocus={() => setActive(index)}
+            onClick={() => setActive(index)}
+          >
+            {letter}
+          </button>
+        ))}
+      </div>
+
+      <div className="food-word-caption" aria-live="polite">
+        <span>{String(active + 1).padStart(2, '0')} / 10</span>
+        <strong>{foods[active]}</strong>
+      </div>
     </div>
   )
-}
-
-function ScenePoster() {
-  return (
-    <div className="atelier-scene-poster" aria-hidden="true">
-      <img src="/atelier-hero.png" alt="" />
-      <span className="atelier-scene-poster-orbit atelier-scene-poster-orbit-a" />
-      <span className="atelier-scene-poster-orbit atelier-scene-poster-orbit-b" />
-      <span className="atelier-scene-poster-core" />
-    </div>
-  )
-}
-
-function supportsWebGL() {
-  try {
-    const canvas = document.createElement('canvas')
-    const context =
-      canvas.getContext('webgl2', { failIfMajorPerformanceCaveat: true }) ||
-      canvas.getContext('webgl', { failIfMajorPerformanceCaveat: true })
-    if (!context) return false
-    context.getExtension('WEBGL_lose_context')?.loseContext()
-    return true
-  } catch {
-    return false
-  }
-}
-
-class SceneErrorBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
-  state = { failed: false }
-
-  static getDerivedStateFromError() {
-    return { failed: true }
-  }
-
-  render() {
-    return this.state.failed ? null : this.props.children
-  }
 }
