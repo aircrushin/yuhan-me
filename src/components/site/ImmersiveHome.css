@@ -328,14 +328,11 @@
 }
 
 .food-letter {
+  display: grid;
   min-width: 0;
   border: 0;
   background-color: transparent;
-  background-image: url('/food-letter-atlas.jpg');
-  background-position: var(--food-position) center;
-  background-size: 1000% 100%;
   padding: 0;
-  color: oklch(0.8 0.1 70);
   font-family: 'Literata', Georgia, serif;
   font-size: clamp(2.7rem, 9.8vw, 9.25rem);
   font-weight: 650;
@@ -347,11 +344,38 @@
   transition:
     filter 300ms cubic-bezier(0.16, 1, 0.3, 1),
     transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: food-letter-arrive 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--food-delay);
+}
+
+.food-letter-texture {
+  grid-area: 1 / 1;
+  background-image: url('/food-letter-atlas.jpg');
+  background-position: var(--food-position-even) center;
+  background-size: 1000% 100%;
+  color: oklch(0.8 0.1 70);
+  transition:
+    opacity 900ms cubic-bezier(0.65, 0, 0.35, 1) var(--food-swap-delay),
+    transform 900ms cubic-bezier(0.16, 1, 0.3, 1) var(--food-swap-delay);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: food-letter-arrive 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: var(--food-delay);
+}
+
+.food-letter-texture-odd {
+  background-position: var(--food-position-odd) center;
+}
+
+.food-word-stage[data-food-phase='even'] .food-letter-texture-even,
+.food-word-stage[data-food-phase='odd'] .food-letter-texture-odd {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.food-word-stage[data-food-phase='even'] .food-letter-texture-odd,
+.food-word-stage[data-food-phase='odd'] .food-letter-texture-even {
+  opacity: 0;
+  transform: scale(0.94);
 }
 
 .food-letter:hover,
@@ -370,56 +394,6 @@
 @keyframes food-letter-arrive {
   from { opacity: 0; transform: translateY(2.5rem) rotate(var(--food-tilt)) scale(0.88); }
   to { opacity: 1; transform: rotate(var(--food-tilt)); }
-}
-
-.food-word-caption {
-  position: absolute;
-  right: clamp(1rem, 3vw, 2.5rem);
-  bottom: clamp(3rem, 5vw, 4rem);
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-  color: oklch(0.88 0.04 78 / 0.74);
-  font-size: 0.64rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.food-word-caption strong {
-  color: oklch(0.9 0.09 78);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-}
-
-.hero-stage-hud {
-  position: absolute;
-  z-index: 8;
-  right: 1rem;
-  left: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  color: oklch(0.88 0.018 190 / 0.72);
-  font-size: 0.64rem;
-  font-weight: 750;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-.hero-stage-hud-top {
-  top: 1rem;
-}
-
-.hero-stage-hud-bottom {
-  bottom: 1rem;
-}
-
-.hero-stage-instruction {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
 }
 
 .kinetic-hero .hero-ledger {
@@ -1074,21 +1048,6 @@
     font-size: clamp(2.35rem, 12vw, 4.2rem);
   }
 
-  .food-word-caption {
-    right: 0.85rem;
-    bottom: 2.7rem;
-  }
-
-  .hero-stage-hud {
-    right: 0.75rem;
-    left: 0.75rem;
-    font-size: 0.58rem;
-  }
-
-  .hero-stage-hud-bottom > span:last-child {
-    display: none;
-  }
-
   .kinetic-hero .hero-ledger {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -1178,11 +1137,13 @@
   .home-experience.is-enhanced [data-home-reveal],
   .home-experience.is-enhanced [data-home-reveal][data-visible='true'],
   .kinetic-reveal,
-  .food-letter {
+  .food-letter,
+  .food-letter-texture {
     opacity: 1;
     transform: none;
     animation: none;
     filter: none;
+    transition: none;
   }
 
   .hero-scroll-cue svg {

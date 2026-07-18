@@ -1,6 +1,6 @@
 import { type CSSProperties } from 'react'
 import { Link } from '@tanstack/react-router'
-import { ArrowDown, ArrowUpRight, MapPin, MousePointer2 } from 'lucide-react'
+import { ArrowDown, ArrowUpRight, MapPin } from 'lucide-react'
 
 import type { Profile, Repo } from '#/db/schema'
 import { Button } from '#/components/ui/button'
@@ -26,17 +26,6 @@ export function Hero({ profile, stats }: HeroProps) {
         <div className="kinetic-hero-shell">
           <div className="kinetic-hero-stage kinetic-reveal" style={{ '--i': 0 } as CSSProperties}>
             <HeroSceneGate />
-            <div className="hero-stage-hud hero-stage-hud-top" aria-hidden="true">
-              <span>{m.hero_food_scene_label()}</span>
-              <span>EST. / MMXXVI</span>
-            </div>
-            <div className="hero-stage-hud hero-stage-hud-bottom">
-              <span className="hero-stage-instruction">
-                <MousePointer2 className="h-3.5 w-3.5" />
-                {m.hero_food_scene_instruction()}
-              </span>
-              <span>{m.hero_food_caption()}</span>
-            </div>
           </div>
 
           <div className="kinetic-hero-copy">
