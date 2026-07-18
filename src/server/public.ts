@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import { and, desc, asc, eq, sql } from 'drizzle-orm'
+import { and, desc, asc, eq } from 'drizzle-orm'
 import { z } from 'zod'
 
 import { getDb } from '#/db/client'
@@ -196,13 +196,6 @@ export const getHomeData = createServerFn({ method: 'GET' }).handler(async () =>
     .where(eq(travelDumps.isVisible, true))
     .orderBy(asc(travelDumps.displayOrder), desc(travelDumps.id))
 
-  const stats = await db.execute(sql`
-    SELECT
-      COUNT(*) FILTER (WHERE is_visible)::int AS visible_repos,
-      COALESCE(SUM(stars) FILTER (WHERE is_visible), 0)::int AS total_stars
-    FROM repos
-  `)
-
   return {
     profile: profileRow ?? null,
     repos: visibleRepos,
@@ -212,9 +205,5 @@ export const getHomeData = createServerFn({ method: 'GET' }).handler(async () =>
     experience: experienceRows,
     posts: recentPosts,
     travelDumps: visibleTravelDumps,
-    stats: (stats.rows[0] as { visible_repos: number; total_stars: number }) ?? {
-      visible_repos: 0,
-      total_stars: 0,
-    },
   }
 })

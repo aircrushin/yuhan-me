@@ -45,7 +45,7 @@ function Home() {
   return (
     <HomeExperience>
       <div data-home-section="home">
-        <Hero profile={data.profile} stats={data.stats} />
+        <Hero profile={data.profile} />
       </div>
       <div data-home-section="about" data-home-reveal>
         <AboutSection profile={data.profile} />
