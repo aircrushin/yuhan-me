@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-exec "/Users/mac/.nvm/versions/node/v22.16.0/bin/node" "/Users/mac/Desktop/vibecoding/theone/theone-cli/packages/cli/dist/index.js" "$@"
