@@ -257,143 +257,29 @@
 .kinetic-hero-stage {
   position: relative;
   z-index: 1;
+  display: grid;
+  place-items: center;
   min-width: 0;
   min-height: clamp(25rem, 55vw, 42rem);
   overflow: hidden;
   border: 1px solid oklch(0.82 0.038 190 / 0.18);
   border-radius: 2px;
-  background: oklch(0.14 0.045 28);
+  background: url('/hero-gradient.jpg') center / cover;
   box-shadow:
     0 35px 80px oklch(0.23 0.026 204 / 0.18),
     0 1px 0 oklch(0.98 0.01 190 / 0.09) inset;
   isolation: isolate;
 }
 
-.kinetic-hero-stage::before,
-.kinetic-hero-stage::after {
-  content: '';
-  position: absolute;
-  z-index: 5;
-  pointer-events: none;
-}
-
-.kinetic-hero-stage::before {
-  inset: 0;
-  background:
-    linear-gradient(90deg, transparent 9.94%, oklch(0.88 0.06 78 / 0.08) 10%, transparent 10.06% 89.94%, oklch(0.88 0.06 78 / 0.08) 90%, transparent 90.06%),
-    linear-gradient(transparent 18%, oklch(0.88 0.06 78 / 0.07) 18.1%, transparent 18.2% 81.8%, oklch(0.88 0.06 78 / 0.07) 81.9%, transparent 82%);
-  opacity: 0.8;
-}
-
-.kinetic-hero-stage::after {
-  inset: 0;
-  background:
-    radial-gradient(circle at var(--food-light-x, 42%) var(--food-light-y, 36%), transparent 0 8%, oklch(0.08 0.025 28 / 0.24) 52%, oklch(0.06 0.018 28 / 0.78) 100%),
-    linear-gradient(110deg, oklch(0.92 0.08 78 / 0.08), transparent 28% 72%, oklch(0.18 0.065 152 / 0.1));
-}
-
-.food-word-stage {
-  --food-light-x: 42%;
-  --food-light-y: 36%;
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  padding: clamp(3.75rem, 8vw, 7.5rem) clamp(1rem, 3.5vw, 3.5rem);
-  background:
-    radial-gradient(circle at var(--food-light-x) var(--food-light-y), oklch(0.66 0.16 52 / 0.16), transparent 26%),
-    linear-gradient(125deg, oklch(0.18 0.065 26), oklch(0.1 0.038 31) 52%, oklch(0.1 0.035 146));
-  isolation: isolate;
-}
-
-.food-word-stage::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  opacity: 0.24;
-  background-image:
-    repeating-linear-gradient(7deg, transparent 0 4px, oklch(0.9 0.05 80 / 0.035) 4px 5px),
-    radial-gradient(circle at 12% 110%, oklch(0.52 0.13 34 / 0.5), transparent 32%);
-}
-
-.food-word {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(0.04rem, 0.35vw, 0.28rem);
-  perspective: 900px;
-}
-
-.food-letter {
-  display: grid;
-  min-width: 0;
-  border: 0;
-  background-color: transparent;
-  padding: 0;
-  font-family: 'Literata', Georgia, serif;
-  font-size: clamp(2.7rem, 9.8vw, 9.25rem);
-  font-weight: 650;
-  line-height: 0.8;
-  letter-spacing: -0.09em;
-  cursor: pointer;
-  filter: drop-shadow(0 1.2rem 1rem oklch(0.04 0.02 25 / 0.52));
-  transform: rotate(var(--food-tilt));
-  transition:
-    filter 300ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
-  animation: food-letter-arrive 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: var(--food-delay);
-}
-
-.food-letter-texture {
-  grid-area: 1 / 1;
-  background-image: url('/food-letter-atlas.jpg');
-  background-position: var(--food-position-even) center;
-  background-size: 1000% 100%;
-  color: oklch(0.8 0.1 70);
-  transition:
-    opacity 900ms cubic-bezier(0.65, 0, 0.35, 1) var(--food-swap-delay),
-    transform 900ms cubic-bezier(0.16, 1, 0.3, 1) var(--food-swap-delay);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.food-letter-texture-odd {
-  background-position: var(--food-position-odd) center;
-}
-
-.food-word-stage[data-food-phase='even'] .food-letter-texture-even,
-.food-word-stage[data-food-phase='odd'] .food-letter-texture-odd {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.food-word-stage[data-food-phase='even'] .food-letter-texture-odd,
-.food-word-stage[data-food-phase='odd'] .food-letter-texture-even {
-  opacity: 0;
-  transform: scale(0.94);
-}
-
-.food-letter:hover,
-.food-letter:focus-visible,
-.food-letter[aria-pressed='true'] {
-  z-index: 2;
-  filter: saturate(1.15) brightness(1.12) drop-shadow(0 1.6rem 1.3rem oklch(0.04 0.02 25 / 0.62));
-  transform: translateY(-0.65rem) rotate(0deg) scale(1.07);
-}
-
-.food-letter:focus-visible {
-  outline: 2px solid oklch(0.82 0.105 86);
-  outline-offset: 0.45rem;
-}
-
-@keyframes food-letter-arrive {
-  from { opacity: 0; transform: translateY(2.5rem) rotate(var(--food-tilt)) scale(0.88); }
-  to { opacity: 1; transform: rotate(var(--food-tilt)); }
+.hero-gradient-wordmark {
+  margin: 0;
+  color: oklch(0.22 0.03 240);
+  font-family: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2.7rem, 9.6vw, 8.5rem);
+  font-weight: 800;
+  letter-spacing: -0.075em;
+  line-height: 0.82;
+  white-space: nowrap;
 }
 
 .kinetic-hero .hero-ledger {
@@ -1040,14 +926,6 @@
     min-height: 23rem;
   }
 
-  .food-word-stage {
-    padding-inline: 0.65rem;
-  }
-
-  .food-letter {
-    font-size: clamp(2.35rem, 12vw, 4.2rem);
-  }
-
   .kinetic-hero .hero-ledger {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -1137,15 +1015,6 @@
   .home-experience.is-enhanced [data-home-reveal],
   .home-experience.is-enhanced [data-home-reveal][data-visible='true'],
   .kinetic-reveal,
-  .food-letter,
-  .food-letter-texture {
-    opacity: 1;
-    transform: none;
-    animation: none;
-    filter: none;
-    transition: none;
-  }
-
   .hero-scroll-cue svg {
     animation: none;
   }

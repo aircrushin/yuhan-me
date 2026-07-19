@@ -4,7 +4,6 @@ import { ArrowDown, ArrowUpRight } from 'lucide-react'
 
 import type { Profile, Repo } from '#/db/schema'
 import { Button } from '#/components/ui/button'
-import { HeroSceneGate } from '#/components/site/HeroSceneGate'
 import { pickLocaleField } from '#/lib/i18n'
 import { m } from '#/paraglide/messages'
 
@@ -22,7 +21,7 @@ export function Hero({ profile }: HeroProps) {
       <div className="page-wrap">
         <div className="kinetic-hero-shell">
           <div className="kinetic-hero-stage kinetic-reveal" style={{ '--i': 0 } as CSSProperties}>
-            <HeroSceneGate />
+            <p className="hero-gradient-wordmark" aria-hidden="true">AIRCRUSHIN</p>
           </div>
 
           <div className="kinetic-hero-copy">

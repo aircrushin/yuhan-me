@@ -1,5 +1,4 @@
 import { ArrowUpRight, ExternalLink, Star } from 'lucide-react'
-import type { CSSProperties } from 'react'
 import { useRef } from 'react'
 
 import type { Repo } from '#/db/schema'
@@ -79,26 +78,18 @@ export function ProjectCard({
             src={repo.customCoverUrl}
             alt=""
             className={cn(
-              'w-full rounded-sm object-cover ring-1 ring-[var(--line)]',
+              'w-full object-cover ring-1 ring-[var(--line)]',
               featured ? 'h-56' : 'h-32',
             )}
           />
         ) : !compact ? (
           <div
+            aria-hidden
             className={cn(
-              'project-cover relative w-full overflow-hidden rounded-sm ring-1 ring-[var(--line)]',
+              'project-gradient-cover w-full ring-1 ring-[var(--line)]',
               featured ? 'h-56' : 'h-28',
             )}
-            aria-hidden
-            style={{
-              '--project-accent': accent,
-            } as CSSProperties}
-          >
-            <div className="project-cover-glow project-cover-glow-a" />
-            <div className="project-cover-glow project-cover-glow-b" />
-            <div className="project-cover-sheen" />
-            <div className="project-cover-grain" />
-          </div>
+          />
         ) : null}
 
         <div className="flex items-start justify-between gap-3">
