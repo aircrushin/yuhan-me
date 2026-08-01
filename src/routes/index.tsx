@@ -7,6 +7,7 @@ import { SkillsSection } from '#/components/site/SkillsSection'
 import { ProjectsPreview } from '#/components/site/ProjectsPreview'
 import { ExperienceSection } from '#/components/site/ExperienceSection'
 import { BlogPreview } from '#/components/site/BlogPreview'
+import { MusicSection } from '#/components/site/MusicSection'
 import { ContactSection } from '#/components/site/ContactSection'
 import { HomeExperience } from '#/components/site/HomeExperience'
 import { getHomeData } from '#/server/public'
@@ -64,6 +65,9 @@ function Home() {
       </div>
       <div data-home-reveal>
         <BlogPreview posts={data.posts} />
+      </div>
+      <div data-home-section="music" data-home-reveal>
+        <MusicSection />
       </div>
       <div data-home-section="contact" data-home-reveal>
         <ContactSection profile={data.profile} />
