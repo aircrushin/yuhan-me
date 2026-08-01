@@ -26,6 +26,12 @@ import { Input } from '#/components/ui/input'
 import { Label } from '#/components/ui/label'
 import { Switch } from '#/components/ui/switch'
 import {
+  PLACE_DETAIL_FIELDS,
+  placeToGooglePlace,
+  type GooglePlace,
+  type PlaceFieldsResult,
+} from '#/lib/google-place'
+import {
   deleteTravelDump,
   listTravelDumpsAdmin,
   reorderTravelDumps,
@@ -40,15 +46,6 @@ export const Route = createFileRoute('/admin/_app/travel')({
 
 type Draft = Omit<TravelDump, 'id' | 'createdAt' | 'updatedAt'> & {
   id?: number
-}
-
-type GooglePlace = {
-  placeId: string | null
-  locationName: string
-  formattedAddress: string
-  latitude: number | null
-  longitude: number | null
-  googleMapsUrl: string
 }
 
 const EMPTY_DRAFT: Draft = {
@@ -276,14 +273,14 @@ function AdminTravel() {
               <Label>Google Maps place</Label>
               <GooglePlaceSearch
                 defaultValue={draft.locationName || draft.formattedAddress}
-                onPlace={(place) => setDraft({ ...draft, ...place })}
+                onPlace={(place) => setDraft((prev) => ({ ...prev, ...place }))}
               />
             </div>
             <div className="space-y-2 sm:col-span-2">
               <Label>Location metadata</Label>
               <div className="surface-card space-y-1 p-3 text-xs text-[color:var(--sea-ink-soft)]">
                 <p className="font-medium text-[color:var(--sea-ink)]">
-                  {draft.locationName || 'No place selected'}
+                  {draft.locationName || draft.formattedAddress || 'No place selected'}
                 </p>
                 {draft.formattedAddress ? <p>{draft.formattedAddress}</p> : null}
                 {draft.latitude !== null && draft.longitude !== null ? (
@@ -347,36 +344,8 @@ function AdminTravel() {
   )
 }
 
-/** Place (New) id values are often `places/ChIJ…`; store the legacy-style id only. */
-function normalizePlaceId(id: string | undefined): string | null {
-  if (!id) return null
-  return id.startsWith('places/') ? id.slice('places/'.length) : id
-}
-
-function readLatLng(loc: unknown): { lat: number; lng: number } | null {
-  if (!loc || typeof loc !== 'object') return null
-  const o = loc as { lat?: unknown; lng?: unknown }
-  if (typeof o.lat === 'function' && typeof o.lng === 'function') {
-    return { lat: (o.lat as () => number)(), lng: (o.lng as () => number)() }
-  }
-  if (typeof o.lat === 'number' && typeof o.lng === 'number') {
-    return { lat: o.lat, lng: o.lng }
-  }
-  return null
-}
-
-/** Minimal typing for Maps JS Place (New) after `fetchFields`. */
-type PlaceFieldsResult = {
-  id?: string
-  displayName?: string
-  formattedAddress?: string
-  location?: unknown
-  googleMapsUri?: string
-  fetchFields: (opts: { fields: string[] }) => Promise<void>
-}
-
 type GmpSelectEvent = Event & {
-  placePrediction: { toPlace: () => PlaceFieldsResult }
+  placePrediction?: { toPlace: () => PlaceFieldsResult }
 }
 
 type PlaceAutocompleteWidget = HTMLElement & {
@@ -439,25 +408,19 @@ function GooglePlaceSearch({
 
         const onSelect = (event: Event) => {
           void (async () => {
-            const ev = event as GmpSelectEvent
-            const place = ev.placePrediction.toPlace()
             try {
-              await place.fetchFields({
-                fields: ['id', 'displayName', 'formattedAddress', 'location', 'googleMapsUri'],
-              })
+              const ev = event as GmpSelectEvent
+              const prediction = ev.placePrediction
+              if (!prediction?.toPlace) {
+                throw new Error('Place prediction missing from gmp-select event')
+              }
+              const place = prediction.toPlace()
+              // Maps JS API field is googleMapsURI (URI), not googleMapsUri.
+              await place.fetchFields({ fields: [...PLACE_DETAIL_FIELDS] })
+              onPlaceRef.current(placeToGooglePlace(place))
             } catch {
-              return
+              toast.error('Failed to load place details from Google Maps')
             }
-            const ll = readLatLng(place.location)
-            const selected = {
-              placeId: normalizePlaceId(place.id),
-              locationName: place.displayName ?? '',
-              formattedAddress: place.formattedAddress ?? '',
-              latitude: ll?.lat ?? null,
-              longitude: ll?.lng ?? null,
-              googleMapsUrl: place.googleMapsUri ?? '',
-            }
-            onPlaceRef.current(selected)
           })()
         }
 
