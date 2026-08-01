@@ -9,6 +9,7 @@ const HOME_SECTIONS = [
   { id: 'about', label: () => m.section_about_kicker() },
   { id: 'collaboration', label: () => m.section_collaboration_kicker() },
   { id: 'projects', label: () => m.section_projects_kicker() },
+  { id: 'music', label: () => m.section_music_kicker() },
   { id: 'contact', label: () => m.section_contact_kicker() },
 ] as const
 
