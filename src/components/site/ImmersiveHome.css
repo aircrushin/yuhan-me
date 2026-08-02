@@ -273,12 +273,13 @@
 
 .hero-gradient-wordmark {
   margin: 0;
-  color: oklch(0.22 0.03 240);
-  font-family: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(2.7rem, 9.6vw, 8.5rem);
-  font-weight: 800;
-  letter-spacing: -0.075em;
-  line-height: 0.82;
+  color: oklch(0.98 0.008 190);
+  font-family: 'Bagel Fat One', 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2.7rem, 9.2vw, 8.25rem);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 0.86;
+  text-shadow: 0 0.12em 0.45em oklch(0.22 0.03 240 / 0.28);
   white-space: nowrap;
 }
 
