@@ -10,6 +10,8 @@ import {
   getCookie,
   verifySession,
 } from '#/lib/admin-auth'
+import { toArtworkImage } from '#/lib/artwork'
+import { deleteArtwork, listArtwork } from '#/lib/blob'
 import { fetchAllUserRepos } from '#/lib/github'
 
 async function assertAdmin() {
@@ -496,5 +498,23 @@ export const deleteMessage = createServerFn({ method: 'POST' })
     await assertAdmin()
     const db = getDb()
     await db.delete(messages).where(eq(messages.id, data.id))
+    return { ok: true }
+  })
+
+// ─── Artwork (Vercel Blob) ──────────────────────────────────────────────────
+
+export const listArtworkAdmin = createServerFn({ method: 'GET' }).handler(async () => {
+  await assertAdmin()
+  const { blobs } = await listArtwork()
+  return blobs
+    .map(toArtworkImage)
+    .sort((a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime())
+})
+
+export const deleteArtworkAdmin = createServerFn({ method: 'POST' })
+  .inputValidator(z.object({ url: z.string().url() }))
+  .handler(async ({ data }) => {
+    await assertAdmin()
+    await deleteArtwork(data.url)
     return { ok: true }
   })

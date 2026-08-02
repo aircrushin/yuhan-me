@@ -13,6 +13,7 @@
 
   "nav_home": "首页",
   "nav_projects": "作品",
+  "nav_artwork": "画廊",
   "nav_travel": "旅行",
   "nav_blog": "随笔",
   "nav_contact": "联系",
@@ -92,6 +93,11 @@
   "section_travel_description": "把住过、走过、后来还会想起的地方，用 LiveDrop 留成一面照片墙。",
   "section_travel_view_all": "查看旅行照片墙",
   "travel_empty": "暂时还没有公开的旅行照片墙。",
+
+  "artwork_page_kicker": "画廊",
+  "artwork_page_title": "插画与视觉作品。",
+  "artwork_page_description": "一面瀑布流图片墙，放插画、图形和视觉实验——不配说明，直接看图。",
+  "artwork_empty": "暂时还没有公开的画作。",
 
   "section_experience_kicker": "经历",
   "section_experience_title": "一条小小的时间线",

@@ -4,6 +4,7 @@ import {
   FileText,
   Folder,
   Home,
+  Image,
   Inbox,
   LogOut,
   MapPinned,
@@ -20,6 +21,7 @@ const NAV: Array<{
   to:
     | '/admin'
     | '/admin/projects'
+    | '/admin/artwork'
     | '/admin/travel'
     | '/admin/experience'
     | '/admin/skills'
@@ -31,6 +33,7 @@ const NAV: Array<{
 }> = [
   { to: '/admin', label: 'Dashboard', icon: Home },
   { to: '/admin/projects', label: 'Projects', icon: Folder },
+  { to: '/admin/artwork', label: 'Artwork', icon: Image },
   { to: '/admin/travel', label: 'Travel', icon: MapPinned },
   { to: '/admin/experience', label: 'Experience', icon: Briefcase },
   { to: '/admin/skills', label: 'Skills', icon: Sparkles },

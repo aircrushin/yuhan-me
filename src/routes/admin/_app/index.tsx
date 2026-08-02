@@ -7,6 +7,7 @@ import {
   Briefcase,
   FileText,
   Folder,
+  Image,
   Inbox,
   MapPinned,
   RefreshCw,
@@ -149,6 +150,12 @@ function Dashboard() {
           to="/admin/travel"
         />
         <QuickAction
+          icon={Image}
+          title="Upload artwork"
+          body="Add illustrations to the public masonry gallery via Vercel Blob."
+          to="/admin/artwork"
+        />
+        <QuickAction
           icon={Sparkles}
           title="Refresh skills"
           body="Add or remove technologies in your toolbelt."
@@ -176,6 +183,7 @@ function StatCard({
   value: string | number
   to:
     | '/admin/projects'
+    | '/admin/artwork'
     | '/admin/travel'
     | '/admin/experience'
     | '/admin/skills'
@@ -212,6 +220,7 @@ function QuickAction({
   body: string
   to:
     | '/admin/projects'
+    | '/admin/artwork'
     | '/admin/travel'
     | '/admin/experience'
     | '/admin/skills'

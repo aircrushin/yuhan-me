@@ -13,6 +13,7 @@
 
   "nav_home": "Home",
   "nav_projects": "Projects",
+  "nav_artwork": "Artwork",
   "nav_travel": "Travel",
   "nav_blog": "Writing",
   "nav_contact": "Contact",
@@ -92,6 +93,11 @@
   "section_travel_description": "Live snapshots from places I've stayed, wandered through, and kept thinking about afterward.",
   "section_travel_view_all": "Open travel walls",
   "travel_empty": "No travel photo walls are published yet.",
+
+  "artwork_page_kicker": "Gallery",
+  "artwork_page_title": "Illustrations and visual work.",
+  "artwork_page_description": "A masonry wall of drawings, graphics, and visual experiments — no captions, just the pictures.",
+  "artwork_empty": "No artwork published yet.",
 
   "section_experience_kicker": "Path",
   "section_experience_title": "A short timeline",

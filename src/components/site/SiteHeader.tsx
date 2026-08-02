@@ -9,9 +9,13 @@ import { ProfileSocialLinks } from '#/components/site/ProfileSocialLinks'
 import { ThemeToggle } from '#/components/site/ThemeToggle'
 import { m } from '#/paraglide/messages'
 
-const NAV: Array<{ to: '/' | '/projects' | '/travel' | '/blog' | '/contact'; label: () => string }> = [
+const NAV: Array<{
+  to: '/' | '/projects' | '/artwork' | '/travel' | '/blog' | '/contact'
+  label: () => string
+}> = [
   { to: '/', label: () => m.nav_home() },
   { to: '/projects', label: () => m.nav_projects() },
+  { to: '/artwork', label: () => m.nav_artwork() },
   { to: '/travel', label: () => m.nav_travel() },
   { to: '/blog', label: () => m.nav_blog() },
   { to: '/contact', label: () => m.nav_contact() },

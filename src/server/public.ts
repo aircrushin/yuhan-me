@@ -4,6 +4,8 @@ import { z } from 'zod'
 
 import { getDb } from '#/db/client'
 import { profile, repos, experience, skills, posts, messages, travelDumps } from '#/db/schema'
+import { isArtworkImagePath, toArtworkImage, type ArtworkImage } from '#/lib/artwork'
+import { listArtwork } from '#/lib/blob'
 
 export const getPublicProfile = createServerFn({ method: 'GET' }).handler(async () => {
   const db = getDb()
@@ -28,6 +30,23 @@ export const getVisibleTravelDumps = createServerFn({ method: 'GET' }).handler(a
     .where(eq(travelDumps.isVisible, true))
     .orderBy(asc(travelDumps.displayOrder), desc(travelDumps.id))
 })
+
+export const getArtworkImages = createServerFn({ method: 'GET' }).handler(
+  async (): Promise<ArtworkImage[]> => {
+    try {
+      const { blobs } = await listArtwork()
+      return blobs
+        .filter((blob) => isArtworkImagePath(blob.pathname))
+        .map(toArtworkImage)
+        .sort(
+          (a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime(),
+        )
+    } catch (error) {
+      console.error('Failed to list artwork blobs', error)
+      return []
+    }
+  },
+)
 
 export const getPublishedPosts = createServerFn({ method: 'GET' }).handler(async () => {
   const db = getDb()

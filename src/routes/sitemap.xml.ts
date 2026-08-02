@@ -29,6 +29,7 @@ export const Route = createFileRoute('/sitemap/xml')({
           urlEntry('/', undefined, 'weekly', '1.0'),
           urlEntry('/blog', undefined, 'weekly', '0.8'),
           urlEntry('/projects', undefined, 'weekly', '0.8'),
+          urlEntry('/artwork', undefined, 'weekly', '0.7'),
           urlEntry('/contact', undefined, 'monthly', '0.5'),
           urlEntry('/travel', undefined, 'monthly', '0.6'),
           ...publishedPosts.map((p) =>
