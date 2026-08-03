@@ -1,4 +1,5 @@
 import { HeadContent, Scripts, createRootRoute, useRouterState } from '@tanstack/react-router'
+import { Analytics } from '@vercel/analytics/react'
 
 import { getLocale } from '#/paraglide/runtime'
 import { m } from '#/paraglide/messages'
@@ -89,6 +90,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <SiteShell>{children}</SiteShell>
         <Toaster richColors closeButton position="top-right" />
+        <Analytics />
         <Scripts />
       </body>
     </html>
